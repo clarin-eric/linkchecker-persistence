@@ -1,1 +1,3 @@
-# curation-persistence
+# curation-persistence API
+
+The curation persistence API (cpa)...
