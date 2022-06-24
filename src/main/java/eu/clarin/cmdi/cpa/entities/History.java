@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,9 +13,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name="history", indexes = {@Index(columnList = "url_id, checkingDate", unique = true)})
 public class History {
@@ -41,7 +46,7 @@ public class History {
    private Integer redirectCount;
    private String category;
    
-   @OneToOne
-   @JoinColumn(name = "url_id")
+   @OneToOne(fetch = FetchType.EAGER)
+   @JoinColumn(name = "url_id", referencedColumnName = "id")
    private Url url;
 }

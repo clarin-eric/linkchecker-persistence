@@ -11,9 +11,14 @@ import javax.persistence.Table;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name="url", indexes = {@Index(columnList = "url", unique = true)})
 public class Url {
@@ -21,6 +26,8 @@ public class Url {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+   
+   @NonNull
    private String url;
    
    @OneToMany

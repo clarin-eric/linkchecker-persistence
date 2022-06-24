@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,11 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-@Table(name = "status", indexes = {@Index(columnList = "url_id", unique = true)})
+@Table(name = "status", indexes = {@Index(columnList = "url_id", unique = true), @Index(columnList = "category", unique = false)})
 public class Status {
    
    @Id
@@ -33,8 +39,9 @@ public class Status {
    private Integer redirectCount;
    private String category;
    
-   @OneToOne
+   @OneToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "url_id")
+   @NonNull
    private Url url;
 
 }
