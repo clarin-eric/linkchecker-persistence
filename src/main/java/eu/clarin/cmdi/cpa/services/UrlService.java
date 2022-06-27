@@ -12,10 +12,15 @@ import eu.clarin.cmdi.cpa.repositories.ContextRepository;
 import eu.clarin.cmdi.cpa.repositories.ProviderGroupRepository;
 import eu.clarin.cmdi.cpa.repositories.UrlContextRepository;
 import eu.clarin.cmdi.cpa.repositories.UrlRepository;
+import eu.clarin.cmdi.cpa.utils.Category;
+import eu.clarin.cmdi.cpa.utils.UrlValidator;
+import eu.clarin.cmdi.cpa.utils.UrlValidator.ValidationResult;
 
 @Transactional
 @Service
 public class UrlService {
+   
+
    
    @Autowired
    private UrlRepository uRep;
@@ -25,14 +30,18 @@ public class UrlService {
    private ContextRepository cRep;
    @Autowired
    private ProviderGroupRepository pRep;
+   @Autowired
+   private StatusService sService;
    
    public void save(String urlString, String origin, String providerGroupName, String expectedMimeType, String source) {
       
       Url url;
       
+      ValidationResult validation = UrlValidator.validate(urlString);
+      
       if((url = uRep.findByUrl(urlString)) == null) {
-         url = new Url();
-         url.setUrl(urlString);
+         url = new Url(urlString, validation.getHost(), validation.isValid());
+         
          uRep.save(url);
       }
       
@@ -67,5 +76,12 @@ public class UrlService {
       urlContext.setIngestionDate(new Timestamp(System.currentTimeMillis()));
       
       ucRep.save(urlContext);
+      
+      if(!validation.isValid()) { //create a status entry if Url is not valid
+         Status status = new Status(Category.Invalid_URL, url);
+         status.setMessage(validation.getMessage());
+         
+         sService.save(status);
+      }
    }
 }
