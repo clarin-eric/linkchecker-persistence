@@ -11,14 +11,15 @@ import javax.persistence.Table;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@RequiredArgsConstructor
 @Entity
 @Table(name="url", indexes = {@Index(columnList = "url", unique = true)})
 public class Url {
@@ -28,7 +29,11 @@ public class Url {
    private Long id;
    
    @NonNull
-   private String url;
+   private final String url;
+   
+   private final String groupKey;
+   
+   private final Boolean valid;
    
    @OneToMany
    @JoinColumn(name = "url_id", referencedColumnName = "id")
