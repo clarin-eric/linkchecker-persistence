@@ -13,14 +13,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
+import eu.clarin.cmdi.cpa.utils.Category;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
+@Data
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@RequiredArgsConstructor
 @Entity
 @Table(name = "status", indexes = {@Index(columnList = "url_id", unique = true), @Index(columnList = "category", unique = false)})
 public class Status {
@@ -37,11 +40,12 @@ public class Status {
    private Timestamp checkingDate;
    private String message;
    private Integer redirectCount;
-   private String category;
+   
+   private final Category category;
    
    @OneToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "url_id")
    @NonNull
-   private Url url;
+   private final Url url;
 
 }

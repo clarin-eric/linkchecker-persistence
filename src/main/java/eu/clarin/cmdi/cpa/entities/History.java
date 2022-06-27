@@ -13,13 +13,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
+import eu.clarin.cmdi.cpa.utils.Category;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@RequiredArgsConstructor
 @Entity
 @Table(name="history", indexes = {@Index(columnList = "url_id, checkingDate", unique = true)})
 public class History {
@@ -44,9 +46,10 @@ public class History {
    private String message;
    
    private Integer redirectCount;
-   private String category;
+   
+   private final Category category;
    
    @OneToOne(fetch = FetchType.EAGER)
    @JoinColumn(name = "url_id", referencedColumnName = "id")
-   private Url url;
+   private final Url url;
 }

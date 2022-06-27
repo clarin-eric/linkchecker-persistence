@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import eu.clarin.cmdi.cpa.repositories.UrlRepository;
 import eu.clarin.cmdi.cpa.services.UrlService;
 
 @SpringBootApplication
@@ -16,10 +17,12 @@ public class CpaApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner runnner(UrlService service) {
+	public CommandLineRunner runnner(UrlRepository uRep) {
 	   
 	   return args -> {
-	      service.save("http://wowasa.com", "origin", "providerGroup", "expectedMimeType", "source");
+	      //service.save("http://wowasa.com", "origin", "providerGroup", "expectedMimeType", "source");
+	      
+	      //uRep.findAllUrlContextContextByProviderGroupName("providerGroup");
 	   };
 
 	}
