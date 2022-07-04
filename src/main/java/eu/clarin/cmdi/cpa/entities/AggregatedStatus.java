@@ -2,6 +2,9 @@ package eu.clarin.cmdi.cpa.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import eu.clarin.cmdi.cpa.utils.Category;
@@ -17,6 +20,10 @@ import lombok.RequiredArgsConstructor;
 @Table(name = "aggregatedStatus")
 public class AggregatedStatus {
    
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
+   
    @Column(name = "name")
    private final String providerGroupName;
    
@@ -25,5 +32,7 @@ public class AggregatedStatus {
    private Long avgDuration;
    
    private Long maxDuration;
+   
+   private Long number;
 
 }

@@ -9,21 +9,30 @@ import org.springframework.stereotype.Service;
 
 import eu.clarin.cmdi.cpa.entities.*;
 import eu.clarin.cmdi.cpa.repositories.ContextRepository;
+import eu.clarin.cmdi.cpa.repositories.HistoryRepository;
+import eu.clarin.cmdi.cpa.repositories.ObsoleteRepository;
 import eu.clarin.cmdi.cpa.repositories.ProviderGroupRepository;
+import eu.clarin.cmdi.cpa.repositories.StatusRepository;
 import eu.clarin.cmdi.cpa.repositories.UrlContextRepository;
 import eu.clarin.cmdi.cpa.repositories.UrlRepository;
 import eu.clarin.cmdi.cpa.utils.Category;
 import eu.clarin.cmdi.cpa.utils.UrlValidator;
 import eu.clarin.cmdi.cpa.utils.UrlValidator.ValidationResult;
+import lombok.extern.slf4j.Slf4j;
 
 @Transactional
 @Service
-public class UrlService {
+@Slf4j
+public class LinkService {
    
 
    
    @Autowired
    private UrlRepository uRep;
+   @Autowired
+   private StatusRepository sRep;
+   @Autowired
+   private HistoryRepository hRep;
    @Autowired
    private UrlContextRepository ucRep;
    @Autowired
@@ -32,6 +41,8 @@ public class UrlService {
    private ProviderGroupRepository pRep;
    @Autowired
    private StatusService sService;
+   @Autowired
+   private ObsoleteRepository oRep;
    
    public void save(String urlString, String origin, String providerGroupName, String expectedMimeType, String source) {
       
@@ -83,5 +94,49 @@ public class UrlService {
          
          sService.save(status);
       }
+   }
+   
+   public void deactivateLinksAfter(int periodInDays) {
+      
+      ucRep.deactivateAfter(periodInDays);
+   }
+   
+   public void deleteLinksAfter(int periodInDays) {
+      
+      log.info("multi step deletion of links older then {} days", periodInDays);
+      
+      int step = 1;
+      
+      log.info("step {}: saving status records", step);
+      oRep.saveStatusLinksOlderThan(periodInDays);
+      log.info("step {}: done", step++);
+      
+      log.info("step {}: saving history records", step);
+      oRep.saveHistoryLinksOlderThan(periodInDays);
+      log.info("step {}: done", step++);
+      
+      log.info("step {}: deleting url_context records", step);
+      ucRep.deleteByPeriod(periodInDays);
+      log.info("step {}: done", step++);
+      
+      log.info("step {}: deleting history records", step);
+      hRep.deleteWithoutContext();
+      log.info("step {}: done", step++);
+      
+      log.info("step {}: deleting status records", step);
+      sRep.deleteWithoutContext();
+      log.info("step {}: done", step++);
+      
+      log.info("step {}: deleting url records", step);
+      uRep.deleteWithoutContext();
+      log.info("step {}: done", step++);
+      
+      log.info("step {}: deleting context records", step);
+      cRep.deleteWithoutContext();
+      log.info("step {}: done", step++);
+      
+      log.info("step {}: deleting providerGroup records", step);
+      pRep.deleteWithoutContext();
+      log.info("step {}: done", step);      
    }
 }

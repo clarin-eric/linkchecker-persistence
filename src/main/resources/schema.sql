@@ -2,9 +2,9 @@
 # author: Wolfgang Walter SAUER (wowasa) <clarin@wowasa.com>
 # date: July 2022
 
-#DROP DATABASE  IF EXISTS `linkchecker`;
-CREATE DATABASE  IF NOT EXISTS `linkchecker` CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `linkchecker`;
+#DROP DATABASE  IF EXISTS `linkcheckerTest`;
+CREATE DATABASE  IF NOT EXISTS `linkcheckerTest` CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `linkcheckerTest`;
 
 CREATE TABLE IF NOT EXISTS `providerGroup` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS `providerGroup` (
 
 CREATE TABLE IF NOT EXISTS `context` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `source` varchar(256) DEFAULT NULL,
+  `source` varchar(16) DEFAULT NULL,
   `record` varchar(256) DEFAULT NULL,
   `providerGroup_id` int DEFAULT NULL,
-  `expectedMimeType` varchar(256) DEFAULT NULL,
+  `expectedMimeType` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ukey_context_record_providerGroup_id_expectedMimeType_source` (`record`, `providerGroup_id`, `expectedMimeType`, `source`),
   KEY `key_providerGroup_id` (`providerGroup_id`),
@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS `history` (
 );
 
 CREATE TABLE IF NOT EXISTS `obsolete` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `url` varchar(1024) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `source` varchar(256) DEFAULT NULL,
   `providerGroupName` varchar(256) DEFAULT NULL,
@@ -106,11 +107,34 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
   `duration` int DEFAULT NULL,
   `checkingDate` datetime NOT NULL,
   `redirectCount` int DEFAULT NULL,
-  `deletionDate` datetime NOT NULL DEFAULT NOW()
+  `deletionDate` datetime NOT NULL DEFAULT NOW(),
+   PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS customer(
+   id int NOT NULL AUTO_INCREMENT,
+   email VARCHAR(256) NOT NULL,
+   token VARCHAR(256) NOT NULL,
+   quota int NOT NULL, 
+   KEY key_customer_email_token (email, token),
+   PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS lot(
+   id int NOT NULL AUTO_INCREMENT,
+   creationDate datetime NOT NULL,
+   PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS lot_url(
+   id int NOT NULL AUTO_INCREMENT,
+   lot_id int NOT NULL,
+   url_id int NOT NULL, 
+   PRIMARY KEY (`id`)
 );
 
 CREATE VIEW IF NOT EXISTS `aggregatedStatus` AS
- SELECT p.name, s.category, COUNT(s.id) AS number, AVG(s.duration) AS avg_duration, MAX(s.duration) AS max_duration
+ SELECT ROW_NUMBER() OVER (ORDER BY p.name, s.category) AS id, p.name, s.category, COUNT(s.id) AS number, AVG(s.duration) AS avg_duration, MAX(s.duration) AS max_duration
  FROM url_context uc
  JOIN (status s, context c)
  ON (uc.url_id=s.url_id AND uc.context_id=c.id)

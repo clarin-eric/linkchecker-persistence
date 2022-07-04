@@ -1,5 +1,6 @@
 package eu.clarin.cmdi.cpa.repositories;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
@@ -9,5 +10,11 @@ public interface ProviderGroupRepository extends CrudRepository<ProviderGroup, L
    
    @Nullable
    public ProviderGroup findByName(String name); 
+   
+   @Query(
+         value = "DELETE FROM providerGroup WHERE id NOT IN (SELECT providerGroup_id from context)",
+         nativeQuery = true
+      )
+   public void deleteWithoutContext();
 
 }
