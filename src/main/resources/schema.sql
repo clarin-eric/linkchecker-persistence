@@ -13,6 +13,15 @@ CREATE TABLE IF NOT EXISTS `providerGroup`(
   UNIQUE KEY `ukey_providerGroup_name` (`name`)
 );
 
+CREATE TABLE IF NOT EXISTS client (
+   id INT NOT NULL AUTO_INCREMENT,
+   email VARCHAR(256) NOT NULL,
+   token VARCHAR(256) NOT NULL,
+   quota INT DEFAULT NULL, 
+   KEY key_customer_email_token (email, token),
+   PRIMARY KEY (id)
+);
+
 
 CREATE TABLE IF NOT EXISTS context (
   id INT NOT NULL AUTO_INCREMENT,
@@ -111,15 +120,6 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
   `redirectCount` INT DEFAULT NULL,
   `deletionDate` DATETIME NOT NULL DEFAULT NOW(),
    PRIMARY KEY (`id`)
-);
-
-CREATE TABLE IF NOT EXISTS client (
-   id INT NOT NULL AUTO_INCREMENT,
-   email VARCHAR(256) NOT NULL,
-   token VARCHAR(256) NOT NULL,
-   quota INT DEFAULT NULL, 
-   KEY key_customer_email_token (email, token),
-   PRIMARY KEY (id)
 );
 
 
