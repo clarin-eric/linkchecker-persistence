@@ -1,6 +1,7 @@
 package eu.clarin.cmdi.cpa.entities;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,6 +38,6 @@ public class Url {
    
    @OneToMany
    @JoinColumn(name = "url_id", referencedColumnName = "id")
-   private Set<UrlContext> urlContexts;
+   private List<UrlContext> urlContexts = new ArrayList<UrlContext>();
 
 }

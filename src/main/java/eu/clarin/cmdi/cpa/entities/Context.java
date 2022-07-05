@@ -1,6 +1,7 @@
 package eu.clarin.cmdi.cpa.entities;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,12 +13,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name="context", indexes = {@Index(columnList = "origin, providerGroup_id, expectedMimeType, source", unique = true)})
@@ -39,6 +38,6 @@ public class Context {
    
    @OneToMany
    @JoinColumn(name = "context_id", referencedColumnName = "id")
-   private Set<UrlContext> urlContexts;
+   private List<UrlContext> urlContexts = new ArrayList<UrlContext>();
 
 }
