@@ -16,12 +16,12 @@ public interface UrlContextRepository extends CrudRepository<UrlContext, Long> {
    @Nullable
    public UrlContext findByUrlAndContext(Url url, Context context);
    
-   @Query("UPDATE UrlContext uc SET uc.active = false WHERE uc.active = true AND uc.ingestionDate > ?1")
    @Modifying
+   @Query("UPDATE UrlContext uc SET uc.active = false WHERE uc.active = true AND uc.ingestionDate > ?1")
    public void deactivateOlderThan(LocalDateTime dateTime);
    
-   @Query("DELETE FROM UrlContext uc WHERE uc.ingestionDate > ?1")
-   @Modifying   
+   @Modifying
+   @Query("DELETE FROM UrlContext uc WHERE uc.ingestionDate > ?1") 
    public void deleteOlderThan(LocalDateTime dateTime);
 
 }

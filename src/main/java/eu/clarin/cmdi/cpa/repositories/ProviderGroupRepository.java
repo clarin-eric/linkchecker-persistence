@@ -1,5 +1,6 @@
 package eu.clarin.cmdi.cpa.repositories;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
@@ -11,7 +12,8 @@ public interface ProviderGroupRepository extends CrudRepository<ProviderGroup, L
    @Nullable
    public ProviderGroup findByName(String name); 
    
-   @Query("DELETE FROM ProviderGroup p WHERE p.contexts IS EMPTY")
+   @Modifying
+   @Query("DELETE FROM ProviderGroup p WHERE p NOT IN (SELECT c.providerGroup FROM Context c)")
    public void deleteWithoutContext();
 
 }

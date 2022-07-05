@@ -2,6 +2,7 @@ package eu.clarin.cmdi.cpa.repositories;
 
 import java.util.stream.Stream;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.lang.Nullable;
@@ -23,7 +24,8 @@ public interface StatusRepository extends PagingAndSortingRepository<Status, Lon
    @Query("SELECT s FROM Status s JOIN s.url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providerGroup p ON p.name=?1 AND s.category=?2")
    public Stream<Status> findAllByProviderGroupAndCategory(String providerGroupName, Category category);
    
-   @Query("DELETE FROM Status s WHERE s.url NOT IN (SELECT uc.url FROM UrlContext uc")
+   @Query("DELETE FROM Status s WHERE s.url NOT IN (SELECT uc.url FROM UrlContext uc)")
+   @Modifying
    public void deleteWithoutContext();
    
    
