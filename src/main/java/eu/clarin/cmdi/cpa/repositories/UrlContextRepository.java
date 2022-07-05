@@ -1,5 +1,7 @@
 package eu.clarin.cmdi.cpa.repositories;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,18 +16,12 @@ public interface UrlContextRepository extends CrudRepository<UrlContext, Long> {
    @Nullable
    public UrlContext findByUrlAndContext(Url url, Context context);
    
-   @Query(
-         value = "UPDATE url_context uc SET uc.active = false WHERE active = true AND timestampdiff(day, uc.ingestionDate, now()) > :periodInDays", 
-         nativeQuery = true
-      )
+   @Query("UPDATE UrlContext uc SET uc.active = false WHERE uc.active = true AND uc.ingestionDate > ?1")
    @Modifying
-   public void deactivateAfter(int periodInDays);
+   public void deactivateOlderThan(LocalDateTime dateTime);
    
-   @Query(
-         value = "DELETE FROM url_context WHERE timestampdiff(day, ingestionDate, now()) > ?1",
-         nativeQuery = true
-      )
+   @Query("DELETE FROM UrlContext uc WHERE uc.ingestionDate > ?1")
    @Modifying   
-   public void deleteByPeriod(int periodInDays);
+   public void deleteOlderThan(LocalDateTime dateTime);
 
 }

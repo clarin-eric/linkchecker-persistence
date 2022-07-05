@@ -1,6 +1,6 @@
 package eu.clarin.cmdi.cpa.services;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
@@ -23,9 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Service
 @Slf4j
-public class LinkService {
-   
-
+public class LinkService {   
    
    @Autowired
    private UrlRepository uRep;
@@ -84,7 +82,7 @@ public class LinkService {
       }
       
       urlContext.setActive(true);
-      urlContext.setIngestionDate(new Timestamp(System.currentTimeMillis()));
+      urlContext.setIngestionDate(LocalDateTime.now());
       
       ucRep.save(urlContext);
       
@@ -98,7 +96,7 @@ public class LinkService {
    
    public void deactivateLinksAfter(int periodInDays) {
       
-      ucRep.deactivateAfter(periodInDays);
+      ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(periodInDays));
    }
    
    public void deleteLinksAfter(int periodInDays) {
@@ -116,7 +114,7 @@ public class LinkService {
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting url_context records", step);
-      ucRep.deleteByPeriod(periodInDays);
+      ucRep.deleteOlderThan(LocalDateTime.now().minusDays(periodInDays));
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting history records", step);

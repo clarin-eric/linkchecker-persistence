@@ -23,10 +23,7 @@ public interface StatusRepository extends PagingAndSortingRepository<Status, Lon
    @Query("SELECT s FROM Status s JOIN s.url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providerGroup p ON p.name=?1 AND s.category=?2")
    public Stream<Status> findAllByProviderGroupAndCategory(String providerGroupName, Category category);
    
-   @Query(
-         value = "DELETE FROM status WHERE url_id NOT IN (SELECT url_id from url_context)",
-         nativeQuery = true
-      )
+   @Query("DELETE FROM Status s WHERE s.url NOT IN (SELECT uc.url FROM UrlContext uc")
    public void deleteWithoutContext();
    
    

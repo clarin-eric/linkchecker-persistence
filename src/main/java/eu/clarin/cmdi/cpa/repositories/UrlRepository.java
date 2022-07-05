@@ -13,10 +13,7 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
    @Nullable
    public Url findByUrl(String url);
    
-   @Query(
-         value = "DELETE FROM url WHERE id NOT IN (SELECT url_id from url_context)",
-         nativeQuery = true
-      )
+   @Query("DELETE FROM Url u WHERE u.urlContexts IS EMPTY")
    public void deleteWithoutContext();
 
 }

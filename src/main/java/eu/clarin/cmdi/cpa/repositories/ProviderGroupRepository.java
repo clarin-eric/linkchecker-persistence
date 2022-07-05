@@ -11,10 +11,7 @@ public interface ProviderGroupRepository extends CrudRepository<ProviderGroup, L
    @Nullable
    public ProviderGroup findByName(String name); 
    
-   @Query(
-         value = "DELETE FROM providerGroup WHERE id NOT IN (SELECT providerGroup_id from context)",
-         nativeQuery = true
-      )
+   @Query("DELETE FROM ProviderGroup p WHERE p.contexts IS EMPTY")
    public void deleteWithoutContext();
 
 }

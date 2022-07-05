@@ -1,6 +1,6 @@
 package eu.clarin.cmdi.cpa.entities;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +41,7 @@ public class History {
    private Integer duration;
    
    @Column(nullable = false)   
-   private Timestamp checkingDate;
+   private LocalDateTime checkingDate;
    
    private String message;
    

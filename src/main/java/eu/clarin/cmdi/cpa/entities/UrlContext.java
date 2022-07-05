@@ -1,6 +1,6 @@
 package eu.clarin.cmdi.cpa.entities;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +36,7 @@ public class UrlContext {
    @NonNull
    private Context context;
    
-   private Timestamp ingestionDate;
+   private LocalDateTime ingestionDate;
    
    private Boolean active;
 

@@ -7,9 +7,6 @@ import eu.clarin.cmdi.cpa.entities.History;
 
 public interface HistoryRepository extends PagingAndSortingRepository<History, Long> {
    
-   @Query(
-         value = "DELETE FROM history WHERE url_id NOT IN (SELECT url_id from url_context)",
-         nativeQuery = true
-      )
+   @Query("DELETE FROM History h WHERE h.url IS NULL")
    public void deleteWithoutContext();
 }

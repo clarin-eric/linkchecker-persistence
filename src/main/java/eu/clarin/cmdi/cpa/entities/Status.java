@@ -1,6 +1,7 @@
 package eu.clarin.cmdi.cpa.entities;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,7 +37,7 @@ public class Status {
    private Long byteSize;
    private Integer duration;
    @Column(nullable = false)
-   private Timestamp checkingDate;
+   private LocalDateTime checkingDate;
    private String message;
    private Integer redirectCount;
    

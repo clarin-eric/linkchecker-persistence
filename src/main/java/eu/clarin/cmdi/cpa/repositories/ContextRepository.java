@@ -12,9 +12,6 @@ public interface ContextRepository extends CrudRepository<Context, Long> {
    @Nullable
    public Context findByOriginAndProviderGroupAndExpectedMimeTypeAndSource(String origin, ProviderGroup providerGroup, String expectedMimeType, String source); 
 
-   @Query(
-         value = "DELETE FROM context WHERE id NOT IN (SELECT context_id from url_context)",
-         nativeQuery = true
-      )
+   @Query("DELETE FROM Context c WHERE c.urlContexts IS EMPTY")
    public void deleteWithoutContext();
 }
