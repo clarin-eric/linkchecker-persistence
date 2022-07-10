@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.clarin.cmdi.cpa.entities.*;
+import eu.clarin.cmdi.cpa.repositories.ClientRepository;
 import eu.clarin.cmdi.cpa.repositories.ContextRepository;
 import eu.clarin.cmdi.cpa.repositories.HistoryRepository;
 import eu.clarin.cmdi.cpa.repositories.ObsoleteRepository;
@@ -40,9 +41,13 @@ public class LinkService {
    private StatusService sService;
    @Autowired
    private ObsoleteRepository oRep;
+   @Autowired
+   private ClientRepository clRep;
    
    @Transactional
-   public void save(String urlString, String origin, String providerGroupName, String expectedMimeType, String source) {
+   public void save(String email, String token, String urlString, String origin, String providerGroupName, String expectedMimeType, String source) {
+      
+      Client client = clRep.findByEmailAndToken(email, token);
       
       Url url;
       
@@ -63,13 +68,11 @@ public class LinkService {
          pRep.save(providerGroup);
       }
       
-      Client client = null;
       
       Context context;
       
       if((context = cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient(origin, providerGroup, expectedMimeType, client)) == null) {
-         context = new Context();
-         context.setOrigin(origin);
+         context = new Context(origin, client);
          context.setProvidergroup(providerGroup);
          context.setExpectedMimeType(expectedMimeType);
 
@@ -79,13 +82,8 @@ public class LinkService {
       UrlContext urlContext;
       
       if((urlContext = ucRep.findByUrlAndContext(url, context)) == null) {
-         urlContext = new UrlContext();
-         urlContext.setUrl(url);
-         urlContext.setContext(context);
+         urlContext = new UrlContext(url, context, LocalDateTime.now(), true);
       }
-      
-      urlContext.setActive(true);
-      urlContext.setIngestionDate(LocalDateTime.now());
       
       ucRep.save(urlContext);
       

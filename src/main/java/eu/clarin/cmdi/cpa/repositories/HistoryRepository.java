@@ -8,7 +8,7 @@ import eu.clarin.cmdi.cpa.entities.History;
 
 public interface HistoryRepository extends PagingAndSortingRepository<History, Long> {
    
-   @Modifying
+   @Modifying(clearAutomatically = true, flushAutomatically = true)
    @Query("DELETE FROM History h WHERE h.url IS NULL")
    public void deleteWithoutContext();
 }

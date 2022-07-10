@@ -10,14 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@RequiredArgsConstructor
+@Data
 @Entity
 @Table(name = "url_context")
 public class UrlContext {
@@ -29,15 +30,15 @@ public class UrlContext {
    @ManyToOne
    @JoinColumn(name = "url_id", referencedColumnName = "id")
    @NonNull
-   private Url url;
+   private final Url url;
    
    @ManyToOne
    @JoinColumn(name = "context_id", referencedColumnName = "id")
    @NonNull
-   private Context context;
-   
+   private final Context context;
+   @NonNull
    private LocalDateTime ingestionDate;
-   
+   @NonNull
    private Boolean active;
 
 }

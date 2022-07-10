@@ -12,7 +12,7 @@ public interface ProvidergroupRepository extends CrudRepository<Providergroup, L
    @Nullable
    public Providergroup findByName(String name); 
    
-   @Modifying
+   @Modifying(clearAutomatically = true, flushAutomatically = true)
    @Query("DELETE FROM Providergroup p WHERE p NOT IN (SELECT c.providergroup FROM Context c)")
    public void deleteWithoutContext();
 

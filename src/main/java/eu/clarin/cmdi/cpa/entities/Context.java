@@ -13,11 +13,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@RequiredArgsConstructor
 @Entity
 @Table(name="context", indexes = {@Index(columnList = "origin, providergroup_id, expectedMimeType, client_id", unique = true)})
 public class Context {
@@ -26,7 +29,7 @@ public class Context {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    
-   private String origin;
+   private final String origin;
    
    @OneToOne(optional = true)
    @JoinColumn(name = "providergroup_id", referencedColumnName = "id")
@@ -36,7 +39,7 @@ public class Context {
    
    @OneToOne
    @JoinColumn(name = "client_id", referencedColumnName = "id")
-   private Client client;
+   private final Client client;
    
    @OneToMany
    @JoinColumn(name = "context_id", referencedColumnName = "id")
