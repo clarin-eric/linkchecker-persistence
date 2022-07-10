@@ -7,23 +7,26 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@RequiredArgsConstructor
 @Entity
-@Table(name="providerGroup", indexes = {@Index(columnList = "name", unique = true)})
-public class ProviderGroup {
+@Table(indexes = {@Index(columnList = "name", unique = true)})
+public class Providergroup {
    
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    
    @NonNull
-   private String name;
+   private final String name;
 
 }

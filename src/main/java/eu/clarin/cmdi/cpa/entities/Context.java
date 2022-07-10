@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name="context", indexes = {@Index(columnList = "origin, providerGroup_id, expectedMimeType, source", unique = true)})
+@Table(name="context", indexes = {@Index(columnList = "origin, providergroup_id, expectedMimeType, client_id", unique = true)})
 public class Context {
    
    @Id
@@ -29,15 +29,18 @@ public class Context {
    private String origin;
    
    @OneToOne(optional = true)
-   @JoinColumn(name = "providerGroup_id", referencedColumnName = "id")
-   private ProviderGroup providerGroup;
+   @JoinColumn(name = "providergroup_id", referencedColumnName = "id")
+   private Providergroup providergroup;
    
    private String expectedMimeType;
    
-   private String source;
+   @OneToOne
+   @JoinColumn(name = "client_id", referencedColumnName = "id")
+   private Client client;
    
    @OneToMany
    @JoinColumn(name = "context_id", referencedColumnName = "id")
    private List<UrlContext> urlContexts = new ArrayList<UrlContext>();
+   
 
 }

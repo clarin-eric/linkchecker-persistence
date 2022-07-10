@@ -5,15 +5,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
-import eu.clarin.cmdi.cpa.entities.ProviderGroup;
+import eu.clarin.cmdi.cpa.entities.Providergroup;
 
-public interface ProviderGroupRepository extends CrudRepository<ProviderGroup, Long> {
+public interface ProvidergroupRepository extends CrudRepository<Providergroup, Long> {
    
    @Nullable
-   public ProviderGroup findByName(String name); 
+   public Providergroup findByName(String name); 
    
    @Modifying
-   @Query("DELETE FROM ProviderGroup p WHERE p NOT IN (SELECT c.providerGroup FROM Context c)")
+   @Query("DELETE FROM Providergroup p WHERE p NOT IN (SELECT c.providergroup FROM Context c)")
    public void deleteWithoutContext();
 
 }

@@ -11,7 +11,7 @@ import eu.clarin.cmdi.cpa.entities.*;
 import eu.clarin.cmdi.cpa.repositories.ContextRepository;
 import eu.clarin.cmdi.cpa.repositories.HistoryRepository;
 import eu.clarin.cmdi.cpa.repositories.ObsoleteRepository;
-import eu.clarin.cmdi.cpa.repositories.ProviderGroupRepository;
+import eu.clarin.cmdi.cpa.repositories.ProvidergroupRepository;
 import eu.clarin.cmdi.cpa.repositories.StatusRepository;
 import eu.clarin.cmdi.cpa.repositories.UrlContextRepository;
 import eu.clarin.cmdi.cpa.repositories.UrlRepository;
@@ -20,7 +20,6 @@ import eu.clarin.cmdi.cpa.utils.UrlValidator;
 import eu.clarin.cmdi.cpa.utils.UrlValidator.ValidationResult;
 import lombok.extern.slf4j.Slf4j;
 
-@Transactional
 @Service
 @Slf4j
 public class LinkService {   
@@ -36,12 +35,13 @@ public class LinkService {
    @Autowired
    private ContextRepository cRep;
    @Autowired
-   private ProviderGroupRepository pRep;
+   private ProvidergroupRepository pRep;
    @Autowired
    private StatusService sService;
    @Autowired
    private ObsoleteRepository oRep;
    
+   @Transactional
    public void save(String urlString, String origin, String providerGroupName, String expectedMimeType, String source) {
       
       Url url;
@@ -49,27 +49,30 @@ public class LinkService {
       ValidationResult validation = UrlValidator.validate(urlString);
       
       if((url = uRep.findByUrl(urlString)) == null) {
-         url = new Url(urlString, validation.getHost(), validation.isValid());
+         url = new Url(urlString);
+         url.setGroupKey(validation.getHost());
+         url.setValid(validation.isValid());
          
          uRep.save(url);
       }
       
-      ProviderGroup providerGroup;
+      Providergroup providerGroup;
       
       if((providerGroup = pRep.findByName(providerGroupName)) == null) {
-         providerGroup = new ProviderGroup();
-         providerGroup.setName(providerGroupName);
+         providerGroup = new Providergroup(providerGroupName);
          pRep.save(providerGroup);
       }
       
+      Client client = null;
+      
       Context context;
       
-      if((context = cRep.findByOriginAndProviderGroupAndExpectedMimeTypeAndSource(origin, providerGroup, expectedMimeType, source)) == null) {
+      if((context = cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient(origin, providerGroup, expectedMimeType, client)) == null) {
          context = new Context();
          context.setOrigin(origin);
-         context.setProviderGroup(providerGroup);
+         context.setProvidergroup(providerGroup);
          context.setExpectedMimeType(expectedMimeType);
-         context.setSource(source);
+
          cRep.save(context);
       }
       
@@ -87,8 +90,7 @@ public class LinkService {
       ucRep.save(urlContext);
       
       if(!validation.isValid()) { //create a status entry if Url is not valid
-         Status status = new Status(Category.Invalid_URL, url);
-         status.setMessage(validation.getMessage());
+         Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), LocalDateTime.now());
          
          sService.save(status);
       }
@@ -99,6 +101,7 @@ public class LinkService {
       ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(periodInDays));
    }
    
+   @Transactional
    public void deleteLinksAfter(int periodInDays) {
       
       log.info("multi step deletion of links older then {} days", periodInDays);

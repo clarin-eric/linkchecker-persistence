@@ -1,10 +1,10 @@
 package eu.clarin.cmdi.cpa.entities;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,20 +32,23 @@ public class Status {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;   
    private String method;
-   private Integer status;
+   private Integer statusCode;
    private String contentType;
    private Long byteSize;
    private Integer duration;
-   @Column(nullable = false)
-   private LocalDateTime checkingDate;
-   private String message;
+
    private Integer redirectCount;
-   
-   private final Category category;
    
    @OneToOne
    @JoinColumn(name = "url_id")
    @NonNull
    private final Url url;
-
+   @NonNull
+   @Enumerated(EnumType.STRING)
+   private final Category category;   
+   @NonNull
+   private final String message;   
+   @NonNull
+   private final LocalDateTime checkingDate;
+   
 }
