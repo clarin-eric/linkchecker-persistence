@@ -1,7 +1,6 @@
 package eu.clarin.cmdi.cpa.repositories;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 
@@ -11,15 +10,9 @@ import eu.clarin.cmdi.cpa.entities.Url;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.AfterEach;
-
 
 @SpringBootTest
-class UrlRepositoryTest {
-   
-   @Autowired
-   private UrlRepository uRep;
-
+class UrlRepositoryTest extends RepositoryTests{
    
 
 	@Test
@@ -39,10 +32,5 @@ class UrlRepositoryTest {
 	   // deleting
 	   uRep.delete(url);
 	   assertEquals(0, uRep.count());
-	}
-	@AfterEach
-	void cleanUp() {
-	   
-	   uRep.deleteAll();
 	}
 }

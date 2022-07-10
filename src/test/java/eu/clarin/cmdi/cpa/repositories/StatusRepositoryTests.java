@@ -1,8 +1,6 @@
 package eu.clarin.cmdi.cpa.repositories;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 
@@ -19,13 +17,9 @@ import java.util.stream.Stream;
 import javax.transaction.Transactional;
 
 @SpringBootTest
-class StatusRepositoryTests {
+class StatusRepositoryTests extends RepositoryTests{
    
-   @Autowired
-   private UrlRepository uRep;
-   @Autowired
-   private StatusRepository sRep;
-   
+
 	
 	@Test
 	void save() {
@@ -83,11 +77,4 @@ class StatusRepositoryTests {
       sRep.deleteWithoutContext();
       assertEquals(0, sRep.count());
 	}
-	
-	@AfterEach
-	void cleanUp() {
-	   sRep.deleteAll();
-	   uRep.deleteAll();
-	}
-
 }

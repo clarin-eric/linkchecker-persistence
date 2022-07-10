@@ -25,7 +25,7 @@ public class StatusService {
          
          History history = new History(oldStatus.getCategory(), oldStatus.getUrl());
          history.setMethod(oldStatus.getMethod());
-         history.setStatus(oldStatus.getStatusCode());
+         history.setStatusCode(oldStatus.getStatusCode());
          history.setMessage(oldStatus.getMessage());
          history.setContentType(oldStatus.getContentType());
          history.setDuration(oldStatus.getDuration());

@@ -1,8 +1,6 @@
 package eu.clarin.cmdi.cpa.repositories;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import eu.clarin.cmdi.cpa.entities.Client;
@@ -17,16 +15,7 @@ import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 
 @SpringBootTest
-class UrlContextRepositoryTests {
-
-   @Autowired
-   private UrlContextRepository ucRep;
-   @Autowired
-   private UrlRepository uRep;
-   @Autowired
-   private ClientRepository clRep;
-   @Autowired
-   private ContextRepository cRep;
+class UrlContextRepositoryTests extends RepositoryTests{
 
    @Test
    void save() {
@@ -86,14 +75,5 @@ class UrlContextRepositoryTests {
       assertEquals(1, ucRep.count());
       assertEquals(false, ucRep.findByUrlAndContext(url, context).getActive());
 
-   }
-
-   @AfterEach
-   void cleanUp() {
-
-      ucRep.deleteAll();
-      cRep.deleteAll();
-      clRep.deleteAll();
-      uRep.deleteAll();
    }
 }

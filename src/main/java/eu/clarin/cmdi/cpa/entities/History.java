@@ -31,7 +31,7 @@ public class History {
    
    private String method;
    
-   private Integer status;
+   private Integer statusCode;
    
    private String contentType;
    
