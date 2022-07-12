@@ -8,6 +8,6 @@ import eu.clarin.cmdi.cpa.entities.AggregatedStatus;
 
 public interface AggregatedStatusRepository extends CrudRepository<AggregatedStatus, Long> {
    
-   Stream<AggregatedStatus> findAllByProviderGroupName(String providerGroupName);
+   Stream<AggregatedStatus> findAllByProvidergroupName(String providergroupName);
    
 }

@@ -2,22 +2,24 @@ package eu.clarin.cmdi.cpa.entities;
 
 import java.io.Serializable;
 
-import javax.persistence.Embeddable;
+import eu.clarin.cmdi.cpa.utils.Category;
 
-import lombok.AccessLevel;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
 
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-@RequiredArgsConstructor
 @Embeddable
 public class AggregatedStatusId implements Serializable {
    
    private static final long serialVersionUID = 1L;
 
-   private final Long urlId;
-   
-   private final Long contextId;
+   @Column(name = "name")
+   private String name;
+   @Enumerated(EnumType.STRING)
+   private Category category;
 }
