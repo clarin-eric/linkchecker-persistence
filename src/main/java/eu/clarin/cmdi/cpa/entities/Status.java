@@ -2,6 +2,7 @@ package eu.clarin.cmdi.cpa.entities;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -39,7 +40,7 @@ public class Status {
 
    private Integer redirectCount;
    
-   @OneToOne
+   @OneToOne(cascade = CascadeType.REMOVE)
    @JoinColumn(name = "url_id")
    @NonNull
    private final Url url;

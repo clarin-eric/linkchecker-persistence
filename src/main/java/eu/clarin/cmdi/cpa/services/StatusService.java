@@ -23,7 +23,7 @@ public class StatusService {
       
       if((oldStatus = sRep.findByUrl(status.getUrl())) != null) { //save record to history
          
-         History history = new History(oldStatus.getCategory(), oldStatus.getUrl());
+         History history = new History(oldStatus.getUrl(), oldStatus.getCategory(), oldStatus.getCheckingDate());
          history.setMethod(oldStatus.getMethod());
          history.setStatusCode(oldStatus.getStatusCode());
          history.setMessage(oldStatus.getMessage());
@@ -31,7 +31,6 @@ public class StatusService {
          history.setDuration(oldStatus.getDuration());
          history.setByteSize(oldStatus.getByteSize());
          history.setRedirectCount(oldStatus.getRedirectCount());
-         history.setCheckingDate(oldStatus.getCheckingDate());
          
          hRep.save(history);
          

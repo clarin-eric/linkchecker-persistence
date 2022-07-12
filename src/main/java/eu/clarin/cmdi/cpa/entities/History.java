@@ -2,6 +2,7 @@ package eu.clarin.cmdi.cpa.entities;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,7 @@ import eu.clarin.cmdi.cpa.utils.Category;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
@@ -38,17 +40,19 @@ public class History {
    private Long byteSize;
    
    private Integer duration;
-   
-   @Column(nullable = false)   
-   private LocalDateTime checkingDate;
+
    
    private String message;
    
    private Integer redirectCount;
    
-   private final Category category;
-   
-   @OneToOne
+   @OneToOne(cascade = CascadeType.REMOVE)
    @JoinColumn(name = "url_id", referencedColumnName = "id")
    private final Url url;
+   
+   @NonNull
+   private final Category category;
+   
+   @NonNull 
+   private final LocalDateTime checkingDate;
 }

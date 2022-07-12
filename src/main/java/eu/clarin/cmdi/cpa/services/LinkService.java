@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import eu.clarin.cmdi.cpa.entities.*;
 import eu.clarin.cmdi.cpa.repositories.ClientRepository;
 import eu.clarin.cmdi.cpa.repositories.ContextRepository;
-import eu.clarin.cmdi.cpa.repositories.HistoryRepository;
 import eu.clarin.cmdi.cpa.repositories.ObsoleteRepository;
 import eu.clarin.cmdi.cpa.repositories.ProvidergroupRepository;
-import eu.clarin.cmdi.cpa.repositories.StatusRepository;
 import eu.clarin.cmdi.cpa.repositories.UrlContextRepository;
 import eu.clarin.cmdi.cpa.repositories.UrlRepository;
 import eu.clarin.cmdi.cpa.utils.Category;
@@ -27,10 +25,6 @@ public class LinkService {
    
    @Autowired
    private UrlRepository uRep;
-   @Autowired
-   private StatusRepository sRep;
-   @Autowired
-   private HistoryRepository hRep;
    @Autowired
    private UrlContextRepository ucRep;
    @Autowired
@@ -118,15 +112,7 @@ public class LinkService {
       ucRep.deleteOlderThan(LocalDateTime.now().minusDays(periodInDays));
       log.info("step {}: done", step++);
       
-      log.info("step {}: deleting history records", step);
-      hRep.deleteWithoutContext();
-      log.info("step {}: done", step++);
-      
-      log.info("step {}: deleting status records", step);
-      sRep.deleteWithoutContext();
-      log.info("step {}: done", step++);
-      
-      log.info("step {}: deleting url records", step);
+      log.info("step {}: deleting url records with delete cascade to status and history records", step);
       uRep.deleteWithoutContext();
       log.info("step {}: done", step++);
       

@@ -22,13 +22,14 @@ public class RepositoryTests {
    
    @AfterEach
    void cleanUp() {
-      hRep.deleteAll();
-      sRep.deleteAll();
+
       ucRep.deleteAll();
       cRep.deleteAll();
       pRep.deleteAll();
       clRep.deleteAll();
       uRep.deleteAll();
+      hRep.deleteAll();
+      sRep.deleteAll();
    }
 
 }

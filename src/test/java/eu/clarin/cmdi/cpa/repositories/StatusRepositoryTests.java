@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
-import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -72,16 +71,4 @@ class StatusRepositoryTests extends RepositoryTests {
       assertEquals(1, page.stream().count());
     
 	}
-
-   @Test
-   void deleteWithoutContext() {
-
-      Url url = new Url("http://www.wowasa.com");
-      uRep.save(url);
-      sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
-
-      assertEquals(1, sRep.count());
-      sRep.deleteWithoutContext();
-      assertEquals(0, sRep.count());
-   }
 }

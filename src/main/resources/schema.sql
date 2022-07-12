@@ -75,24 +75,26 @@ CREATE TABLE IF NOT EXISTS `status` (
   UNIQUE KEY (`url_id`),
   INDEX (`category`),
   FOREIGN KEY (`url_id`) REFERENCES `url` (`id`)
+  ON DELETE CASCADE
 );
 
 
 CREATE TABLE IF NOT EXISTS `history` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `status_id` INT NOT NULL,
   `url_id` INT DEFAULT NULL,
   `status_code` INT DEFAULT NULL,
-  `message` VARCHAR(256),
+  `message` VARCHAR(256) DEFAULT NULL,
   `category` VARCHAR(25) NOT NULL,
-  `method` VARCHAR(10) NOT NULL,
+  `method` VARCHAR(10) DEFAULT NULL,
   `content_type` VARCHAR(256) DEFAULT NULL,
   `byte_size` INT DEFAULT NULL,
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME NOT NULL,
   `redirect_count` INT DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY (`url_id`,`checking_date`)
+  UNIQUE KEY (`url_id`,`checking_date`),
+  FOREIGN KEY (`url_id`) REFERENCES `url` (`id`)
+  ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `obsolete` (
