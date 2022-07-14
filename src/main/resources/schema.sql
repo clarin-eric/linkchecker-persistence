@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `status` (
   PRIMARY KEY (`id`),
   UNIQUE KEY (`url_id`),
   INDEX (`category`),
+  INDEX (`checking_date`),
   FOREIGN KEY (`url_id`) REFERENCES `url` (`id`)
   ON DELETE CASCADE
 );
