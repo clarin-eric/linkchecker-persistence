@@ -12,8 +12,10 @@ import eu.clarin.cmdi.cpa.utils.Category;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -71,4 +73,38 @@ class StatusRepositoryTests extends RepositoryTests {
       assertEquals(1, page.stream().count());
     
 	}
+   
+   @Test
+   void findByUrlUrl() {
+      Url url1 = uRep.save(new Url("http://www.wowasa.com/page1"));
+      Url url2 = uRep.save(new Url("http://www.wowasa.com/page2"));
+      
+      sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
+      sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
+      
+      assertNotNull(sRep.findByUrlUrl("http://www.wowasa.com/page1"));
+   }
+   
+   @Transactional
+   @Test
+   void findAllByUrlUrlIn() {
+      
+      Url url1 = uRep.save(new Url("http://www.wowasa.com/page1"));
+      Url url2 = uRep.save(new Url("http://www.wowasa.com/page2"));
+      
+      sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
+      sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
+      
+      try(Stream<Status> stream = sRep.findAllByUrlUrlIn("http://www.wowasa.com/page1", "http://www.wowasa.com/page2")){
+      
+         assertEquals(2, stream.count());
+         
+      }    
+      
+      try(Stream<Status> stream = sRep.findAllByUrlUrlIn("http://www.wowasa.com/page1", "http://www.wowasa.com/page2")){
+         
+         stream.forEach(status -> assertNotNull(status.getUrl()));
+      
+      } 
+   }
 }

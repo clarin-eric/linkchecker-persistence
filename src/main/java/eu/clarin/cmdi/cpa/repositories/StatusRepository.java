@@ -1,5 +1,7 @@
 package eu.clarin.cmdi.cpa.repositories;
 
+import java.util.stream.Stream;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -18,8 +20,11 @@ public interface StatusRepository extends PagingAndSortingRepository<Status, Lon
    public Status findByUrl(Url url);
    
    @Nullable
-   @Query("SELECT s FROM Status s JOIN s.url u ON u.url=?1")
-   public Status findByUrlString(String urlString);
+//   @Query("SELECT s FROM Status s JOIN Url u WHERE u.url=?1")
+   public Status findByUrlUrl(String url);
+   
+//   @Query("SELECT s FROM Status s JOIN FETCH Url u WHERE u.url IN (?1)")
+   public Stream<Status> findAllByUrlUrlIn(String... urls);
    
    public Page<Status> findAllByCategory(Category category, Pageable pageable);
    

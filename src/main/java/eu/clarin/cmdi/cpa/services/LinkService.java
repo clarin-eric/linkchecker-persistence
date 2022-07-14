@@ -43,6 +43,11 @@ public class LinkService {
       
       Client client = clRep.findByEmailAndToken(email, token);
       
+      if(client == null) {
+         log.error("client with email: {} and token: {} unknown", email, token);
+         return;
+      }
+      
       Url url;
       
       ValidationResult validation = UrlValidator.validate(urlString);
