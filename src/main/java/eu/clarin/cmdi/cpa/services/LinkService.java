@@ -38,15 +38,12 @@ public class LinkService {
    @Autowired
    private ClientRepository clRep;
    
+   public void save(Client client, String urlString, String origin, String providerGroupName, String expectedMimeType) {
+      save(client, urlString, origin, providerGroupName, expectedMimeType, LocalDateTime.now());
+   }
+   
    @Transactional
-   public void save(String email, String token, String urlString, String origin, String providerGroupName, String expectedMimeType, String source) {
-      
-      Client client = clRep.findByEmailAndToken(email, token);
-      
-      if(client == null) {
-         log.error("client with email: {} and token: {} unknown", email, token);
-         return;
-      }
+   public void save(Client client, String urlString, String origin, String providerGroupName, String expectedMimeType, LocalDateTime ingestionDate) {
       
       Url url;
       
@@ -60,9 +57,9 @@ public class LinkService {
          uRep.save(url);
       }
       
-      Providergroup providerGroup;
+      Providergroup providerGroup = null;
       
-      if((providerGroup = pRep.findByName(providerGroupName)) == null) {
+      if(providerGroupName != null && (providerGroup = pRep.findByName(providerGroupName)) == null) {
          providerGroup = new Providergroup(providerGroupName);
          pRep.save(providerGroup);
       }
@@ -81,25 +78,26 @@ public class LinkService {
       UrlContext urlContext;
       
       if((urlContext = ucRep.findByUrlAndContext(url, context)) == null) {
-         urlContext = new UrlContext(url, context, LocalDateTime.now(), true);
+         urlContext = new UrlContext(url, context, ingestionDate, true);
       }
       
       ucRep.save(urlContext);
       
       if(!validation.isValid()) { //create a status entry if Url is not valid
-         Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), LocalDateTime.now());
+         Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), ingestionDate);
          
          sService.save(status);
       }
    }
    
-   public void deactivateLinksAfter(int periodInDays) {
+   @Transactional
+   public void deactivateLinksOlderThan(int periodInDays) {
       
       ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(periodInDays));
    }
    
    @Transactional
-   public void deleteLinksAfter(int periodInDays) {
+   public void deleteLinksOderThan(int periodInDays) {
       
       log.info("multi step deletion of links older then {} days", periodInDays);
       

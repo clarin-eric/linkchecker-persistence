@@ -80,4 +80,22 @@ class UrlRepositoryTest extends RepositoryTests{
 	         }
 	   });
 	}
+	
+	@Test
+	void countByUrlContextActive() {
+	   
+	   Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+	   Context context = cRep.save(new Context("origin", client));
+	   
+	   IntStream.range(0, 6).forEach(i -> {	      
+	      
+	      ucRep.save(new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i)), context, LocalDateTime.now(), true));
+	   });
+      IntStream.range(6, 10).forEach(i -> {         
+         
+         ucRep.save(new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i)), context, LocalDateTime.now(), false));
+      });	   
+	   assertEquals(6, uRep.countByUrlContextsActive(true));
+	   assertEquals(4, uRep.countByUrlContextsActive(false));
+	}
 }

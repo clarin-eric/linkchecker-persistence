@@ -34,5 +34,7 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
           nativeQuery = true     
       )
    public Stream<Url> getNextUrlsToCheck(int maxPerGroup);
+   
+   public long countByUrlContextsActive(boolean active);
 
 }
