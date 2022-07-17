@@ -4,13 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import eu.clarin.cmdi.cpa.entities.AggregatedStatus;
-import eu.clarin.cmdi.cpa.entities.Client;
-import eu.clarin.cmdi.cpa.entities.Context;
-import eu.clarin.cmdi.cpa.entities.Providergroup;
-import eu.clarin.cmdi.cpa.entities.Status;
-import eu.clarin.cmdi.cpa.entities.Url;
-import eu.clarin.cmdi.cpa.entities.UrlContext;
+import eu.clarin.cmdi.cpa.model.AggregatedStatus;
+import eu.clarin.cmdi.cpa.model.Client;
+import eu.clarin.cmdi.cpa.model.Context;
+import eu.clarin.cmdi.cpa.model.Providergroup;
+import eu.clarin.cmdi.cpa.model.Status;
+import eu.clarin.cmdi.cpa.model.Url;
+import eu.clarin.cmdi.cpa.model.UrlContext;
+import eu.clarin.cmdi.cpa.repository.AggregatedStatusRepository;
 import eu.clarin.cmdi.cpa.utils.Category;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -64,7 +65,11 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
          
          Context context = contexts[random.nextInt(10)];
          
-         ucRep.save(new UrlContext(urls.lastElement(), context, LocalDateTime.now(), true));
+         UrlContext urlContext = new UrlContext(urls.lastElement(), context);
+         urlContext.setIngestionDate(LocalDateTime.now());
+         urlContext.setActive(true);
+         
+         ucRep.save(urlContext);
          
          
          Status status = new Status(urls.lastElement(), Category.values()[random.nextInt(Category.values().length)], "", LocalDateTime.now());

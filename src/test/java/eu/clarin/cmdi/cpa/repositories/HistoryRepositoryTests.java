@@ -3,8 +3,8 @@ package eu.clarin.cmdi.cpa.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import eu.clarin.cmdi.cpa.entities.History;
-import eu.clarin.cmdi.cpa.entities.Url;
+import eu.clarin.cmdi.cpa.model.History;
+import eu.clarin.cmdi.cpa.model.Url;
 import eu.clarin.cmdi.cpa.utils.Category;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

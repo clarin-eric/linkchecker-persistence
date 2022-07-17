@@ -1,13 +1,13 @@
-package eu.clarin.cmdi.cpa.repositories;
+package eu.clarin.cmdi.cpa.repository;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
-import eu.clarin.cmdi.cpa.entities.Client;
-import eu.clarin.cmdi.cpa.entities.Context;
-import eu.clarin.cmdi.cpa.entities.Providergroup;
+import eu.clarin.cmdi.cpa.model.Client;
+import eu.clarin.cmdi.cpa.model.Context;
+import eu.clarin.cmdi.cpa.model.Providergroup;
 
 public interface ContextRepository extends CrudRepository<Context, Long> {
    

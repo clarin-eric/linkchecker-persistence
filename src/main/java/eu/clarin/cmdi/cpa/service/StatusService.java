@@ -1,13 +1,13 @@
-package eu.clarin.cmdi.cpa.services;
+package eu.clarin.cmdi.cpa.service;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.clarin.cmdi.cpa.entities.*;
-import eu.clarin.cmdi.cpa.repositories.HistoryRepository;
-import eu.clarin.cmdi.cpa.repositories.StatusRepository;
+import eu.clarin.cmdi.cpa.model.*;
+import eu.clarin.cmdi.cpa.repository.HistoryRepository;
+import eu.clarin.cmdi.cpa.repository.StatusRepository;
 
 @Service
 @Transactional
@@ -16,7 +16,9 @@ public class StatusService {
    StatusRepository sRep;
    @Autowired
    HistoryRepository hRep;
+
    
+   @Transactional
    public void save(Status status) {
       
       Status oldStatus;

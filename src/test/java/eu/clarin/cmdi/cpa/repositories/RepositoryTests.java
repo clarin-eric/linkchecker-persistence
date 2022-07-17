@@ -3,6 +3,14 @@ package eu.clarin.cmdi.cpa.repositories;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import eu.clarin.cmdi.cpa.repository.ClientRepository;
+import eu.clarin.cmdi.cpa.repository.ContextRepository;
+import eu.clarin.cmdi.cpa.repository.HistoryRepository;
+import eu.clarin.cmdi.cpa.repository.ProvidergroupRepository;
+import eu.clarin.cmdi.cpa.repository.StatusRepository;
+import eu.clarin.cmdi.cpa.repository.UrlContextRepository;
+import eu.clarin.cmdi.cpa.repository.UrlRepository;
+
 public class RepositoryTests {
    
    @Autowired

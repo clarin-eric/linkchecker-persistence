@@ -6,8 +6,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import eu.clarin.cmdi.cpa.entities.Status;
-import eu.clarin.cmdi.cpa.entities.Url;
+import eu.clarin.cmdi.cpa.model.Status;
+import eu.clarin.cmdi.cpa.model.Url;
 import eu.clarin.cmdi.cpa.utils.Category;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

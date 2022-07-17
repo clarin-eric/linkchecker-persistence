@@ -1,4 +1,4 @@
-package eu.clarin.cmdi.cpa.entities;
+package eu.clarin.cmdi.cpa.model;
 
 import java.time.LocalDateTime;
 
@@ -36,9 +36,9 @@ public class UrlContext {
    @JoinColumn(name = "context_id", referencedColumnName = "id")
    @NonNull
    private final Context context;
-   @NonNull
+
    private LocalDateTime ingestionDate;
-   @NonNull
+
    private Boolean active;
 
 }

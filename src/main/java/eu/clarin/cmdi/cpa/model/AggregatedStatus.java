@@ -1,4 +1,4 @@
-package eu.clarin.cmdi.cpa.entities;
+package eu.clarin.cmdi.cpa.model;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;

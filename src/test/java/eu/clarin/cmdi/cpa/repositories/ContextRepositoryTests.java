@@ -3,11 +3,11 @@ package eu.clarin.cmdi.cpa.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import eu.clarin.cmdi.cpa.entities.Client;
-import eu.clarin.cmdi.cpa.entities.Context;
-import eu.clarin.cmdi.cpa.entities.Providergroup;
-import eu.clarin.cmdi.cpa.entities.Url;
-import eu.clarin.cmdi.cpa.entities.UrlContext;
+import eu.clarin.cmdi.cpa.model.Client;
+import eu.clarin.cmdi.cpa.model.Context;
+import eu.clarin.cmdi.cpa.model.Providergroup;
+import eu.clarin.cmdi.cpa.model.Url;
+import eu.clarin.cmdi.cpa.model.UrlContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,8 +31,13 @@ class ContextRepositoryTests extends RepositoryTests {
       Context contextWith = cRep.save(new Context("origin1", client));
 
       cRep.save(new Context("origin2", client));
+      
+      UrlContext urlContext = new UrlContext(url, contextWith);
+      urlContext.setIngestionDate(LocalDateTime.now());
+      urlContext.setActive(true);
+      
 
-      ucRep.save(new UrlContext(url, contextWith, LocalDateTime.now(), true));
+      ucRep.save(urlContext);
 
       assertEquals(2, cRep.count());
 

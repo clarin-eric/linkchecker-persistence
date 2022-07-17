@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 
-import eu.clarin.cmdi.cpa.entities.Client;
-import eu.clarin.cmdi.cpa.entities.Context;
-import eu.clarin.cmdi.cpa.entities.Url;
-import eu.clarin.cmdi.cpa.entities.UrlContext;
+import eu.clarin.cmdi.cpa.model.Client;
+import eu.clarin.cmdi.cpa.model.Context;
+import eu.clarin.cmdi.cpa.model.Url;
+import eu.clarin.cmdi.cpa.model.UrlContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -66,7 +66,12 @@ class UrlRepositoryTest extends RepositoryTests{
 	      
 	      uRep.save(urls[i]);
 	      
-	      ucRep.save(new UrlContext(urls[i], context, LocalDateTime.now().minusDays(100 +i), true));
+	      UrlContext urlContext = new UrlContext(urls[i], context);
+	      urlContext.setIngestionDate(LocalDateTime.now().minusDays(100 +i));
+	      urlContext.setActive(true);
+
+	      
+	      ucRep.save(urlContext);
 	      
 	   });
 	   
@@ -87,13 +92,21 @@ class UrlRepositoryTest extends RepositoryTests{
 	   Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
 	   Context context = cRep.save(new Context("origin", client));
 	   
-	   IntStream.range(0, 6).forEach(i -> {	      
+	   IntStream.range(0, 6).forEach(i -> {	
 	      
-	      ucRep.save(new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i)), context, LocalDateTime.now(), true));
+	      UrlContext urlContext = new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i)), context);
+	      urlContext.setIngestionDate(LocalDateTime.now());
+	      urlContext.setActive(true);
+	      
+	      ucRep.save(urlContext);
 	   });
-      IntStream.range(6, 10).forEach(i -> {         
+      IntStream.range(6, 10).forEach(i -> {  
          
-         ucRep.save(new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i)), context, LocalDateTime.now(), false));
+         UrlContext urlContext = new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i)), context);
+         urlContext.setIngestionDate(LocalDateTime.now());
+         urlContext.setActive(false);
+         
+         ucRep.save(urlContext);
       });	   
 	   assertEquals(6, uRep.countByUrlContextsActive(true));
 	   assertEquals(4, uRep.countByUrlContextsActive(false));

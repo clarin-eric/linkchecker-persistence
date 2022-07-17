@@ -1,4 +1,4 @@
-package eu.clarin.cmdi.cpa.entities;
+package eu.clarin.cmdi.cpa.model;
 
 import java.util.ArrayList;
 import java.util.List;

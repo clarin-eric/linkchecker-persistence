@@ -1,4 +1,4 @@
-package eu.clarin.cmdi.cpa.repositories;
+package eu.clarin.cmdi.cpa.repository;
 
 import java.util.stream.Stream;
 
@@ -9,9 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.lang.Nullable;
 
-
-import eu.clarin.cmdi.cpa.entities.Status;
-import eu.clarin.cmdi.cpa.entities.Url;
+import eu.clarin.cmdi.cpa.model.Status;
+import eu.clarin.cmdi.cpa.model.Url;
 import eu.clarin.cmdi.cpa.utils.Category;
 
 

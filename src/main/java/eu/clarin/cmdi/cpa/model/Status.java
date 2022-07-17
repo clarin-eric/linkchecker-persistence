@@ -1,9 +1,11 @@
-package eu.clarin.cmdi.cpa.entities;
+package eu.clarin.cmdi.cpa.model;
 
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,6 +18,7 @@ import eu.clarin.cmdi.cpa.utils.Category;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -23,35 +26,30 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 @Entity
-@Table(name="history", indexes = {@Index(columnList = "url_id, checkingDate", unique = true)})
-public class History {
-
+@Table(name = "status", indexes = {@Index(columnList = "url_id", unique = true), @Index(columnList = "category", unique = false)})
+public class Status {
+   
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
-   
+   private Long id;   
    private String method;
-   
    private Integer statusCode;
-   
    private String contentType;
-   
    private Long contentLength;
-   
    private Integer duration;
 
-   
-   private String message;
-   
    private Integer redirectCount;
    
    @OneToOne(cascade = CascadeType.REMOVE)
-   @JoinColumn(name = "url_id", referencedColumnName = "id")
-   private final Url url;
-   
+   @JoinColumn(name = "url_id")
    @NonNull
-   private final Category category;
-   
-   @NonNull 
+   private final Url url;
+   @NonNull
+   @Enumerated(EnumType.STRING)
+   private final Category category;   
+   @NonNull
+   private final String message;   
+   @NonNull
    private final LocalDateTime checkingDate;
+   
 }

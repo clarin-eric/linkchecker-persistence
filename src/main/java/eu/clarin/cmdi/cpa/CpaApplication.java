@@ -5,8 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import eu.clarin.cmdi.cpa.repositories.UrlRepository;
-import eu.clarin.cmdi.cpa.services.LinkService;
+import eu.clarin.cmdi.cpa.repository.UrlRepository;
+import eu.clarin.cmdi.cpa.service.LinkService;
 
 @SpringBootApplication
 public class CpaApplication {

@@ -3,9 +3,9 @@ package eu.clarin.cmdi.cpa.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import eu.clarin.cmdi.cpa.entities.Client;
-import eu.clarin.cmdi.cpa.entities.Context;
-import eu.clarin.cmdi.cpa.entities.Providergroup;
+import eu.clarin.cmdi.cpa.model.Client;
+import eu.clarin.cmdi.cpa.model.Context;
+import eu.clarin.cmdi.cpa.model.Providergroup;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

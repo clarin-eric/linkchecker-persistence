@@ -1,4 +1,4 @@
-package eu.clarin.cmdi.cpa.repositories;
+package eu.clarin.cmdi.cpa.repository;
 
 import java.time.LocalDateTime;
 
@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
-import eu.clarin.cmdi.cpa.entities.Context;
-import eu.clarin.cmdi.cpa.entities.Url;
-import eu.clarin.cmdi.cpa.entities.UrlContext;
+import eu.clarin.cmdi.cpa.model.Context;
+import eu.clarin.cmdi.cpa.model.Url;
+import eu.clarin.cmdi.cpa.model.UrlContext;
 
 public interface UrlContextRepository extends CrudRepository<UrlContext, Long> {
    

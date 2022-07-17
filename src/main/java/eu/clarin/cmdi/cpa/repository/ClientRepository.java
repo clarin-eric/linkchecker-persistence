@@ -1,9 +1,9 @@
-package eu.clarin.cmdi.cpa.repositories;
+package eu.clarin.cmdi.cpa.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
-import eu.clarin.cmdi.cpa.entities.Client;
+import eu.clarin.cmdi.cpa.model.Client;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
    

@@ -1,4 +1,4 @@
-package eu.clarin.cmdi.cpa.services;
+package eu.clarin.cmdi.cpa.service;
 
 import java.time.LocalDateTime;
 
@@ -7,14 +7,14 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.clarin.cmdi.cpa.entities.*;
-import eu.clarin.cmdi.cpa.repositories.ClientRepository;
-import eu.clarin.cmdi.cpa.repositories.ContextRepository;
-import eu.clarin.cmdi.cpa.repositories.HistoryRepository;
-import eu.clarin.cmdi.cpa.repositories.ProvidergroupRepository;
-import eu.clarin.cmdi.cpa.repositories.StatusRepository;
-import eu.clarin.cmdi.cpa.repositories.UrlContextRepository;
-import eu.clarin.cmdi.cpa.repositories.UrlRepository;
+import eu.clarin.cmdi.cpa.model.*;
+import eu.clarin.cmdi.cpa.repository.ClientRepository;
+import eu.clarin.cmdi.cpa.repository.ContextRepository;
+import eu.clarin.cmdi.cpa.repository.HistoryRepository;
+import eu.clarin.cmdi.cpa.repository.ProvidergroupRepository;
+import eu.clarin.cmdi.cpa.repository.StatusRepository;
+import eu.clarin.cmdi.cpa.repository.UrlContextRepository;
+import eu.clarin.cmdi.cpa.repository.UrlRepository;
 import eu.clarin.cmdi.cpa.utils.Category;
 import eu.clarin.cmdi.cpa.utils.UrlValidator;
 import eu.clarin.cmdi.cpa.utils.UrlValidator.ValidationResult;
@@ -61,30 +61,37 @@ public class LinkService {
       }
       
       Providergroup providerGroup = null;
-      
-      if(providerGroupName != null && (providerGroup = pRep.findByName(providerGroupName)) == null) {
-         providerGroup = new Providergroup(providerGroupName);
-         pRep.save(providerGroup);
+     
+      synchronized(this) {
+         if(providerGroupName != null && (providerGroup = pRep.findByName(providerGroupName)) == null) {
+            providerGroup = new Providergroup(providerGroupName);
+            pRep.save(providerGroup);
+         }
       }
       
-      
       Context context;
-      
-      if((context = cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient(origin, providerGroup, expectedMimeType, client)) == null) {
-         context = new Context(origin, client);
-         context.setProvidergroup(providerGroup);
-         context.setExpectedMimeType(expectedMimeType);
-
-         cRep.save(context);
+     
+      synchronized(this) {
+         if((context = cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient(origin, providerGroup, expectedMimeType, client)) == null) {
+            context = new Context(origin, client);
+            context.setProvidergroup(providerGroup);
+            context.setExpectedMimeType(expectedMimeType);
+   
+            cRep.save(context);
+         }
       }
       
       UrlContext urlContext;
       
-      if((urlContext = ucRep.findByUrlAndContext(url, context)) == null) {
-         urlContext = new UrlContext(url, context, ingestionDate, true);
+      synchronized(this) {
+         if((urlContext = ucRep.findByUrlAndContext(url, context)) == null) {
+            urlContext = new UrlContext(url, context);
+         }
+         urlContext.setIngestionDate(ingestionDate);
+         urlContext.setActive(true);
+         
+         ucRep.save(urlContext);
       }
-      
-      ucRep.save(urlContext);
       
       if(!validation.isValid()) { //create a status entry if Url is not valid
          Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), ingestionDate);

@@ -1,10 +1,10 @@
-package eu.clarin.cmdi.cpa.repositories;
+package eu.clarin.cmdi.cpa.repository;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import eu.clarin.cmdi.cpa.entities.History;
+import eu.clarin.cmdi.cpa.model.History;
 
 public interface HistoryRepository extends PagingAndSortingRepository<History, Long> {
    

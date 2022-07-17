@@ -1,11 +1,11 @@
-package eu.clarin.cmdi.cpa.repositories;
+package eu.clarin.cmdi.cpa.repository;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.lang.Nullable;
 
-import eu.clarin.cmdi.cpa.entities.Providergroup;
+import eu.clarin.cmdi.cpa.model.Providergroup;
 
 public interface ProvidergroupRepository extends CrudRepository<Providergroup, Long> {
    

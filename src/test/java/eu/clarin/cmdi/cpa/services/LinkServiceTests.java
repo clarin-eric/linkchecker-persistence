@@ -4,24 +4,26 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import eu.clarin.cmdi.cpa.entities.Client;
+import eu.clarin.cmdi.cpa.model.Client;
 import eu.clarin.cmdi.cpa.repositories.RepositoryTests;
+import eu.clarin.cmdi.cpa.service.LinkService;
+import lombok.extern.slf4j.Slf4j;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.IntStream;
 
-import javax.transaction.Transactional;
-
 @SpringBootTest
+@Slf4j
 class LinkServiceTests extends RepositoryTests{
   
    
    @Autowired
    private LinkService lService;
 
-   @Transactional
 	@Test
 	void save() {
       
@@ -66,6 +68,46 @@ class LinkServiceTests extends RepositoryTests{
       assertEquals(4, cRep.count());
       assertEquals(1, pRep.count());
       
+	}
+	
+	@Test
+	void multithreadedSave() {
+	   
+
+	   
+	   Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+	   
+	   ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(30);
+	   
+	   IntStream.range(0, 30).forEach(threadNr -> {
+	      
+	        executor.submit(() -> {
+	           
+	           IntStream.range(0, 30).forEach(loopNr -> {
+	              lService.save(
+	                    client, 
+	                    "http://www.wowasa.com?thread=" + threadNr + "&loop=" +loopNr,
+	                    "origin" + (loopNr%3), 
+	                    "pg" + (loopNr%5),
+	                    "application/xml");
+	           });
+	         });
+	      
+	   });
+	   while(executor.getActiveCount() > 0) {
+	      try {
+            Thread.sleep(5000);
+         }
+         catch (InterruptedException e) {
+            
+            log.error("", e);
+         }
+	   }
+	   
+	   assertEquals(900, uRep.count());
+	   assertEquals(5, pRep.count());
+	   assertEquals(15, cRep.count());
+	   
 	}
    
    @Test
