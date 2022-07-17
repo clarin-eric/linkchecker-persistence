@@ -35,11 +35,11 @@ CREATE TABLE IF NOT EXISTS `context` (
 
 CREATE TABLE IF NOT EXISTS `url` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `url` VARCHAR(1024) NOT NULL,
+  `name` VARCHAR(1024) NOT NULL,
   `group_key` VARCHAR(128) DEFAULT NULL,
   `valid` boolean DEFAULT NULL, 
   PRIMARY KEY (`id`),
-  UNIQUE KEY (`url`),
+  UNIQUE KEY (`name`),
   INDEX (`group_key`)
 );
 
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `status` (
   `category` VARCHAR(25) NOT NULL,
   `method` VARCHAR(10) DEFAULT NULL,
   `content_type` VARCHAR(256) DEFAULT NULL,
-  `byte_size` bigint DEFAULT NULL,
+  `content_length` bigint DEFAULT NULL,
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME NOT NULL,
   `redirect_count` INT DEFAULT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `history` (
   `category` VARCHAR(25) NOT NULL,
   `method` VARCHAR(10) DEFAULT NULL,
   `content_type` VARCHAR(256) DEFAULT NULL,
-  `byte_size` INT DEFAULT NULL,
+  `content_length` INT DEFAULT NULL,
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME NOT NULL,
   `redirect_count` INT DEFAULT NULL,
@@ -100,8 +100,8 @@ CREATE TABLE IF NOT EXISTS `history` (
 
 CREATE TABLE IF NOT EXISTS `obsolete` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `url` VARCHAR(1024) NOT NULL,
-  `client` int DEFAULT NULL,
+  `url_name` VARCHAR(1024) NOT NULL,
+  `client_email` int DEFAULT NULL,
   `providergroup_name` VARCHAR(256) DEFAULT NULL,
   `origin` VARCHAR(256) DEFAULT NULL,
   `expected_mime_type` VARCHAR(256) DEFAULT NULL,
@@ -111,11 +111,11 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
   `category` VARCHAR(25) NOT NULL,
   `method` VARCHAR(10) DEFAULT NULL,
   `content_type` VARCHAR(256) DEFAULT NULL,
-  `byte_size` bigint DEFAULT NULL,
+  `content_length` bigint DEFAULT NULL,
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME NOT NULL,
   `redirect_count` INT DEFAULT NULL,
-  `deletion_date` DATETIME NOT NULL DEFAULT NOW(),
+  `deletion_date` DATETIME NOT NULL,
    PRIMARY KEY (`id`)
 );
 

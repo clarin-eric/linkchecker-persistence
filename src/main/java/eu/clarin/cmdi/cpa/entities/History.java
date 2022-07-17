@@ -3,7 +3,6 @@ package eu.clarin.cmdi.cpa.entities;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,7 +36,7 @@ public class History {
    
    private String contentType;
    
-   private Long byteSize;
+   private Long contentLength;
    
    private Integer duration;
 

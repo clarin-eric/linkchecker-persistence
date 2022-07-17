@@ -5,14 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import eu.clarin.cmdi.cpa.entities.Client;
-import eu.clarin.cmdi.cpa.repositories.ClientRepository;
 import eu.clarin.cmdi.cpa.repositories.RepositoryTests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -71,7 +69,7 @@ class LinkServiceTests extends RepositoryTests{
 	}
    
    @Test
-   void deactivateLinksAfter() {
+   void deactivateLinksOlderThan() {
       
       Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
       
@@ -87,5 +85,21 @@ class LinkServiceTests extends RepositoryTests{
       assertEquals(8, uRep.countByUrlContextsActive(false));
       
    }
-
+   
+   @Test
+   void deleteLinksOlderThan() {
+      
+      Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+      
+      IntStream.range(0, 100).forEach(i -> {
+         lService.save(client, "http://www.wowasa.com?page=" +i, "origin1", "pg0", "application/xml", LocalDateTime.now().minusDays(i));
+      });
+      
+      assertEquals(100, uRep.countByUrlContextsActive(true));  
+      
+      lService.deleteLinksOderThan(30);
+      
+      assertEquals(30, uRep.countByUrlContextsActive(true));  
+           
+   }
 }

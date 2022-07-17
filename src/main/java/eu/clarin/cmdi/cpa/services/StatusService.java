@@ -29,7 +29,7 @@ public class StatusService {
          history.setMessage(oldStatus.getMessage());
          history.setContentType(oldStatus.getContentType());
          history.setDuration(oldStatus.getDuration());
-         history.setByteSize(oldStatus.getByteSize());
+         history.setContentLength(oldStatus.getContentLength());
          history.setRedirectCount(oldStatus.getRedirectCount());
          
          hRep.save(history);

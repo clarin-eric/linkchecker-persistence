@@ -14,15 +14,15 @@ import eu.clarin.cmdi.cpa.entities.Url;
 public interface UrlRepository extends CrudRepository<Url, Long> {
    
    @Nullable
-   public Url findByUrl(String url);
+   public Url findByName(String name);
    
    @Modifying
    @Query("DELETE FROM Url u WHERE u.urlContexts IS EMPTY")
    public void deleteWithoutContext();
    
    @Query(
-         value = "SELECT id, url, group_key, valid FROM" 
-                  + " (SELECT ROW_NUMBER() OVER (PARTITION BY u.group_key ORDER BY s.checking_date) AS order_Nr, u.id, u.url, u.group_key, u.valid, s.checking_date" 
+         value = "SELECT id, name, group_key, valid FROM" 
+                  + " (SELECT ROW_NUMBER() OVER (PARTITION BY u.group_key ORDER BY s.checking_date) AS order_Nr, u.id, u.name, u.group_key, u.valid, s.checking_date" 
                   + " FROM url u"
                   + " LEFT JOIN status s ON s.url_id = u.id"
                   + " INNER JOIN url_context uc ON u.id = uc.url_id"

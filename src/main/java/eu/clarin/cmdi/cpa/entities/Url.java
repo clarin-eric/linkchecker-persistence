@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 @Entity
-@Table(name="url", indexes = {@Index(columnList = "url", unique = true)})
+@Table(name="url", indexes = {@Index(columnList = "name", unique = true)})
 public class Url {
    
    @Id
@@ -30,7 +30,7 @@ public class Url {
    private Long id;
    
    @NonNull
-   private final String url;
+   private final String name;
    
    private String groupKey;
    

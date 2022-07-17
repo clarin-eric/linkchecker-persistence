@@ -35,7 +35,7 @@ public class Status {
    private String method;
    private Integer statusCode;
    private String contentType;
-   private Long byteSize;
+   private Long contentLength;
    private Integer duration;
 
    private Integer redirectCount;

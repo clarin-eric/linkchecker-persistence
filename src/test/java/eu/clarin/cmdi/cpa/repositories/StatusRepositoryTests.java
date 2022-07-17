@@ -82,7 +82,7 @@ class StatusRepositoryTests extends RepositoryTests {
       sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
       sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
       
-      assertNotNull(sRep.findByUrlUrl("http://www.wowasa.com/page1"));
+      assertNotNull(sRep.findByUrlName("http://www.wowasa.com/page1"));
    }
    
    @Transactional
@@ -95,13 +95,13 @@ class StatusRepositoryTests extends RepositoryTests {
       sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
       sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
       
-      try(Stream<Status> stream = sRep.findAllByUrlUrlIn("http://www.wowasa.com/page1", "http://www.wowasa.com/page2")){
+      try(Stream<Status> stream = sRep.findAllByUrlNameIn("http://www.wowasa.com/page1", "http://www.wowasa.com/page2")){
       
          assertEquals(2, stream.count());
          
       }    
       
-      try(Stream<Status> stream = sRep.findAllByUrlUrlIn("http://www.wowasa.com/page1", "http://www.wowasa.com/page2")){
+      try(Stream<Status> stream = sRep.findAllByUrlNameIn("http://www.wowasa.com/page1", "http://www.wowasa.com/page2")){
          
          stream.forEach(status -> assertNotNull(status.getUrl()));
       

@@ -69,7 +69,7 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
          
          Status status = new Status(urls.lastElement(), Category.values()[random.nextInt(Category.values().length)], "", LocalDateTime.now());
          status.setDuration(random.nextInt(15000));
-         status.setByteSize((long) random.nextInt(Integer.MAX_VALUE));
+         status.setContentLength((long) random.nextInt(Integer.MAX_VALUE));
          
          sRep.save(status);
          

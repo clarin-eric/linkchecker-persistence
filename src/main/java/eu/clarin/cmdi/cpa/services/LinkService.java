@@ -10,8 +10,9 @@ import org.springframework.stereotype.Service;
 import eu.clarin.cmdi.cpa.entities.*;
 import eu.clarin.cmdi.cpa.repositories.ClientRepository;
 import eu.clarin.cmdi.cpa.repositories.ContextRepository;
-import eu.clarin.cmdi.cpa.repositories.ObsoleteRepository;
+import eu.clarin.cmdi.cpa.repositories.HistoryRepository;
 import eu.clarin.cmdi.cpa.repositories.ProvidergroupRepository;
+import eu.clarin.cmdi.cpa.repositories.StatusRepository;
 import eu.clarin.cmdi.cpa.repositories.UrlContextRepository;
 import eu.clarin.cmdi.cpa.repositories.UrlRepository;
 import eu.clarin.cmdi.cpa.utils.Category;
@@ -34,7 +35,9 @@ public class LinkService {
    @Autowired
    private StatusService sService;
    @Autowired
-   private ObsoleteRepository oRep;
+   private StatusRepository sRep;
+   @Autowired
+   private HistoryRepository hRep;
    @Autowired
    private ClientRepository clRep;
    
@@ -43,14 +46,14 @@ public class LinkService {
    }
    
    @Transactional
-   public void save(Client client, String urlString, String origin, String providerGroupName, String expectedMimeType, LocalDateTime ingestionDate) {
+   public void save(Client client, String urlName, String origin, String providerGroupName, String expectedMimeType, LocalDateTime ingestionDate) {
       
       Url url;
       
-      ValidationResult validation = UrlValidator.validate(urlString);
+      ValidationResult validation = UrlValidator.validate(urlName);
       
-      if((url = uRep.findByUrl(urlString)) == null) {
-         url = new Url(urlString);
+      if((url = uRep.findByName(urlName)) == null) {
+         url = new Url(urlName);
          url.setGroupKey(validation.getHost());
          url.setValid(validation.isValid());
          
@@ -104,11 +107,11 @@ public class LinkService {
       int step = 1;
       
       log.info("step {}: saving status records", step);
-      oRep.saveStatusLinksOlderThan(periodInDays);
+      sRep.saveStatusLinksOlderThan(periodInDays);
       log.info("step {}: done", step++);
       
       log.info("step {}: saving history records", step);
-      oRep.saveHistoryLinksOlderThan(periodInDays);
+      hRep.saveHistoryLinksOlderThan(periodInDays);
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting url_context records", step);
