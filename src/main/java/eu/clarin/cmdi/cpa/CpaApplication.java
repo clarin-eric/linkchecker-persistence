@@ -5,8 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import eu.clarin.cmdi.cpa.repository.UrlRepository;
-import eu.clarin.cmdi.cpa.service.LinkService;
 
 @SpringBootApplication
 public class CpaApplication {
@@ -17,12 +15,10 @@ public class CpaApplication {
 	}
 	
 	@Bean
-	public CommandLineRunner runnner(UrlRepository uRep) {
+	public CommandLineRunner runnner() {
 	   
 	   return args -> {
-	      //service.save("http://wowasa.com", "origin", "providerGroup", "expectedMimeType", "source");
-	      
-	      //uRep.findAllUrlContextContextByProviderGroupName("providerGroup");
+
 	   };
 
 	}

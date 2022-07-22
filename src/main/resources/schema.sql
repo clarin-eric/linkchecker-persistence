@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS `status` (
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME NOT NULL,
   `redirect_count` INT DEFAULT NULL,
+  `recheck` BOOLEAN DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`url_id`),
   INDEX (`category`),

@@ -52,4 +52,6 @@ public class Status {
    @NonNull
    private final LocalDateTime checkingDate;
    
+   private Boolean recheck;
+   
 }
