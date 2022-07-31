@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
@@ -20,9 +21,11 @@ public class Client {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    
-   private final String email;
+   @NonNull
+   private String email;
    
-   private final String token;
+   @NonNull
+   private String token;
    
    private Long quota; 
 
