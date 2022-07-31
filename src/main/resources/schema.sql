@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `history` (
 
 CREATE TABLE IF NOT EXISTS `obsolete` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `url_name` VARCHAR(1024) NOT NULL,
+  `url_name` VARCHAR(512) NOT NULL,
   `client_email` int DEFAULT NULL,
   `providergroup_name` VARCHAR(256) DEFAULT NULL,
   `origin` VARCHAR(256) DEFAULT NULL,
