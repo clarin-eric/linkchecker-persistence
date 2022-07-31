@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `providergroup` (
 CREATE TABLE IF NOT EXISTS `client` (
    `id` INT NOT NULL AUTO_INCREMENT,
    `email` VARCHAR(256) NOT NULL,
-   `token` CHAR(32) NOT NULL,
+   `token` VARCHAR(36) NOT NULL,
    `quota` INT DEFAULT NULL, 
    PRIMARY KEY (`id`),
    INDEX (`email`, `token`)  

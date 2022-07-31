@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.IntStream;
@@ -27,7 +28,7 @@ class LinkServiceTests extends RepositoryTests{
 	@Test
 	void save() {
       
-      Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+      Client client = clRep.save(new Client("devnull@wowasa.com", UUID.randomUUID().toString()));
       
       IntStream.range(0, 3).forEach(i -> {
          
