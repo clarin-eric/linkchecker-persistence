@@ -48,6 +48,8 @@ public class LinkService {
    @Transactional
    public void save(Client client, String urlName, String origin, String providerGroupName, String expectedMimeType, LocalDateTime ingestionDate) {
       
+      urlName = urlName.trim();
+      
       Url url;
       
       ValidationResult validation = UrlValidator.validate(urlName);
