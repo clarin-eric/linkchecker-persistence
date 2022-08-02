@@ -9,11 +9,13 @@ CREATE TABLE IF NOT EXISTS `providergroup` (
 
 CREATE TABLE IF NOT EXISTS `client` (
    `id` INT NOT NULL AUTO_INCREMENT,
+   `username` VARCHAR(256) NOT NULL,
    `email` VARCHAR(256) NOT NULL,
    `token` VARCHAR(36) NOT NULL,
    `quota` INT DEFAULT NULL, 
    PRIMARY KEY (`id`),
-   INDEX (`email`, `token`)  
+   UNIQUE KEY (`username`),
+   INDEX (`username`, `token`)  
 );
 
 

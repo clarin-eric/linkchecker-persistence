@@ -28,7 +28,7 @@ class LinkServiceTests extends RepositoryTests{
 	@Test
 	void save() {
       
-      Client client = clRep.save(new Client("devnull@wowasa.com", UUID.randomUUID().toString()));
+      Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", UUID.randomUUID().toString()));
       
       IntStream.range(0, 3).forEach(i -> {
          
@@ -76,7 +76,7 @@ class LinkServiceTests extends RepositoryTests{
 	   
 
 	   
-	   Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+	   Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
 	   
 	   ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(30);
 	   
@@ -114,7 +114,7 @@ class LinkServiceTests extends RepositoryTests{
    @Test
    void deactivateLinksOlderThan() {
       
-      Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+      Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
       
       IntStream.range(0, 15).forEach(i -> {
          lService.save(client, "http://www.wowasa.com?page=" +i, "origin1", "pg0", "application/xml", LocalDateTime.now().minusDays(i));
@@ -132,7 +132,7 @@ class LinkServiceTests extends RepositoryTests{
    @Test
    void deleteLinksOlderThan() {
       
-      Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+      Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
       
       IntStream.range(0, 100).forEach(i -> {
          lService.save(client, "http://www.wowasa.com?page=" +i, "origin1", "pg0", "application/xml", LocalDateTime.now().minusDays(i));

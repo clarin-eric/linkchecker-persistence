@@ -33,7 +33,7 @@ class ProvidergroupRepositoryTests extends RepositoryTests{
 	   Providergroup providergroup = pRep.save(new Providergroup("wowasa's pg"));
 	   pRep.save(new Providergroup("other's pg"));
 	   
-	   Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+	   Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
 	   Context context = new Context("origin1", client);
 	   context.setProvidergroup(providergroup);
 	   cRep.save(context);

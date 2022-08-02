@@ -46,7 +46,7 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
       
       final Providergroup[] providergroups = {pRep.save(new Providergroup("wowasa's pg")), pRep.save(new Providergroup("other's pg"))};
       
-      final Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+      final Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
       
       final Context[] contexts = new Context[10];
       IntStream.range(0, 10).forEach(i -> {

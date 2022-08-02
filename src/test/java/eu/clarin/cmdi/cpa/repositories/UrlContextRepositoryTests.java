@@ -22,7 +22,7 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com"));
 
-      Client client = clRep.save(new Client("clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
+      Client client = clRep.save(new Client("wowasa", "clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
 
       Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), client));
       
@@ -42,7 +42,7 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com"));
 
-      Client client = clRep.save(new Client("clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
+      Client client = clRep.save(new Client("wowasa", "clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
 
       Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), client));
       
@@ -68,7 +68,7 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com"));
 
-      Client client = clRep.save(new Client("clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
+      Client client = clRep.save(new Client("wowasa", "clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
 
       Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), client));
       

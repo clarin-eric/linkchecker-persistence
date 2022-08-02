@@ -8,6 +8,6 @@ import eu.clarin.cmdi.cpa.model.Client;
 public interface ClientRepository extends CrudRepository<Client, Long> {
    
    @Nullable
-   public Client findByEmailAndToken(String email, String token);
+   public Client findByUsernameAndToken(String username, String token);
 
 }

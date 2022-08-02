@@ -26,7 +26,7 @@ class ContextRepositoryTests extends RepositoryTests {
 
       Url url = uRep.save(new Url("http://www.wowasa.com"));
 
-      Client client = clRep.save(new Client("devnull@wowasa.com", "########"));
+      Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "########"));
 
       Context contextWith = cRep.save(new Context("origin1", client));
 
@@ -50,7 +50,7 @@ class ContextRepositoryTests extends RepositoryTests {
    @Test
    void findByOriginAndProvidergroupAndExpectedMimeTypeAndClient() {
 
-      Client client = clRep.save(new Client("devnull@wowasa.com", "########"));
+      Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "########"));
 
       cRep.save(new Context("origin1", client));
 

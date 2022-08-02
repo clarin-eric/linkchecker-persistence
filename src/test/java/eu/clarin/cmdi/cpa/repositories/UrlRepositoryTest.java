@@ -53,7 +53,7 @@ class UrlRepositoryTest extends RepositoryTests{
 	   final String[] groupKeys = {"key1", "key2", "key3"};
 	   final Url[] urls = new Url[100];
 	   
-	   final Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+	   final Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
 	   
 	   final Context context = cRep.save(new Context("origin", client));
 	   
@@ -89,7 +89,7 @@ class UrlRepositoryTest extends RepositoryTests{
 	@Test
 	void countByUrlContextActive() {
 	   
-	   Client client = clRep.save(new Client("devnull@wowasa.com", "xxxxxxxx"));
+	   Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
 	   Context context = cRep.save(new Context("origin", client));
 	   
 	   IntStream.range(0, 6).forEach(i -> {	
