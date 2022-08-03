@@ -33,9 +33,9 @@ public class Context {
    
    @OneToOne(optional = true)
    @JoinColumn(name = "providergroup_id", referencedColumnName = "id")
-   private Providergroup providergroup;
+   private final Providergroup providergroup;
    
-   private String expectedMimeType;
+   private final String expectedMimeType;
    
    @OneToOne
    @JoinColumn(name = "client_id", referencedColumnName = "id")

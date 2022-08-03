@@ -27,7 +27,7 @@ class StatusServiceTests extends RepositoryTests{
 	@Test
 	void save() {
       
-      Url url = uRep.save(new Url("http://www.wowasa.com"));
+      Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
       
       sService.save(new Status(url, Category.Broken, "", LocalDateTime.now()));
       

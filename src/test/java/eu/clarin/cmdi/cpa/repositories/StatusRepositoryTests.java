@@ -25,7 +25,7 @@ class StatusRepositoryTests extends RepositoryTests {
    @Test
    void save() {
 
-      Url url = new Url("http://www.wowasa.com");
+      Url url = new Url("http://www.wowasa.com", "www.wowasa.com", true);
       uRep.save(url);
 
       Status status = new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now());
@@ -53,8 +53,8 @@ class StatusRepositoryTests extends RepositoryTests {
    @Test
 	@Transactional
 	void findAllByCategory() {
-	   Url url1 = uRep.save(new Url("http://www.wowasa.com/page1"));
-	   Url url2 = uRep.save(new Url("http://www.wowasa.com/page2"));
+	   Url url1 = uRep.save(new Url("http://www.wowasa.com/page1", "www.wowasa.com", true));
+	   Url url2 = uRep.save(new Url("http://www.wowasa.com/page2", "www.wowasa.com", true));
 	   
 	   sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
 	   sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
@@ -76,8 +76,8 @@ class StatusRepositoryTests extends RepositoryTests {
    
    @Test
    void findByUrlUrl() {
-      Url url1 = uRep.save(new Url("http://www.wowasa.com/page1"));
-      Url url2 = uRep.save(new Url("http://www.wowasa.com/page2"));
+      Url url1 = uRep.save(new Url("http://www.wowasa.com/page1", "www.wowasa.com", true));
+      Url url2 = uRep.save(new Url("http://www.wowasa.com/page2", "www.wowasa.com", true));
       
       sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
       sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
@@ -89,8 +89,8 @@ class StatusRepositoryTests extends RepositoryTests {
    @Test
    void findAllByUrlUrlIn() {
       
-      Url url1 = uRep.save(new Url("http://www.wowasa.com/page1"));
-      Url url2 = uRep.save(new Url("http://www.wowasa.com/page2"));
+      Url url1 = uRep.save(new Url("http://www.wowasa.com/page1", "www.wowasa.com", true));
+      Url url2 = uRep.save(new Url("http://www.wowasa.com/page2", "www.wowasa.com", true));
       
       sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
       sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));

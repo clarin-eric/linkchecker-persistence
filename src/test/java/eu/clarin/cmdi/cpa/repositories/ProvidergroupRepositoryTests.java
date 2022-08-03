@@ -8,8 +8,8 @@ import eu.clarin.cmdi.cpa.model.Context;
 import eu.clarin.cmdi.cpa.model.Providergroup;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import javax.transaction.Transactional;
 
@@ -22,8 +22,8 @@ class ProvidergroupRepositoryTests extends RepositoryTests{
 	   pRep.save(new Providergroup("wowasa's pg"));
 	   
 	   assertEquals(1, pRep.count());
-	   assertNotNull(pRep.findByName("wowasa's pg"));
-	   assertNull(pRep.findByName("other's pg"));
+	   assertFalse(pRep.findByName("wowasa's pg").isEmpty());
+	   assertTrue(pRep.findByName("other's pg").isEmpty());
 	}
 	
 	@Transactional
@@ -34,8 +34,8 @@ class ProvidergroupRepositoryTests extends RepositoryTests{
 	   pRep.save(new Providergroup("other's pg"));
 	   
 	   Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
-	   Context context = new Context("origin1", client);
-	   context.setProvidergroup(providergroup);
+	   Context context = new Context("origin1", providergroup, null, client);
+
 	   cRep.save(context);
 	   
 	   assertEquals(2, pRep.count());

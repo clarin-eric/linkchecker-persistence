@@ -1,11 +1,11 @@
 package eu.clarin.cmdi.cpa.repository;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 import eu.clarin.cmdi.cpa.model.Url;
@@ -13,8 +13,7 @@ import eu.clarin.cmdi.cpa.model.Url;
 @Repository
 public interface UrlRepository extends CrudRepository<Url, Long> {
    
-   @Nullable
-   public Url findByName(String name);
+   public Optional<Url> findByName(String name);
    
    @Modifying
    @Query("DELETE FROM Url u WHERE u.urlContexts IS EMPTY")

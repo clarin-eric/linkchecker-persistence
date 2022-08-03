@@ -1,6 +1,7 @@
 package eu.clarin.cmdi.cpa.service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -46,60 +47,60 @@ public class LinkService {
    }
    
    @Transactional
-   public void save(Client client, String urlName, String origin, String providerGroupName, String expectedMimeType, LocalDateTime ingestionDate) {
+   public void save(Client client, String urlName, String origin, String providergroupName, String expectedMimeType, LocalDateTime ingestionDate) {
       
       urlName = urlName.trim();
       
-      Url url;
-      
       ValidationResult validation = UrlValidator.validate(urlName);
       
-      if((url = uRep.findByName(urlName)) == null) {
-         url = new Url(urlName);
-         url.setGroupKey(validation.getHost());
-         url.setValid(validation.isValid());
+      Url url = getUrl(urlName, validation);      
+      
+      Providergroup providergroup = (providergroupName == null)?null: getProvidergroup(providergroupName);
+      
+      Context context = getContext(origin, providergroup, expectedMimeType, client);
          
-         uRep.save(url);
-      }
-      
-      Providergroup providerGroup = null;
-     
-      synchronized(this) {
-         if(providerGroupName != null && (providerGroup = pRep.findByName(providerGroupName)) == null) {
-            providerGroup = new Providergroup(providerGroupName);
-            pRep.save(providerGroup);
-         }
-      }
-      
-      Context context;
-     
-      synchronized(this) {
-         if((context = cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient(origin, providerGroup, expectedMimeType, client)) == null) {
-            context = new Context(origin, client);
-            context.setProvidergroup(providerGroup);
-            context.setExpectedMimeType(expectedMimeType);
-   
-            cRep.save(context);
-         }
-      }
-      
-      UrlContext urlContext;
-      
-      synchronized(this) {
-         if((urlContext = ucRep.findByUrlAndContext(url, context)) == null) {
-            urlContext = new UrlContext(url, context);
-         }
-         urlContext.setIngestionDate(ingestionDate);
-         urlContext.setActive(true);
-         
-         ucRep.save(urlContext);
-      }
+      getUrlContext(url, context, ingestionDate);      
+
       
       if(!validation.isValid()) { //create a status entry if Url is not valid
          Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), ingestionDate);
          
          sService.save(status);
       }
+   }
+   
+   private synchronized Url getUrl(String urlName, ValidationResult validation) {
+      
+      return uRep.findByName(urlName)
+         .orElseGet(() -> uRep.save(new  Url(urlName, validation.getHost(), validation.isValid())));
+   
+   }
+   
+   private synchronized Providergroup getProvidergroup(String providergroupName) {
+      
+      return pRep.findByName(providergroupName)
+               .orElseGet(() -> pRep.save(new Providergroup(providergroupName)));
+      
+   }
+   
+   private synchronized Context getContext(String origin, Providergroup providergroup, String expectedMimeType, Client client){
+      
+      return cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient(origin, providergroup, expectedMimeType, client)
+               .orElseGet(() -> cRep.save(new Context(origin, providergroup, expectedMimeType, client)));
+      
+   }
+   
+   private synchronized UrlContext getUrlContext(Url url, Context context, LocalDateTime ingestionDate) {
+      
+      return ucRep.findByUrlAndContext(url, context)
+               .or(()-> Optional.of(new UrlContext(url, context)))
+               .map(urlContext -> {
+                  urlContext.setIngestionDate(ingestionDate);
+                  urlContext.setActive(true);
+                  
+                  return ucRep.save(urlContext);
+               })
+               .get();
    }
    
    @Transactional

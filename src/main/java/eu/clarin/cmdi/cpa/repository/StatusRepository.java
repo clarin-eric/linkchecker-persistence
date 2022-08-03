@@ -1,5 +1,6 @@
 package eu.clarin.cmdi.cpa.repository;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.springframework.data.domain.Page;
@@ -7,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.lang.Nullable;
 
 import eu.clarin.cmdi.cpa.model.Status;
 import eu.clarin.cmdi.cpa.model.Url;
@@ -16,11 +16,10 @@ import eu.clarin.cmdi.cpa.utils.Category;
 
 public interface StatusRepository extends PagingAndSortingRepository<Status, Long> {
    
-   @Nullable
-   public Status findByUrl(Url url);
    
-   @Nullable
-   public Status findByUrlName(String name);
+   public Optional<Status> findByUrl(Url url);  
+   
+   public Optional<Status> findByUrlName(String name);
    
    public Stream<Status> findAllByUrlNameIn(String... names);
    

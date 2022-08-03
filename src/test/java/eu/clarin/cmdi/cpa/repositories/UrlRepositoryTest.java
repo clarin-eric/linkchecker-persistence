@@ -29,15 +29,15 @@ class UrlRepositoryTest extends RepositoryTests{
 	void save() {
 	   
 	   // the URL mustn't be null
-	   assertThrows(NullPointerException.class, () -> uRep.save(new Url(null)));
+	   assertThrows(NullPointerException.class, () -> uRep.save(new Url(null, null, null)));
 	   
 	   // saving
-	   Url url = new Url("http://www.wowasa.com");
+	   Url url = new Url("http://www.wowasa.com", "www.wowasa.com", true);
 	   uRep.save(url);
 	   assertEquals(1, uRep.count());
 	   
 	   // the same URL mustn't be saved twice
-	   assertThrows(DataAccessException.class, () -> uRep.save(new Url("http://www.wowasa.com")));
+	   assertThrows(DataAccessException.class, () -> uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true)));
 	   
 	   // deleting
 	   uRep.delete(url);
@@ -55,14 +55,11 @@ class UrlRepositoryTest extends RepositoryTests{
 	   
 	   final Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
 	   
-	   final Context context = cRep.save(new Context("origin", client));
+	   final Context context = cRep.save(new Context("origin", null, null, client));
 	   
 	   IntStream.range(0, 100).forEach(i -> {
 	      
-	      urls[i] = new Url("http://www.wowasa.com?page=" +i);
-	      
-	      urls[i].setGroupKey(groupKeys[random.nextInt(3)]);
-	      urls[i].setValid(true);
+	      urls[i] = new Url("http://www.wowasa.com?page=" +i, groupKeys[random.nextInt(3)], true);
 	      
 	      uRep.save(urls[i]);
 	      
@@ -90,11 +87,11 @@ class UrlRepositoryTest extends RepositoryTests{
 	void countByUrlContextActive() {
 	   
 	   Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
-	   Context context = cRep.save(new Context("origin", client));
+	   Context context = cRep.save(new Context("origin", null, null, client));
 	   
 	   IntStream.range(0, 6).forEach(i -> {	
 	      
-	      UrlContext urlContext = new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i)), context);
+	      UrlContext urlContext = new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i, "www.wowasa.com", true)), context);
 	      urlContext.setIngestionDate(LocalDateTime.now());
 	      urlContext.setActive(true);
 	      
@@ -102,7 +99,7 @@ class UrlRepositoryTest extends RepositoryTests{
 	   });
       IntStream.range(6, 10).forEach(i -> {  
          
-         UrlContext urlContext = new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i)), context);
+         UrlContext urlContext = new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i, "www.wowasa.com", true)), context);
          urlContext.setIngestionDate(LocalDateTime.now());
          urlContext.setActive(false);
          

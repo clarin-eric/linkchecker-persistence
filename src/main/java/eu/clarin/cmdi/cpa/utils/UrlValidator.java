@@ -11,7 +11,7 @@ public class UrlValidator {
    
    private final static List<String> VALID_PROTOCOLS = Arrays.asList("http", "https", "ftp");
    
-   public static ValidationResult validate(String urlString) {
+   public static synchronized ValidationResult validate(String urlString) {
       
       try{
          

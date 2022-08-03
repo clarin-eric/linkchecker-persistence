@@ -10,10 +10,11 @@ import eu.clarin.cmdi.cpa.model.Url;
 import eu.clarin.cmdi.cpa.model.UrlContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -24,13 +25,13 @@ class ContextRepositoryTests extends RepositoryTests {
    @Transactional
    void deleteWithoutContext() {
 
-      Url url = uRep.save(new Url("http://www.wowasa.com"));
+      Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
       Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "########"));
 
-      Context contextWith = cRep.save(new Context("origin1", client));
+      Context contextWith = cRep.save(new Context("origin1", null, null, client));
 
-      cRep.save(new Context("origin2", client));
+      cRep.save(new Context("origin2", null, null, client));
       
       UrlContext urlContext = new UrlContext(url, contextWith);
       urlContext.setIngestionDate(LocalDateTime.now());
@@ -52,24 +53,23 @@ class ContextRepositoryTests extends RepositoryTests {
 
       Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "########"));
 
-      cRep.save(new Context("origin1", client));
+      cRep.save(new Context("origin1", null, null, client));
 
       Providergroup providergroup = pRep.save(new Providergroup("wowasa's pg"));
 
-      Context context = new Context("origin1", client);
-      context.setProvidergroup(providergroup);
-      context.setExpectedMimeType("application/pdf");
+      Context context = new Context("origin1", providergroup, "application/pdf", client);
+
       cRep.save(context);
 
       assertEquals(2, cRep.count());
 
-      assertNull(
-            cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient("origin1", null, "some mime type", client));
+      assertTrue(
+            cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient("origin1", null, "some mime type", client).isEmpty());
 
-      assertNotNull(cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient("origin1", null, null, client));
+      assertFalse(cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient("origin1", null, null, client).isEmpty());
 
-      assertNotNull(cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient("origin1", providergroup,
-            "application/pdf", client));
+      assertFalse(cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient("origin1", providergroup,
+            "application/pdf", client).isEmpty());
 
    }
 

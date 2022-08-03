@@ -32,9 +32,9 @@ public class Url {
    @NonNull
    private final String name;
    
-   private String groupKey;
+   private final String groupKey;
    
-   private Boolean valid;
+   private final Boolean valid;
    
    @OneToMany
    @JoinColumn(name = "url_id", referencedColumnName = "id")

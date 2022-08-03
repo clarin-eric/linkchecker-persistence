@@ -50,8 +50,7 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
       
       final Context[] contexts = new Context[10];
       IntStream.range(0, 10).forEach(i -> {
-         contexts[i] = new Context("context" + i, client);
-         contexts[i].setProvidergroup(providergroups[random.nextInt(2)]);
+         contexts[i] = new Context("context" + i, providergroups[random.nextInt(2)], null, client);
          cRep.save(contexts[i]);
       });
       
@@ -61,7 +60,7 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
       
       IntStream.range(1, 100).forEach( i-> {
          
-         urls.add(uRep.save(new Url("http://www.wowasa.com?page=" + i)));  
+         urls.add(uRep.save(new Url("http://www.wowasa.com?page=" + i, "www.wowasa.com", true)));  
          
          Context context = contexts[random.nextInt(10)];
          

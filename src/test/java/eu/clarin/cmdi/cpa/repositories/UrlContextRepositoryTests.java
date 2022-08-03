@@ -20,11 +20,11 @@ class UrlContextRepositoryTests extends RepositoryTests{
    @Test
    void save() {
 
-      Url url = uRep.save(new Url("http://www.wowasa.com"));
+      Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
       Client client = clRep.save(new Client("wowasa", "clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
 
-      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), client));
+      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, client));
       
       UrlContext urlContext = new UrlContext(url, context);
       urlContext.setIngestionDate(LocalDateTime.now());
@@ -40,11 +40,11 @@ class UrlContextRepositoryTests extends RepositoryTests{
    @Transactional
    void deleteOlderThan() {
 
-      Url url = uRep.save(new Url("http://www.wowasa.com"));
+      Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
       Client client = clRep.save(new Client("wowasa", "clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
 
-      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), client));
+      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, client));
       
       UrlContext urlContext = new UrlContext(url, context);
       urlContext.setIngestionDate(LocalDateTime.now().minusDays(7));
@@ -66,11 +66,11 @@ class UrlContextRepositoryTests extends RepositoryTests{
    @Transactional
    void deactivateOlderThan() {
 
-      Url url = uRep.save(new Url("http://www.wowasa.com"));
+      Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
       Client client = clRep.save(new Client("wowasa", "clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
 
-      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), client));
+      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, client));
       
       UrlContext urlContext = new UrlContext(url, context);
       urlContext.setIngestionDate(LocalDateTime.now().minusDays(7));
@@ -81,12 +81,12 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(8));
 
-      assertEquals(true, ucRep.findByUrlAndContext(url, context).getActive());
+      assertEquals(true, ucRep.findByUrlAndContext(url, context).get().getActive());
 
       ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(6));
 
       assertEquals(1, ucRep.count());
-      assertEquals(false, ucRep.findByUrlAndContext(url, context).getActive());
+      assertEquals(false, ucRep.findByUrlAndContext(url, context).get().getActive());
 
    }
 }

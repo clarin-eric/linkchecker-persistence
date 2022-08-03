@@ -17,7 +17,7 @@ class HistoryRepositoryTests extends RepositoryTests {
 	@Test
 	void save() {
 	   
-	   History history = new History(uRep.save(new Url("http://www.wowasa.com")), Category.Broken, LocalDateTime.now());
+	   History history = new History(uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true)), Category.Broken, LocalDateTime.now());
 	   
 	   hRep.save(history);
 	   

@@ -21,10 +21,7 @@ public class StatusService {
    @Transactional
    public void save(Status status) {
       
-      Status oldStatus;
-      
-      if((oldStatus = sRep.findByUrl(status.getUrl())) != null) { //save record to history
-         
+      sRep.findByUrl(status.getUrl()).ifPresent(oldStatus -> {//save record to history
          History history = new History(oldStatus.getUrl(), oldStatus.getCategory(), oldStatus.getCheckingDate());
          history.setMethod(oldStatus.getMethod());
          history.setStatusCode(oldStatus.getStatusCode());
@@ -37,7 +34,7 @@ public class StatusService {
          hRep.save(history);
          
          status.setId(oldStatus.getId());
-      }
+      }); 
       
       sRep.save(status); //insert or update
    }
