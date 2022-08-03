@@ -28,7 +28,6 @@ public class Client {
    
    @NonNull
    private String email;
-   
    @NonNull
    private String token;
    

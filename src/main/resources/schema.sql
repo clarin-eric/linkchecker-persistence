@@ -14,8 +14,7 @@ CREATE TABLE IF NOT EXISTS `client` (
    `token` VARCHAR(36) NOT NULL,
    `quota` INT DEFAULT NULL, 
    PRIMARY KEY (`id`),
-   UNIQUE KEY (`username`),
-   INDEX (`username`, `token`)  
+   UNIQUE KEY (`username`)
 );
 
 

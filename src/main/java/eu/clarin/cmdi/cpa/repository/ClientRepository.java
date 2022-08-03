@@ -9,6 +9,6 @@ import eu.clarin.cmdi.cpa.model.Client;
 public interface ClientRepository extends CrudRepository<Client, Long> {
    
    
-   public Optional<Client> findByUsernameAndToken(String username, String token);
+   public Optional<Client> findByUsername(String username);
 
 }
