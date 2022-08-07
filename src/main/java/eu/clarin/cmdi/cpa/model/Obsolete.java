@@ -26,7 +26,7 @@ public class Obsolete {
    
    private String urlName;
    
-   private String clienEmail;
+   private String userName;
    
    private String origin;
    

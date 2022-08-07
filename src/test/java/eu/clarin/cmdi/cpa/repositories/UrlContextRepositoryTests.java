@@ -3,8 +3,9 @@ package eu.clarin.cmdi.cpa.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import eu.clarin.cmdi.cpa.model.Client;
+import eu.clarin.cmdi.cpa.model.User;
 import eu.clarin.cmdi.cpa.model.Context;
+import eu.clarin.cmdi.cpa.model.Role;
 import eu.clarin.cmdi.cpa.model.Url;
 import eu.clarin.cmdi.cpa.model.UrlContext;
 
@@ -22,9 +23,9 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      Client client = clRep.save(new Client("wowasa", "clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
+      User user = clRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
 
-      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, client));
+      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, user));
       
       UrlContext urlContext = new UrlContext(url, context);
       urlContext.setIngestionDate(LocalDateTime.now());
@@ -42,9 +43,9 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      Client client = clRep.save(new Client("wowasa", "clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
+      User user = clRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
 
-      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, client));
+      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, user));
       
       UrlContext urlContext = new UrlContext(url, context);
       urlContext.setIngestionDate(LocalDateTime.now().minusDays(7));
@@ -68,9 +69,9 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      Client client = clRep.save(new Client("wowasa", "clarin@wowasa.com", "xxxxxxxxxxxxxxxx"));
+      User user = clRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
 
-      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, client));
+      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, user));
       
       UrlContext urlContext = new UrlContext(url, context);
       urlContext.setIngestionDate(LocalDateTime.now().minusDays(7));

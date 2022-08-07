@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.clarin.cmdi.cpa.model.*;
-import eu.clarin.cmdi.cpa.repository.ClientRepository;
 import eu.clarin.cmdi.cpa.repository.ContextRepository;
 import eu.clarin.cmdi.cpa.repository.HistoryRepository;
 import eu.clarin.cmdi.cpa.repository.ProvidergroupRepository;
@@ -39,15 +38,13 @@ public class LinkService {
    private StatusRepository sRep;
    @Autowired
    private HistoryRepository hRep;
-   @Autowired
-   private ClientRepository clRep;
    
-   public void save(Client client, String urlString, String origin, String providerGroupName, String expectedMimeType) {
+   public void save(User client, String urlString, String origin, String providerGroupName, String expectedMimeType) {
       save(client, urlString, origin, providerGroupName, expectedMimeType, LocalDateTime.now());
    }
    
    @Transactional
-   public void save(Client client, String urlName, String origin, String providergroupName, String expectedMimeType, LocalDateTime ingestionDate) {
+   public void save(User user, String urlName, String origin, String providergroupName, String expectedMimeType, LocalDateTime ingestionDate) {
       
       urlName = urlName.trim();
       
@@ -57,7 +54,7 @@ public class LinkService {
       
       Providergroup providergroup = (providergroupName == null)?null: getProvidergroup(providergroupName);
       
-      Context context = getContext(origin, providergroup, expectedMimeType, client);
+      Context context = getContext(origin, providergroup, expectedMimeType, user);
          
       getUrlContext(url, context, ingestionDate);      
 
@@ -83,10 +80,10 @@ public class LinkService {
       
    }
    
-   private synchronized Context getContext(String origin, Providergroup providergroup, String expectedMimeType, Client client){
+   private synchronized Context getContext(String origin, Providergroup providergroup, String expectedMimeType, User user){
       
-      return cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient(origin, providergroup, expectedMimeType, client)
-               .orElseGet(() -> cRep.save(new Context(origin, providergroup, expectedMimeType, client)));
+      return cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndUser(origin, providergroup, expectedMimeType, user)
+               .orElseGet(() -> cRep.save(new Context(origin, providergroup, expectedMimeType, user)));
       
    }
    

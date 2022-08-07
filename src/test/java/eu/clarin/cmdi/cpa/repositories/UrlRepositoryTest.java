@@ -4,8 +4,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 
-import eu.clarin.cmdi.cpa.model.Client;
+import eu.clarin.cmdi.cpa.model.User;
 import eu.clarin.cmdi.cpa.model.Context;
+import eu.clarin.cmdi.cpa.model.Role;
 import eu.clarin.cmdi.cpa.model.Url;
 import eu.clarin.cmdi.cpa.model.UrlContext;
 
@@ -53,9 +54,9 @@ class UrlRepositoryTest extends RepositoryTests{
 	   final String[] groupKeys = {"key1", "key2", "key3"};
 	   final Url[] urls = new Url[100];
 	   
-	   final Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
+	   final User user = clRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
 	   
-	   final Context context = cRep.save(new Context("origin", null, null, client));
+	   final Context context = cRep.save(new Context("origin", null, null, user));
 	   
 	   IntStream.range(0, 100).forEach(i -> {
 	      
@@ -86,8 +87,8 @@ class UrlRepositoryTest extends RepositoryTests{
 	@Test
 	void countByUrlContextActive() {
 	   
-	   Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
-	   Context context = cRep.save(new Context("origin", null, null, client));
+	   User user = clRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+	   Context context = cRep.save(new Context("origin", null, null, user));
 	   
 	   IntStream.range(0, 6).forEach(i -> {	
 	      

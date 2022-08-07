@@ -7,29 +7,30 @@ CREATE TABLE IF NOT EXISTS `providergroup` (
   UNIQUE KEY (`name`)
 );
 
-CREATE TABLE IF NOT EXISTS `client` (
+CREATE TABLE IF NOT EXISTS `appuser` (
    `id` INT NOT NULL AUTO_INCREMENT,
-   `username` VARCHAR(256) NOT NULL,
-   `email` VARCHAR(256) NOT NULL,
+   `name` VARCHAR(256) NOT NULL,
+   `email` VARCHAR(256) DEFAULT NULL,
    `token` VARCHAR(36) NOT NULL,
    `quota` INT DEFAULT NULL, 
+   `role` VARCHAR(64) NOT NULL,
    PRIMARY KEY (`id`),
-   UNIQUE KEY (`username`)
+   UNIQUE KEY (`name`)
 );
 
 
 CREATE TABLE IF NOT EXISTS `context` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `client_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
   `origin` VARCHAR(256) NOT NULL,
   `providergroup_id` INT DEFAULT NULL,
   `expected_mime_type` VARCHAR(64) DEFAULT NULL,
   PRIMARY KEY (`id`),  
-  UNIQUE KEY (`origin`, `providergroup_id`, `expected_mime_type`, `client_id`),
+  UNIQUE KEY (`origin`, `providergroup_id`, `expected_mime_type`, `user_id`),
   INDEX (`providergroup_id`),
   FOREIGN KEY (`providergroup_id`) REFERENCES `providergroup` (`id`),
-  INDEX (`client_id`),
-  FOREIGN KEY (`client_id`) REFERENCES `client` (`id`)
+  INDEX (`user_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `appuser` (`id`)
 );
 
 
@@ -103,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `history` (
 CREATE TABLE IF NOT EXISTS `obsolete` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `url_name` VARCHAR(512) NOT NULL,
-  `client_email` int DEFAULT NULL,
+  `user_name` int DEFAULT NULL,
   `providergroup_name` VARCHAR(256) DEFAULT NULL,
   `origin` VARCHAR(256) DEFAULT NULL,
   `expected_mime_type` VARCHAR(256) DEFAULT NULL,

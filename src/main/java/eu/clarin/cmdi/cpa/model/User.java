@@ -1,6 +1,8 @@
 package eu.clarin.cmdi.cpa.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,20 +19,22 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 @Entity
-@Table(name="client", indexes = {@Index(columnList = "username", unique = true)})
-public class Client {
+@Table(name = "appuser", indexes = {@Index(columnList = "name", unique = true)})
+public class User {
    
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    
-   private final String username;
+   private final String name;
    
-   @NonNull
    private String email;
    @NonNull
    private String token;
    
    private Long quota; 
+   @NonNull
+   @Enumerated(EnumType.STRING)
+   private Role role;
 
 }

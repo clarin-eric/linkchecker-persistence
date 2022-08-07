@@ -3,9 +3,10 @@ package eu.clarin.cmdi.cpa.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import eu.clarin.cmdi.cpa.model.Client;
+import eu.clarin.cmdi.cpa.model.User;
 import eu.clarin.cmdi.cpa.model.Context;
 import eu.clarin.cmdi.cpa.model.Providergroup;
+import eu.clarin.cmdi.cpa.model.Role;
 import eu.clarin.cmdi.cpa.model.Url;
 import eu.clarin.cmdi.cpa.model.UrlContext;
 
@@ -26,11 +27,11 @@ class ContextRepositoryTests extends RepositoryTests {
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "########"));
+      User user = clRep.save(new User("wowasa", "########", Role.ADMIN));
 
-      Context contextWith = cRep.save(new Context("origin1", null, null, client));
+      Context contextWith = cRep.save(new Context("origin1", null, null, user));
 
-      cRep.save(new Context("origin2", null, null, client));
+      cRep.save(new Context("origin2", null, null, user));
       
       UrlContext urlContext = new UrlContext(url, contextWith);
       urlContext.setIngestionDate(LocalDateTime.now());
@@ -50,7 +51,7 @@ class ContextRepositoryTests extends RepositoryTests {
    @Test
    void findByOriginAndProvidergroupAndExpectedMimeTypeAndClient() {
 
-      Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "########"));
+      User client = clRep.save(new User("wowasa", "########", Role.ADMIN));
 
       cRep.save(new Context("origin1", null, null, client));
 
@@ -63,11 +64,11 @@ class ContextRepositoryTests extends RepositoryTests {
       assertEquals(2, cRep.count());
 
       assertTrue(
-            cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient("origin1", null, "some mime type", client).isEmpty());
+            cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndUser("origin1", null, "some mime type", client).isEmpty());
 
-      assertFalse(cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient("origin1", null, null, client).isEmpty());
+      assertFalse(cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndUser("origin1", null, null, client).isEmpty());
 
-      assertFalse(cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndClient("origin1", providergroup,
+      assertFalse(cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndUser("origin1", providergroup,
             "application/pdf", client).isEmpty());
 
    }

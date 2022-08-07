@@ -29,8 +29,8 @@ public interface StatusRepository extends PagingAndSortingRepository<Status, Lon
    public Page<Status> findAllByProvidergroupAndCategory(String providerGroupName, Category category, Pageable pageable);
    
    @Query(
-         value = "INSERT INTO obsolete (url_name, client_email, providergroup_name, origin, expected_mime_type, ingestion_date, status_code, message, category, method, content_type, content_length, duration, checking_date, redirect_count, deletion_date) "
-               + "SELECT u.name, cl.email, p.name, c.origin, c.expected_mime_type, uc.ingestion_date, s.status_code, s.message, s.category, s.method, s.content_type, s.content_length, s.duration, s.checking_date, s.redirect_count, NOW() "
+         value = "INSERT INTO obsolete (url_name, user_name, providergroup_name, origin, expected_mime_type, ingestion_date, status_code, message, category, method, content_type, content_length, duration, checking_date, redirect_count, deletion_date) "
+               + "SELECT u.name, us.name, p.name, c.origin, c.expected_mime_type, uc.ingestion_date, s.status_code, s.message, s.category, s.method, s.content_type, s.content_length, s.duration, s.checking_date, s.redirect_count, NOW() "
                + "FROM url_context uc "
                + "INNER JOIN (url u) "
                + "ON u.id=uc.url_id "
@@ -40,8 +40,8 @@ public interface StatusRepository extends PagingAndSortingRepository<Status, Lon
                + "ON p.id=c.providergroup_id "
                + "INNER JOIN status s "
                + "ON s.url_id=u.id "
-               + "INNER JOIN client cl "
-               + "ON cl.id=c.client_id "
+               + "INNER JOIN appuser us "
+               + "ON us.id=c.user_id "
                + "WHERE uc.ingestion_date < ?1", 
          nativeQuery = true
       )

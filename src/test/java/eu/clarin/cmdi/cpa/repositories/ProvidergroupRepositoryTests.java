@@ -3,9 +3,10 @@ package eu.clarin.cmdi.cpa.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import eu.clarin.cmdi.cpa.model.Client;
+import eu.clarin.cmdi.cpa.model.User;
 import eu.clarin.cmdi.cpa.model.Context;
 import eu.clarin.cmdi.cpa.model.Providergroup;
+import eu.clarin.cmdi.cpa.model.Role;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,8 +34,8 @@ class ProvidergroupRepositoryTests extends RepositoryTests{
 	   Providergroup providergroup = pRep.save(new Providergroup("wowasa's pg"));
 	   pRep.save(new Providergroup("other's pg"));
 	   
-	   Client client = clRep.save(new Client("wowasa", "devnull@wowasa.com", "xxxxxxxx"));
-	   Context context = new Context("origin1", providergroup, null, client);
+	   User user = clRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+	   Context context = new Context("origin1", providergroup, null, user);
 
 	   cRep.save(context);
 	   
