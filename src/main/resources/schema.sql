@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `appuser` (
    `id` INT NOT NULL AUTO_INCREMENT,
    `name` VARCHAR(256) NOT NULL,
    `email` VARCHAR(256) DEFAULT NULL,
-   `token` VARCHAR(36) NOT NULL,
+   `password` VARCHAR(128) NOT NULL,
    `quota` INT DEFAULT NULL, 
    `role` VARCHAR(64) NOT NULL,
    PRIMARY KEY (`id`),

@@ -30,7 +30,7 @@ public class User {
    
    private String email;
    @NonNull
-   private String token;
+   private String password;
    
    private Long quota; 
    @NonNull
