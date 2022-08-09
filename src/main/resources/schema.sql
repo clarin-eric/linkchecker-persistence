@@ -9,13 +9,13 @@ CREATE TABLE IF NOT EXISTS `providergroup` (
 
 CREATE TABLE IF NOT EXISTS `appuser` (
    `id` INT NOT NULL AUTO_INCREMENT,
-   `name` VARCHAR(256) NOT NULL,
-   `email` VARCHAR(256) DEFAULT NULL,
+   `username` VARCHAR(256) NOT NULL,
    `password` VARCHAR(128) NOT NULL,
+   `email` VARCHAR(256) DEFAULT NULL,
    `quota` INT DEFAULT NULL, 
    `role` VARCHAR(64) NOT NULL,
    PRIMARY KEY (`id`),
-   UNIQUE KEY (`name`)
+   UNIQUE KEY (`username`)
 );
 
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `context` (
 
 CREATE TABLE IF NOT EXISTS `url` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(1024) NOT NULL,
+  `name` VARCHAR(512) NOT NULL,
   `group_key` VARCHAR(128) DEFAULT NULL,
   `valid` boolean DEFAULT NULL, 
   PRIMARY KEY (`id`),
