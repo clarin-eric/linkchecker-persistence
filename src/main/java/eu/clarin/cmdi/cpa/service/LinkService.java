@@ -39,12 +39,12 @@ public class LinkService {
    @Autowired
    private HistoryRepository hRep;
    
-   public void save(User client, String urlString, String origin, String providerGroupName, String expectedMimeType) {
+   public void save(Client client, String urlString, String origin, String providerGroupName, String expectedMimeType) {
       save(client, urlString, origin, providerGroupName, expectedMimeType, LocalDateTime.now());
    }
    
    @Transactional
-   public void save(User user, String urlName, String origin, String providergroupName, String expectedMimeType, LocalDateTime ingestionDate) {
+   public void save(Client client, String urlName, String origin, String providergroupName, String expectedMimeType, LocalDateTime ingestionDate) {
       
       urlName = urlName.trim();
       
@@ -54,9 +54,9 @@ public class LinkService {
       
       Providergroup providergroup = (providergroupName == null)?null: getProvidergroup(providergroupName);
       
-      Context context = getContext(origin, providergroup, expectedMimeType, user);
+      Context context = getContext(origin, providergroup, client);
          
-      getUrlContext(url, context, ingestionDate);      
+      getUrlContext(url, context, expectedMimeType, ingestionDate);      
 
       
       if(!validation.isValid()) { //create a status entry if Url is not valid
@@ -80,18 +80,19 @@ public class LinkService {
       
    }
    
-   private synchronized Context getContext(String origin, Providergroup providergroup, String expectedMimeType, User user){
+   private synchronized Context getContext(String origin, Providergroup providergroup, Client client){
       
-      return cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndUser(origin, providergroup, expectedMimeType, user)
-               .orElseGet(() -> cRep.save(new Context(origin, providergroup, expectedMimeType, user)));
+      return cRep.findByOriginAndProvidergroupAndClient(origin, providergroup, client)
+               .orElseGet(() -> cRep.save(new Context(origin, providergroup, client)));
       
    }
    
-   private synchronized UrlContext getUrlContext(Url url, Context context, LocalDateTime ingestionDate) {
+   private synchronized UrlContext getUrlContext(Url url, Context context, String expectedMimeType, LocalDateTime ingestionDate) {
       
-      return ucRep.findByUrlAndContext(url, context)
+      return ucRep.findByUrlAndContextAndExpectedMimeType(url, context, expectedMimeType)
                .or(() -> Optional.of(new UrlContext(url, context, ingestionDate, true)))
                .map(urlContext -> {
+                  urlContext.setExpectedMimeType(expectedMimeType);
                   urlContext.setIngestionDate(ingestionDate);
                   urlContext.setActive(true);
                

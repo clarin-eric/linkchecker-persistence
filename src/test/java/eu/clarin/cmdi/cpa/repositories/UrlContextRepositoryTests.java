@@ -3,7 +3,7 @@ package eu.clarin.cmdi.cpa.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import eu.clarin.cmdi.cpa.model.User;
+import eu.clarin.cmdi.cpa.model.Client;
 import eu.clarin.cmdi.cpa.model.Context;
 import eu.clarin.cmdi.cpa.model.Role;
 import eu.clarin.cmdi.cpa.model.Url;
@@ -23,9 +23,9 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      User user = usRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
+      Client client = usRep.save(new Client("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
 
-      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, user));
+      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, client));
       
       UrlContext urlContext = new UrlContext(url, context, LocalDateTime.now(), true);
       urlContext.setActive(true);
@@ -42,9 +42,9 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      User user = usRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
+      Client client = usRep.save(new Client("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
 
-      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, user));
+      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, client));
       
       UrlContext urlContext = new UrlContext(url, context, LocalDateTime.now().minusDays(7), false);
       urlContext.setActive(true);
@@ -67,9 +67,9 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      User user = usRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
+      Client client = usRep.save(new Client("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
 
-      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, user));
+      Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, client));
       
       UrlContext urlContext = new UrlContext(url, context, LocalDateTime.now().minusDays(7), true);
       urlContext.setActive(true);
@@ -78,12 +78,12 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(8));
 
-      assertEquals(true, ucRep.findByUrlAndContext(url, context).get().getActive());
+      assertEquals(true, ucRep.findByUrlAndContextAndExpectedMimeType(url, context, null).get().getActive());
 
       ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(6));
 
       assertEquals(1, ucRep.count());
-      assertEquals(false, ucRep.findByUrlAndContext(url, context).get().getActive());
+      assertEquals(false, ucRep.findByUrlAndContextAndExpectedMimeType(url, context, null).get().getActive());
 
    }
 }

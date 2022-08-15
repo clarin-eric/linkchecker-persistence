@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import eu.clarin.cmdi.cpa.model.AggregatedStatus;
-import eu.clarin.cmdi.cpa.model.User;
+import eu.clarin.cmdi.cpa.model.Client;
 import eu.clarin.cmdi.cpa.model.Context;
 import eu.clarin.cmdi.cpa.model.Providergroup;
 import eu.clarin.cmdi.cpa.model.Role;
@@ -47,11 +47,11 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
       
       final Providergroup[] providergroups = {pRep.save(new Providergroup("wowasa's pg")), pRep.save(new Providergroup("other's pg"))};
       
-      final User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+      final Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
       
       final Context[] contexts = new Context[10];
       IntStream.range(0, 10).forEach(i -> {
-         contexts[i] = new Context("context" + i, providergroups[random.nextInt(2)], null, user);
+         contexts[i] = new Context("context" + i, providergroups[random.nextInt(2)], client);
          cRep.save(contexts[i]);
       });
       

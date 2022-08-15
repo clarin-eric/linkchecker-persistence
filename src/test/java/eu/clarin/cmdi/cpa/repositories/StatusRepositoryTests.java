@@ -11,7 +11,7 @@ import eu.clarin.cmdi.cpa.model.Role;
 import eu.clarin.cmdi.cpa.model.Status;
 import eu.clarin.cmdi.cpa.model.Url;
 import eu.clarin.cmdi.cpa.model.UrlContext;
-import eu.clarin.cmdi.cpa.model.User;
+import eu.clarin.cmdi.cpa.model.Client;
 import eu.clarin.cmdi.cpa.utils.Category;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -120,7 +120,7 @@ class StatusRepositoryTests extends RepositoryTests {
       
       Random rand = new Random();
       
-      User[] users = {usRep.save(new User("wowasa1", "pw", Role.USER)), usRep.save(new User("wowasa2", "pw", Role.USER))};
+      Client[] clients = {usRep.save(new Client("wowasa1", "pw", Role.USER)), usRep.save(new Client("wowasa2", "pw", Role.USER))};
       Context[] contexts = new Context[100];
       
       IntStream.range(0, 100).forEach(i -> {
@@ -128,7 +128,7 @@ class StatusRepositoryTests extends RepositoryTests {
          
          sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
          
-         contexts[i] = cRep.save(new Context("upload" + i, null, null, users[rand.nextInt(2)]));
+         contexts[i] = cRep.save(new Context("upload" + i, null, clients[rand.nextInt(2)]));
          
          ucRep.save(new UrlContext(url, contexts[i], LocalDateTime.now(), true));
       });
@@ -136,8 +136,8 @@ class StatusRepositoryTests extends RepositoryTests {
       Stream.of("wowasa1", "wowasa2").forEach(name -> {
          
          assertEquals(
-               Stream.of(contexts).filter(context -> context.getUser().getName().equals(name)).count(), 
-               sRep.findAllByUrlUrlContextsContextUserName(name).count()
+               Stream.of(contexts).filter(context -> context.getClient().getName().equals(name)).count(), 
+               sRep.findAllByUrlUrlContextsContextClientName(name).count()
             );         
       });            
    }
@@ -149,7 +149,7 @@ class StatusRepositoryTests extends RepositoryTests {
       
       Random rand = new Random();
       
-      User[] users = {usRep.save(new User("wowasa1", "pw", Role.USER)), usRep.save(new User("wowasa2", "pw", Role.USER))};
+      Client[] clients = {usRep.save(new Client("wowasa1", "pw", Role.USER)), usRep.save(new Client("wowasa2", "pw", Role.USER))};
       Context[] contexts = new Context[100];
       
       IntStream.range(0, 100).forEach(i -> {
@@ -157,13 +157,13 @@ class StatusRepositoryTests extends RepositoryTests {
          
          sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
          
-         contexts[i] = cRep.save(new Context("upload" + i, null, null, users[rand.nextInt(2)]));
+         contexts[i] = cRep.save(new Context("upload" + i, null, clients[rand.nextInt(2)]));
          
          ucRep.save(new UrlContext(url, contexts[i], LocalDateTime.now(), true));
       }); 
       
       Stream.of(contexts).forEach(context -> {
-         assertEquals(1, sRep.findAllByUrlUrlContextsContextUserNameAndUrlUrlContextsContextOrigin(context.getUser().getName(), context.getOrigin()).count());
+         assertEquals(1, sRep.findAllByUrlUrlContextsContextClientNameAndUrlUrlContextsContextOrigin(context.getClient().getName(), context.getOrigin()).count());
       });
    }
 }

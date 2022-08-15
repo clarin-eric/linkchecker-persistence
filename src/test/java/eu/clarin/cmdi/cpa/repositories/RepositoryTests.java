@@ -3,7 +3,7 @@ package eu.clarin.cmdi.cpa.repositories;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import eu.clarin.cmdi.cpa.repository.UserRepository;
+import eu.clarin.cmdi.cpa.repository.ClientRepository;
 import eu.clarin.cmdi.cpa.repository.ContextRepository;
 import eu.clarin.cmdi.cpa.repository.HistoryRepository;
 import eu.clarin.cmdi.cpa.repository.ProvidergroupRepository;
@@ -26,7 +26,7 @@ public class RepositoryTests {
    @Autowired
    protected ProvidergroupRepository pRep;
    @Autowired
-   protected UserRepository usRep;
+   protected ClientRepository usRep;
    
    @AfterEach
    void cleanUp() {

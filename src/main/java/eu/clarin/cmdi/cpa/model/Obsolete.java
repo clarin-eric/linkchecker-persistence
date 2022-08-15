@@ -28,7 +28,7 @@ public class Obsolete {
    @NonNull
    private String urlName;
    
-   private String userName;
+   private String clientName;
    
    private String origin;
    

@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 @Entity
-@Table(name="context", indexes = {@Index(columnList = "origin, providergroup_id, expectedMimeType, user_id", unique = true)})
+@Table(name="context", indexes = {@Index(columnList = "origin, providergroup_id, client_id", unique = true)})
 public class Context {
    
    @Id
@@ -35,11 +35,9 @@ public class Context {
    @JoinColumn(name = "providergroup_id")
    private final Providergroup providergroup;
    
-   private final String expectedMimeType;
-   
    @OneToOne
-   @JoinColumn(name = "user_id")
-   private final User user;
+   @JoinColumn(name = "client_id")
+   private final Client client;
    
    @OneToMany(mappedBy = "context")
    private List<UrlContext> urlContexts = new ArrayList<UrlContext>();

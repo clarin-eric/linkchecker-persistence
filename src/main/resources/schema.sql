@@ -7,13 +7,14 @@ CREATE TABLE IF NOT EXISTS `providergroup` (
   UNIQUE KEY (`name`)
 );
 
-CREATE TABLE IF NOT EXISTS `appuser` (
+CREATE TABLE IF NOT EXISTS `client` (
    `id` INT NOT NULL AUTO_INCREMENT,
    `name` VARCHAR(256) NOT NULL,
    `password` VARCHAR(128) NOT NULL,
    `email` VARCHAR(256) DEFAULT NULL,
    `quota` INT DEFAULT NULL, 
    `role` VARCHAR(64) NOT NULL,
+   `enabled` BOOLEAN DEFAULT NULL,
    PRIMARY KEY (`id`),
    UNIQUE KEY (`name`)
 );
@@ -21,16 +22,15 @@ CREATE TABLE IF NOT EXISTS `appuser` (
 
 CREATE TABLE IF NOT EXISTS `context` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` INT NOT NULL,
+  `client_id` INT NOT NULL,
   `origin` VARCHAR(256) NOT NULL,
   `providergroup_id` INT DEFAULT NULL,
-  `expected_mime_type` VARCHAR(64) DEFAULT NULL,
   PRIMARY KEY (`id`),  
-  UNIQUE KEY (`origin`, `providergroup_id`, `expected_mime_type`, `user_id`),
+  UNIQUE KEY (`origin`, `providergroup_id`, `client_id`),
   INDEX (`providergroup_id`),
   FOREIGN KEY (`providergroup_id`) REFERENCES `providergroup` (`id`),
-  INDEX (`user_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `appuser` (`id`)
+  INDEX (`client_id`),
+  FOREIGN KEY (`client_id`) REFERENCES `client` (`id`)
 );
 
 
@@ -50,12 +50,13 @@ CREATE TABLE IF NOT EXISTS `url_context` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `url_id` INT NOT NULL,
   `context_id` INT NOT NULL,
+  `expected_mime_type` VARCHAR(64) DEFAULT NULL,
   `ingestion_date` DATETIME NOT NULL,
   `active` BOOLEAN NOT NULL,
   PRIMARY KEY (`id`),
   INDEX (`url_id`, `active`, `context_id`),
   INDEX (`context_id`, `active`, `url_id`),
-  UNIQUE KEY (`url_id`, `context_id`),
+  UNIQUE KEY (`url_id`, `context_id`, `expected_mime_type`),
   FOREIGN KEY (`url_id`) REFERENCES `url` (`id`),
   FOREIGN KEY (`context_id`) REFERENCES `context` (`id`)
 );
@@ -104,19 +105,19 @@ CREATE TABLE IF NOT EXISTS `history` (
 CREATE TABLE IF NOT EXISTS `obsolete` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `url_name` VARCHAR(512) NOT NULL,
-  `user_name` int DEFAULT NULL,
+  `client_name` int DEFAULT NULL,
   `providergroup_name` VARCHAR(256) DEFAULT NULL,
   `origin` VARCHAR(256) DEFAULT NULL,
   `expected_mime_type` VARCHAR(256) DEFAULT NULL,
   `ingestion_date` DATETIME DEFAULT NULL,
   `status_code` INT DEFAULT NULL,
   `message` VARCHAR(1024) DEFAULT NULL,
-  `category` VARCHAR(25) NOT NULL,
+  `category` VARCHAR(25) DEFAULT NULL,
   `method` VARCHAR(10) DEFAULT NULL,
   `content_type` VARCHAR(256) DEFAULT NULL,
   `content_length` bigint DEFAULT NULL,
   `duration` INT DEFAULT NULL,
-  `checking_date` DATETIME NOT NULL,
+  `checking_date` DATETIME DEFAULT NULL,
   `redirect_count` INT DEFAULT NULL,
   `deletion_date` DATETIME NOT NULL,
    PRIMARY KEY (`id`)

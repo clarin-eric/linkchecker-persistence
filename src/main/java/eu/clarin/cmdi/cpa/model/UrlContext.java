@@ -36,6 +36,8 @@ public class UrlContext {
    @JoinColumn(name = "context_id")
    @NonNull
    private final Context context;
+   
+   private String expectedMimeType;
    @NonNull
    private LocalDateTime ingestionDate;
    @NonNull

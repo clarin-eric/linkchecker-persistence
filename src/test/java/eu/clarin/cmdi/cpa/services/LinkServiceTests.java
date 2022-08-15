@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import eu.clarin.cmdi.cpa.model.Role;
-import eu.clarin.cmdi.cpa.model.User;
+import eu.clarin.cmdi.cpa.model.Client;
 import eu.clarin.cmdi.cpa.repositories.RepositoryTests;
 import eu.clarin.cmdi.cpa.service.LinkService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +29,11 @@ class LinkServiceTests extends RepositoryTests{
 	@Test
 	void save() {
       
-      User user = usRep.save(new User("wowasa", UUID.randomUUID().toString(), Role.ADMIN));
+      Client client = usRep.save(new Client("wowasa", UUID.randomUUID().toString(), Role.ADMIN));
       
       IntStream.range(0, 3).forEach(i -> {
          
-         lService.save(user, "http://www.wowasa.com?page=0", "origin0", null, null);
+         lService.save(client, "http://www.wowasa.com?page=0", "origin0", null, null);
          
       });
       
@@ -42,32 +42,32 @@ class LinkServiceTests extends RepositoryTests{
       assertEquals(1, cRep.count());
       assertEquals(0, pRep.count());
       
-      lService.save(user, "http://www.wowasa.com?page=0", "origin1", null, null);
+      lService.save(client, "http://www.wowasa.com?page=0", "origin1", null, null);
       
       assertEquals(1, uRep.count());
       assertEquals(2, ucRep.count());
       assertEquals(2, cRep.count());
       assertEquals(0, pRep.count());
       
-      lService.save(user, "http://www.wowasa.com?page=0", "origin1", "pg0", null);
+      lService.save(client, "http://www.wowasa.com?page=0", "origin1", "pg0", null);
       
       assertEquals(1, uRep.count());
       assertEquals(3, ucRep.count());
       assertEquals(3, cRep.count());
       assertEquals(1, pRep.count());
       
-      lService.save(user, "http://www.wowasa.com?page=0", "origin1", "pg0", "application/xml");
+      lService.save(client, "http://www.wowasa.com?page=0", "origin1", "pg0", "application/xml");
       
       assertEquals(1, uRep.count());
       assertEquals(4, ucRep.count());
-      assertEquals(4, cRep.count());
+      assertEquals(3, cRep.count());
       assertEquals(1, pRep.count());
       
-      lService.save(user, "http://www.wowasa.com?page=1", "origin1", "pg0", "application/xml");
+      lService.save(client, "http://www.wowasa.com?page=1", "origin1", "pg0", "application/xml");
       
       assertEquals(2, uRep.count());
       assertEquals(5, ucRep.count());
-      assertEquals(4, cRep.count());
+      assertEquals(3, cRep.count());
       assertEquals(1, pRep.count());
       
 	}
@@ -77,7 +77,7 @@ class LinkServiceTests extends RepositoryTests{
 	   
 
 	   
-	   User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+	   Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
 	   
 	   ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(30);
 	   
@@ -87,7 +87,7 @@ class LinkServiceTests extends RepositoryTests{
 	           
 	           IntStream.range(0, 30).forEach(loopNr -> {
 	              lService.save(
-	                    user, 
+	                    client, 
 	                    "http://www.wowasa.com?thread=" + threadNr + "&loop=" +loopNr,
 	                    "origin" + (loopNr%3), 
 	                    "pg" + (loopNr%5),
@@ -115,10 +115,10 @@ class LinkServiceTests extends RepositoryTests{
    @Test
    void deactivateLinksOlderThan() {
       
-      User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+      Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
       
       IntStream.range(0, 15).forEach(i -> {
-         lService.save(user, "http://www.wowasa.com?page=" +i, "origin1", "pg0", "application/xml", LocalDateTime.now().minusDays(i));
+         lService.save(client, "http://www.wowasa.com?page=" +i, "origin1", "pg0", "application/xml", LocalDateTime.now().minusDays(i));
       });
       
       assertEquals(15, uRep.countByUrlContextsActive(true));
@@ -133,10 +133,10 @@ class LinkServiceTests extends RepositoryTests{
    @Test
    void deleteLinksOlderThan() {
       
-      User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+      Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
       
       IntStream.range(0, 100).forEach(i -> {
-         lService.save(user, "http://www.wowasa.com?page=" +i, "origin1", "pg0", "application/xml", LocalDateTime.now().minusDays(i));
+         lService.save(client, "http://www.wowasa.com?page=" +i, "origin1", "pg0", "application/xml", LocalDateTime.now().minusDays(i));
       });
       
       assertEquals(100, uRep.countByUrlContextsActive(true));  

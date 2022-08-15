@@ -3,7 +3,7 @@ package eu.clarin.cmdi.cpa.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import eu.clarin.cmdi.cpa.model.User;
+import eu.clarin.cmdi.cpa.model.Client;
 import eu.clarin.cmdi.cpa.model.Context;
 import eu.clarin.cmdi.cpa.model.Providergroup;
 import eu.clarin.cmdi.cpa.model.Role;
@@ -11,7 +11,6 @@ import eu.clarin.cmdi.cpa.model.Url;
 import eu.clarin.cmdi.cpa.model.UrlContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.time.LocalDateTime;
@@ -27,11 +26,11 @@ class ContextRepositoryTests extends RepositoryTests {
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      User user = usRep.save(new User("wowasa", "########", Role.ADMIN));
+      Client client = usRep.save(new Client("wowasa", "########", Role.ADMIN));
 
-      Context contextWith = cRep.save(new Context("origin1", null, null, user));
+      Context contextWith = cRep.save(new Context("origin1", null, client));
 
-      cRep.save(new Context("origin2", null, null, user));
+      cRep.save(new Context("origin2", null, client));
       
       UrlContext urlContext = new UrlContext(url, contextWith, LocalDateTime.now(), true);
       urlContext.setActive(true);     
@@ -47,27 +46,23 @@ class ContextRepositoryTests extends RepositoryTests {
    }
 
    @Test
-   void findByOriginAndProvidergroupAndExpectedMimeTypeAndClient() {
+   void findByOriginAndProvidergroupAndClient() {
 
-      User client = usRep.save(new User("wowasa", "########", Role.ADMIN));
+      Client client = usRep.save(new Client("wowasa", "########", Role.ADMIN));
 
-      cRep.save(new Context("origin1", null, null, client));
+      cRep.save(new Context("origin1", null, client));
 
       Providergroup providergroup = pRep.save(new Providergroup("wowasa's pg"));
 
-      Context context = new Context("origin1", providergroup, "application/pdf", client);
+      Context context = new Context("origin1", providergroup, client);
 
       cRep.save(context);
 
       assertEquals(2, cRep.count());
 
-      assertTrue(
-            cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndUser("origin1", null, "some mime type", client).isEmpty());
+      assertFalse(cRep.findByOriginAndProvidergroupAndClient("origin1", null, client).isEmpty());
 
-      assertFalse(cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndUser("origin1", null, null, client).isEmpty());
-
-      assertFalse(cRep.findByOriginAndProvidergroupAndExpectedMimeTypeAndUser("origin1", providergroup,
-            "application/pdf", client).isEmpty());
+      assertFalse(cRep.findByOriginAndProvidergroupAndClient("origin1", providergroup, client).isEmpty());
 
    }
 

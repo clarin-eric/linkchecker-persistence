@@ -13,7 +13,7 @@ import eu.clarin.cmdi.cpa.model.UrlContext;
 
 public interface UrlContextRepository extends CrudRepository<UrlContext, Long> {
    
-   public Optional<UrlContext> findByUrlAndContext(Url url, Context context);
+   public Optional<UrlContext> findByUrlAndContextAndExpectedMimeType(Url url, Context context, String expectedMimeType);
    
    @Modifying(clearAutomatically = true, flushAutomatically = true)
    @Query("UPDATE UrlContext uc SET uc.active = false WHERE uc.active = true AND uc.ingestionDate < ?1")
