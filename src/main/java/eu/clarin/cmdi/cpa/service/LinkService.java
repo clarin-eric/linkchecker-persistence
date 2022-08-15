@@ -90,14 +90,15 @@ public class LinkService {
    private synchronized UrlContext getUrlContext(Url url, Context context, LocalDateTime ingestionDate) {
       
       return ucRep.findByUrlAndContext(url, context)
-               .or(()-> Optional.of(new UrlContext(url, context)))
+               .or(() -> Optional.of(new UrlContext(url, context, ingestionDate, true)))
                .map(urlContext -> {
                   urlContext.setIngestionDate(ingestionDate);
                   urlContext.setActive(true);
-                  
+               
                   return ucRep.save(urlContext);
                })
                .get();
+
    }
    
    @Transactional

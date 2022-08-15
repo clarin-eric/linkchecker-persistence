@@ -47,7 +47,7 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
       
       final Providergroup[] providergroups = {pRep.save(new Providergroup("wowasa's pg")), pRep.save(new Providergroup("other's pg"))};
       
-      final User user = clRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+      final User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
       
       final Context[] contexts = new Context[10];
       IntStream.range(0, 10).forEach(i -> {
@@ -65,8 +65,7 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
          
          Context context = contexts[random.nextInt(10)];
          
-         UrlContext urlContext = new UrlContext(urls.lastElement(), context);
-         urlContext.setIngestionDate(LocalDateTime.now());
+         UrlContext urlContext = new UrlContext(urls.lastElement(), context, LocalDateTime.now(), true);
          urlContext.setActive(true);
          
          ucRep.save(urlContext);

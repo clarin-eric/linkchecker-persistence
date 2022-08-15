@@ -10,7 +10,7 @@ public interface HistoryRepository extends PagingAndSortingRepository<History, L
    
    @Query(
          value = "INSERT INTO obsolete (url_name, user_name, providergroup_name, origin, expected_mime_type, ingestion_date, status_code, message, category, method, content_type, content_length, duration, checking_date, redirect_count) "
-               + "SELECT u.name, us.username, p.name, c.origin, c.expected_mime_type, uc.ingestion_date, h.status_code, h.message, h.category, h.method, h.content_type, h.content_length, h.duration, h.checking_date, h.redirect_count "
+               + "SELECT u.name, us.name, p.name, c.origin, c.expected_mime_type, uc.ingestion_date, h.status_code, h.message, h.category, h.method, h.content_type, h.content_length, h.duration, h.checking_date, h.redirect_count "
                + "FROM url_context uc "
                + "INNER JOIN (url u) "
                + "ON u.id=uc.url_id "

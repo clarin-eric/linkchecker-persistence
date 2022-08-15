@@ -26,7 +26,7 @@ public class RepositoryTests {
    @Autowired
    protected ProvidergroupRepository pRep;
    @Autowired
-   protected UserRepository clRep;
+   protected UserRepository usRep;
    
    @AfterEach
    void cleanUp() {
@@ -34,7 +34,7 @@ public class RepositoryTests {
       ucRep.deleteAll();
       cRep.deleteAll();
       pRep.deleteAll();
-      clRep.deleteAll();
+      usRep.deleteAll();
       uRep.deleteAll();
       hRep.deleteAll();
       sRep.deleteAll();

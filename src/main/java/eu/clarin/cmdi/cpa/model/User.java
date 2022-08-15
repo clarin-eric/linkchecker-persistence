@@ -19,16 +19,16 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 @Entity
-@Table(name = "appuser", indexes = {@Index(columnList = "username", unique = true)})
+@Table(name = "appuser", indexes = {@Index(columnList = "name", unique = true)})
 public class User {
    
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    
-   private final String username;
-
-   private final String password;   
+   private final String name;
+   @NonNull
+   private String password;   
    
    private String email;
    

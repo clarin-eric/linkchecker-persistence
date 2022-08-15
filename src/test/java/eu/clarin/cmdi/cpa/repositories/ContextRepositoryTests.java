@@ -27,16 +27,14 @@ class ContextRepositoryTests extends RepositoryTests {
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      User user = clRep.save(new User("wowasa", "########", Role.ADMIN));
+      User user = usRep.save(new User("wowasa", "########", Role.ADMIN));
 
       Context contextWith = cRep.save(new Context("origin1", null, null, user));
 
       cRep.save(new Context("origin2", null, null, user));
       
-      UrlContext urlContext = new UrlContext(url, contextWith);
-      urlContext.setIngestionDate(LocalDateTime.now());
-      urlContext.setActive(true);
-      
+      UrlContext urlContext = new UrlContext(url, contextWith, LocalDateTime.now(), true);
+      urlContext.setActive(true);     
 
       ucRep.save(urlContext);
 
@@ -51,7 +49,7 @@ class ContextRepositoryTests extends RepositoryTests {
    @Test
    void findByOriginAndProvidergroupAndExpectedMimeTypeAndClient() {
 
-      User client = clRep.save(new User("wowasa", "########", Role.ADMIN));
+      User client = usRep.save(new User("wowasa", "########", Role.ADMIN));
 
       cRep.save(new Context("origin1", null, null, client));
 

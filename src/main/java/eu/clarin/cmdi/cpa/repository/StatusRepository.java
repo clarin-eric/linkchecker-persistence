@@ -25,12 +25,16 @@ public interface StatusRepository extends PagingAndSortingRepository<Status, Lon
    
    public Page<Status> findAllByCategory(Category category, Pageable pageable);
    
+   public Stream<Status> findAllByUrlUrlContextsContextUserName(String name);
+   
+   public Stream<Status> findAllByUrlUrlContextsContextUserNameAndUrlUrlContextsContextOrigin(String name, String origin);
+   
    @Query("SELECT s FROM Status s JOIN s.url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON p.name=?1 AND s.category=?2")
    public Page<Status> findAllByProvidergroupAndCategory(String providerGroupName, Category category, Pageable pageable);
    
    @Query(
          value = "INSERT INTO obsolete (url_name, user_name, providergroup_name, origin, expected_mime_type, ingestion_date, status_code, message, category, method, content_type, content_length, duration, checking_date, redirect_count, deletion_date) "
-               + "SELECT u.name, us.username, p.name, c.origin, c.expected_mime_type, uc.ingestion_date, s.status_code, s.message, s.category, s.method, s.content_type, s.content_length, s.duration, s.checking_date, s.redirect_count, NOW() "
+               + "SELECT u.name, us.name, p.name, c.origin, c.expected_mime_type, uc.ingestion_date, s.status_code, s.message, s.category, s.method, s.content_type, s.content_length, s.duration, s.checking_date, s.redirect_count, NOW() "
                + "FROM url_context uc "
                + "INNER JOIN (url u) "
                + "ON u.id=uc.url_id "

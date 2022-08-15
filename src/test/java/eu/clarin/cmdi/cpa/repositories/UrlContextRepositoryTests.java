@@ -23,12 +23,11 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      User user = clRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
+      User user = usRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
 
       Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, user));
       
-      UrlContext urlContext = new UrlContext(url, context);
-      urlContext.setIngestionDate(LocalDateTime.now());
+      UrlContext urlContext = new UrlContext(url, context, LocalDateTime.now(), true);
       urlContext.setActive(true);
 
       ucRep.save(urlContext);
@@ -43,12 +42,11 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      User user = clRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
+      User user = usRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
 
       Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, user));
       
-      UrlContext urlContext = new UrlContext(url, context);
-      urlContext.setIngestionDate(LocalDateTime.now().minusDays(7));
+      UrlContext urlContext = new UrlContext(url, context, LocalDateTime.now().minusDays(7), false);
       urlContext.setActive(true);
 
       ucRep.save(urlContext);
@@ -69,14 +67,12 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      User user = clRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
+      User user = usRep.save(new User("wowasa", "xxxxxxxxxxxxxxxx", Role.ADMIN));
 
       Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, null, user));
       
-      UrlContext urlContext = new UrlContext(url, context);
-      urlContext.setIngestionDate(LocalDateTime.now().minusDays(7));
+      UrlContext urlContext = new UrlContext(url, context, LocalDateTime.now().minusDays(7), true);
       urlContext.setActive(true);
-
 
       ucRep.save(urlContext);
 

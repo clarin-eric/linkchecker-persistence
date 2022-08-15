@@ -34,7 +34,7 @@ class ProvidergroupRepositoryTests extends RepositoryTests{
 	   Providergroup providergroup = pRep.save(new Providergroup("wowasa's pg"));
 	   pRep.save(new Providergroup("other's pg"));
 	   
-	   User user = clRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+	   User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
 	   Context context = new Context("origin1", providergroup, null, user);
 
 	   cRep.save(context);

@@ -46,7 +46,7 @@ public class History {
    private Integer redirectCount;
    
    @OneToOne(cascade = CascadeType.REMOVE)
-   @JoinColumn(name = "url_id", referencedColumnName = "id")
+   @JoinColumn(name = "url_id")
    private final Url url;
    
    @NonNull

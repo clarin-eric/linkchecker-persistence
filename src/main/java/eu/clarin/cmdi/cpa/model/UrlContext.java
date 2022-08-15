@@ -28,17 +28,17 @@ public class UrlContext {
    private Long id;
    
    @ManyToOne
-   @JoinColumn(name = "url_id", referencedColumnName = "id")
+   @JoinColumn(name = "url_id")
    @NonNull
    private final Url url;
    
    @ManyToOne
-   @JoinColumn(name = "context_id", referencedColumnName = "id")
+   @JoinColumn(name = "context_id")
    @NonNull
    private final Context context;
-
+   @NonNull
    private LocalDateTime ingestionDate;
-
+   @NonNull
    private Boolean active;
 
 }

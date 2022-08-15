@@ -32,17 +32,16 @@ public class Context {
    private final String origin;
    
    @OneToOne(optional = true)
-   @JoinColumn(name = "providergroup_id", referencedColumnName = "id")
+   @JoinColumn(name = "providergroup_id")
    private final Providergroup providergroup;
    
    private final String expectedMimeType;
    
    @OneToOne
-   @JoinColumn(name = "user_id", referencedColumnName = "id")
+   @JoinColumn(name = "user_id")
    private final User user;
    
-   @OneToMany
-   @JoinColumn(name = "context_id", referencedColumnName = "id")
+   @OneToMany(mappedBy = "context")
    private List<UrlContext> urlContexts = new ArrayList<UrlContext>();
    
 

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
@@ -36,6 +37,9 @@ public class Url {
    
    private final Boolean valid;
    
+   @OneToOne(mappedBy = "url")
+   private Status status;
+
    @OneToMany
    @JoinColumn(name = "url_id", referencedColumnName = "id")
    private List<UrlContext> urlContexts = new ArrayList<UrlContext>();

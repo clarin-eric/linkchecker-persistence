@@ -14,23 +14,25 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@RequiredArgsConstructor
 @Entity
 public class Obsolete {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
-   
+   @NonNull
    private String urlName;
    
    private String userName;
    
    private String origin;
    
-   private String prividergroupName;
+   private String providergroupName;
    
    private String expectedMimeType;
    
@@ -42,10 +44,10 @@ public class Obsolete {
    private Integer redirectCount;
    @NonNull
    @Enumerated(EnumType.STRING)
-   private final Category category;   
+   private Category category;   
    @NonNull
-   private final String message;   
+   private String message;   
    @NonNull
-   private final LocalDateTime checkingDate;
+   private LocalDateTime checkingDate;
 
 }

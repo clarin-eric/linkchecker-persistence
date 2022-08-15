@@ -6,8 +6,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import eu.clarin.cmdi.cpa.model.Context;
+import eu.clarin.cmdi.cpa.model.Role;
 import eu.clarin.cmdi.cpa.model.Status;
 import eu.clarin.cmdi.cpa.model.Url;
+import eu.clarin.cmdi.cpa.model.UrlContext;
+import eu.clarin.cmdi.cpa.model.User;
 import eu.clarin.cmdi.cpa.utils.Category;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDateTime;
+import java.util.Random;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
@@ -106,5 +112,58 @@ class StatusRepositoryTests extends RepositoryTests {
          stream.forEach(status -> assertNotNull(status.getUrl()));
       
       } 
+   }
+   
+   @Transactional
+   @Test
+   public void findAllByUrlUrlContextsContextUserName() {
+      
+      Random rand = new Random();
+      
+      User[] users = {usRep.save(new User("wowasa1", "pw", Role.USER)), usRep.save(new User("wowasa2", "pw", Role.USER))};
+      Context[] contexts = new Context[100];
+      
+      IntStream.range(0, 100).forEach(i -> {
+         Url url = uRep.save(new Url("http://www.wowasa.com/page" +i, "www.wowasa.com", true));
+         
+         sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
+         
+         contexts[i] = cRep.save(new Context("upload" + i, null, null, users[rand.nextInt(2)]));
+         
+         ucRep.save(new UrlContext(url, contexts[i], LocalDateTime.now(), true));
+      });
+      
+      Stream.of("wowasa1", "wowasa2").forEach(name -> {
+         
+         assertEquals(
+               Stream.of(contexts).filter(context -> context.getUser().getName().equals(name)).count(), 
+               sRep.findAllByUrlUrlContextsContextUserName(name).count()
+            );         
+      });            
+   }
+   
+
+   @Transactional
+   @Test
+   public void findAllByUrlUrlContextsContextUserNameAndUrlUrlContextsContextOrigin() {
+      
+      Random rand = new Random();
+      
+      User[] users = {usRep.save(new User("wowasa1", "pw", Role.USER)), usRep.save(new User("wowasa2", "pw", Role.USER))};
+      Context[] contexts = new Context[100];
+      
+      IntStream.range(0, 100).forEach(i -> {
+         Url url = uRep.save(new Url("http://www.wowasa.com/page" +i, "www.wowasa.com", true));
+         
+         sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
+         
+         contexts[i] = cRep.save(new Context("upload" + i, null, null, users[rand.nextInt(2)]));
+         
+         ucRep.save(new UrlContext(url, contexts[i], LocalDateTime.now(), true));
+      }); 
+      
+      Stream.of(contexts).forEach(context -> {
+         assertEquals(1, sRep.findAllByUrlUrlContextsContextUserNameAndUrlUrlContextsContextOrigin(context.getUser().getName(), context.getOrigin()).count());
+      });
    }
 }

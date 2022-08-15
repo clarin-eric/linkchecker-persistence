@@ -9,6 +9,6 @@ import eu.clarin.cmdi.cpa.model.User;
 public interface UserRepository extends CrudRepository<User, Long> {
    
    
-   public Optional<User> findByUsername(String username);
+   public Optional<User> findByName(String username);
 
 }

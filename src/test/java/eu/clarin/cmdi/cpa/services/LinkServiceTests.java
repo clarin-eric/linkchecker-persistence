@@ -29,7 +29,7 @@ class LinkServiceTests extends RepositoryTests{
 	@Test
 	void save() {
       
-      User user = clRep.save(new User("wowasa", UUID.randomUUID().toString(), Role.ADMIN));
+      User user = usRep.save(new User("wowasa", UUID.randomUUID().toString(), Role.ADMIN));
       
       IntStream.range(0, 3).forEach(i -> {
          
@@ -77,7 +77,7 @@ class LinkServiceTests extends RepositoryTests{
 	   
 
 	   
-	   User user = clRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+	   User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
 	   
 	   ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(30);
 	   
@@ -115,7 +115,7 @@ class LinkServiceTests extends RepositoryTests{
    @Test
    void deactivateLinksOlderThan() {
       
-      User user = clRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+      User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
       
       IntStream.range(0, 15).forEach(i -> {
          lService.save(user, "http://www.wowasa.com?page=" +i, "origin1", "pg0", "application/xml", LocalDateTime.now().minusDays(i));
@@ -133,7 +133,7 @@ class LinkServiceTests extends RepositoryTests{
    @Test
    void deleteLinksOlderThan() {
       
-      User user = clRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+      User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
       
       IntStream.range(0, 100).forEach(i -> {
          lService.save(user, "http://www.wowasa.com?page=" +i, "origin1", "pg0", "application/xml", LocalDateTime.now().minusDays(i));

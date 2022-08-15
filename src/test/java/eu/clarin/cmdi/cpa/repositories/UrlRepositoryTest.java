@@ -54,7 +54,7 @@ class UrlRepositoryTest extends RepositoryTests{
 	   final String[] groupKeys = {"key1", "key2", "key3"};
 	   final Url[] urls = new Url[100];
 	   
-	   final User user = clRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+	   final User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
 	   
 	   final Context context = cRep.save(new Context("origin", null, null, user));
 	   
@@ -64,10 +64,8 @@ class UrlRepositoryTest extends RepositoryTests{
 	      
 	      uRep.save(urls[i]);
 	      
-	      UrlContext urlContext = new UrlContext(urls[i], context);
-	      urlContext.setIngestionDate(LocalDateTime.now().minusDays(100 +i));
+	      UrlContext urlContext = new UrlContext(urls[i], context, LocalDateTime.now().minusDays(100 +i), true);
 	      urlContext.setActive(true);
-
 	      
 	      ucRep.save(urlContext);
 	      
@@ -87,21 +85,19 @@ class UrlRepositoryTest extends RepositoryTests{
 	@Test
 	void countByUrlContextActive() {
 	   
-	   User user = clRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
+	   User user = usRep.save(new User("wowasa", "xxxxxxxx", Role.ADMIN));
 	   Context context = cRep.save(new Context("origin", null, null, user));
 	   
 	   IntStream.range(0, 6).forEach(i -> {	
 	      
-	      UrlContext urlContext = new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i, "www.wowasa.com", true)), context);
-	      urlContext.setIngestionDate(LocalDateTime.now());
+	      UrlContext urlContext = new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i, "www.wowasa.com", true)), context, LocalDateTime.now(), true);
 	      urlContext.setActive(true);
 	      
 	      ucRep.save(urlContext);
 	   });
       IntStream.range(6, 10).forEach(i -> {  
          
-         UrlContext urlContext = new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i, "www.wowasa.com", true)), context);
-         urlContext.setIngestionDate(LocalDateTime.now());
+         UrlContext urlContext = new UrlContext(uRep.save(new Url("http://www.wowasa.com?page=" +i, "www.wowasa.com", true)), context, LocalDateTime.now(), true);
          urlContext.setActive(false);
          
          ucRep.save(urlContext);
