@@ -38,9 +38,10 @@ public class UrlValidator {
    public static class ValidationResult{
       
       private final boolean isValid;
-      private final String message;
+
       private final String host;
       
+      private final String message;    
       
    }
    
