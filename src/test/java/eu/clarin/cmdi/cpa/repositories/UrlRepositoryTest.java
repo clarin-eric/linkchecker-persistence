@@ -71,12 +71,12 @@ class UrlRepositoryTest extends RepositoryTests{
 	      
 	   });
 	   
-	   try(Stream<Url> stream = uRep.getNextUrlsToCheck(100)){
+	   try(Stream<Url> stream = uRep.getNextUrlsToCheck(100, LocalDateTime.now())){
 	      assertEquals(100, stream.count());
 	   }
 	   
 	   IntStream.range(0, 1).forEach(i -> {
-	       try(Stream<Url> stream = uRep.getNextUrlsToCheck(100)){
+	       try(Stream<Url> stream = uRep.getNextUrlsToCheck(100, LocalDateTime.now())){
 	            assertEquals(Arrays.stream(urls).filter(url -> url.getGroupKey().equals(groupKeys[i])).count(), stream.filter(url -> url.getGroupKey().equals(groupKeys[i])).count());
 	         }
 	   });
