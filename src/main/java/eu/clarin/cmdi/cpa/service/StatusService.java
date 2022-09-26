@@ -1,6 +1,7 @@
 package eu.clarin.cmdi.cpa.service;
 
-import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -39,5 +40,14 @@ public class StatusService {
       }); 
       
       sRep.save(status); //insert or update
+   }
+   
+   @Transactional
+   public Map<String, Status> getStatus(String... urlString){
+      
+      return sRep
+            .findAllByUrlNameIn(urlString)
+            .collect(Collectors.toMap(status -> status.getUrl().getName(), status -> status));
+   
    }
 }
