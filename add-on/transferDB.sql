@@ -1,11 +1,19 @@
+# author: Wolfgang Walter SAUER (clarin@wowasa.com)
+# creation-date: 2022-09-26
+# 
+# the purpose of this script is to transfer the old database design used by the RASA API to the new cruration-persistence API design 
 
+RENAME TABLE `url` TO `url_old`;
+RENAME TABLE `status` TO `status_old`;
+RENAME TABLE `history` TO `history_old`;
+RENAME TABLE `obsolete` TO `obsolete_old`;
+RENAME TABLE `providerGroup` TO `providergroup`;
+RENAME TABLE `context` TO `context_old`;
+RENAME TABLE `url_context` TO `url_context_old`;
 
-CREATE TABLE IF NOT EXISTS `providergroup` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(256) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY (`name`)
-);
+ALTER DATABASE `linkcheckerModify`
+DEFAULT CHARACTER SET utf8mb4
+DEFAULT COLLATE utf8mb4_bin;
 
 CREATE TABLE IF NOT EXISTS `client` (
    `id` INT NOT NULL AUTO_INCREMENT,
@@ -135,3 +143,77 @@ CREATE VIEW IF NOT EXISTS `aggregated_status` AS
  ON (p.id=c.providergroup_id)
  WHERE uc.active=true
  GROUP BY p.name, s.category;
+
+
+INSERT INTO `client`(`name`, `password`, `role`, `enabled`) VALUES('curation', 'change_password', 'USER', true); 
+
+INSERT INTO `obsolete`(
+								`url_name`, 
+								`client_name`, 
+								`providergroup_name`, 
+								`origin`, 
+								`expected_mime_type`, 
+								`ingestion_date`, 
+								`status_code`, 
+								`message`, 
+								`category`, 
+								`method`, 
+								`content_type`,
+								`content_length`,
+								`duration`,
+								`checking_date`,
+								`redirect_count`,
+								`deletion_date`
+								)
+SELECT `url`, 
+	'curation', 
+	`providerGroupName`, 
+	`record`, 
+	`expectedMimeType`, 
+	`ingestionDate`, 
+	`statusCode`, 
+	`message`, 
+	`category`, 
+	`method`, 
+	`contentType`, 
+	`byteSize`, 
+	`duration`, 
+	`checkingDate`, 
+	`redirectCount`, 
+	`deletionDate`
+FROM `obsolete_old`;
+
+DROP TABLE `obsolete_old`;
+
+INSERT IGNORE INTO `url` (`id`, `name`, `group_key`, `valid`)
+SELECT `id`, `url`, `groupKey`, `valid`
+FROM `url_old`;
+
+INSERT IGNORE INTO `history`(`url_id`, `status_code`, `message`, `category`, `method`, `content_type`, `content_length`, `duration`, `checking_date`, `redirect_count`)
+SELECT `url_id`, `statusCode`, `message`, `category`, `method`, `contentType`, `byteSize`, `duration`, `checkingDate`, `redirectCount`
+FROM `history_old`; 
+
+DROP TABLE `history_old`;
+
+INSERT IGNORE INTO `status`(`url_id`, `status_code`, `message`, `category`, `method`, `content_type`, `content_length`, `duration`, `checking_date`, `redirect_count`)
+SELECT `url_id`, `statusCode`, `message`, `category`, `method`, `contentType`, `byteSize`, `duration`, `checkingDate`, `redirectCount`
+FROM `status_old`; 
+
+DROP TABLE `status_old`;
+
+INSERT IGNORE INTO `context`(`id`, `client_id`, `origin`, `providergroup_id`)
+SELECT id, 1, record, providerGroup_id
+FROM `context_old`;
+
+INSERT IGNORE INTO `url_context`(`url_id`, `context_id`, `expected_mime_type`, `ingestion_date`, `active`)
+SELECT uc.url_id, uc.context_id, c.expectedMimeType, uc.ingestionDate, uc.active
+FROM url_context_old uc
+INNER JOIN context_old c
+ON c.id=uc.context_id;
+
+DROP TABLE `url_context_old`;
+DROP TABLE `context_old`;
+DROP TABLE `url_old`;
+
+
+
