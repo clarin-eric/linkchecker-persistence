@@ -7,10 +7,10 @@
       <version>2.7.1</version>
       <relativePath /> <!-- lookup parent from repository -->
    </parent>
-   <groupId>eu.clarin.cmdi</groupId>
-   <artifactId>curation-persistence</artifactId>
+   <groupId>eu.clarin</groupId>
+   <artifactId>linkchecker-persistence</artifactId>
    <version>0.0.1-SNAPSHOT</version>
-   <name>Curation Persistence API</name>
+   <name>Linkchecker Persistence API</name>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <maven.compiler.source>17</maven.compiler.source>
