@@ -7,11 +7,12 @@ RENAME TABLE `url` TO `url_old`;
 RENAME TABLE `status` TO `status_old`;
 RENAME TABLE `history` TO `history_old`;
 RENAME TABLE `obsolete` TO `obsolete_old`;
-RENAME TABLE `providerGroup` TO `providergroup`;
+#RENAME TABLE `providerGroup` TO `providergroup_tmp`;
+#RENAME TABLE `providergroup_tmp` TO `providergroup`;
 RENAME TABLE `context` TO `context_old`;
 RENAME TABLE `url_context` TO `url_context_old`;
 
-ALTER DATABASE `linkcheckerModify`
+ALTER DATABASE `linkchecker`
 DEFAULT CHARACTER SET utf8mb4
 DEFAULT COLLATE utf8mb4_bin;
 
