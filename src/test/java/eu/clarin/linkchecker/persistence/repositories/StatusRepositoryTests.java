@@ -3,8 +3,6 @@ package eu.clarin.linkchecker.persistence.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 import eu.clarin.linkchecker.persistence.model.Client;
 import eu.clarin.linkchecker.persistence.model.Context;
@@ -65,19 +63,24 @@ class StatusRepositoryTests extends RepositoryTests {
 	   sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
 	   sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
 	   
-      Page<Status> page = sRep.findAllByCategory(Category.Ok, PageRequest.of(0, 10));     
-
-      assertEquals(0, page.stream().count()); 
-      
-      page = sRep.findAllByCategory(Category.Blocked_By_Robots_txt, PageRequest.of(0, 10)); 
+      try(Stream<Status> stream = sRep.findAllByCategory(Category.Ok)){
          
-      assertEquals(1, page.stream().count()); 
+         assertEquals(0, stream.count()); 
+      
+      }
+      
+      try(Stream<Status> stream = sRep.findAllByCategory(Category.Blocked_By_Robots_txt)){ 
+         
+         assertEquals(1, stream.count()); 
+      
+      }
 
       
-      page = sRep.findAllByCategory(Category.Broken, PageRequest.of(0, 10));
+      try(Stream<Status> stream = sRep.findAllByCategory(Category.Broken)){
 
-      assertEquals(1, page.stream().count());
-    
+         assertEquals(1, stream.count());
+         
+      }
 	}
    
    @Test
