@@ -55,10 +55,6 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
          cRep.save(contexts[i]);
       });
       
-
-      
-
-      
       IntStream.range(1, 100).forEach( i-> {
          
          urls.add(uRep.save(new Url("http://www.wowasa.com?page=" + i, "www.wowasa.com", true)));  
