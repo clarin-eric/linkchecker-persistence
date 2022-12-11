@@ -21,14 +21,13 @@ import lombok.RequiredArgsConstructor;
 public class AggregatedStatus {
    
    @EmbeddedId
-   private AggregatedStatusId id;
+   private AggregatedStatusId aggregatedStatusId;
    
    @Column(name = "name", insertable = false, updatable = false)
    private final String providergroupName;
    @Column(insertable = false, updatable = false)
    @Enumerated(EnumType.STRING)
-   private final Category category;
-   
+   private final Category category;   
    @Nullable
    private Double avgDuration;
    @Nullable
