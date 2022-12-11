@@ -3,8 +3,6 @@ package eu.clarin.linkchecker.persistence.repository;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -23,14 +21,15 @@ public interface StatusRepository extends PagingAndSortingRepository<Status, Lon
    
    public Stream<Status> findAllByUrlNameIn(String... names);
    
-   public Page<Status> findAllByCategory(Category category, Pageable pageable);
+   public Stream<Status> findAllByCategory(Category category);
    
    public Stream<Status> findAllByUrlUrlContextsContextClientName(String name);
    
    public Stream<Status> findAllByUrlUrlContextsContextClientNameAndUrlUrlContextsContextOrigin(String name, String origin);
    
+   
    @Query("SELECT s FROM Status s JOIN s.url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON p.name=?1 AND s.category=?2")
-   public Page<Status> findAllByProvidergroupAndCategory(String providerGroupName, Category category, Pageable pageable);
+   public Stream<Status> findAllByProvidergroupAndCategory(String providerGroupName, Category category);
    
    @Query(
          value = """
