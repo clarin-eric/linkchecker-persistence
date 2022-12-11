@@ -135,3 +135,16 @@ CREATE VIEW IF NOT EXISTS `aggregated_status` AS
  ON (p.id=c.providergroup_id)
  WHERE uc.active=true
  GROUP BY p.name, s.category;
+ 
+CREATE VIEW IF NOT EXISTS `latest_status` AS
+   SELECT * FROM
+   (SELECT ROW_NUMBER() OVER (PARTITION BY p.name, s.category ORDER BY s.checking_date DESC) AS order_nr, s.*, u.name AS urlname, p.name AS providergroupname
+      FROM status s 
+      INNER JOIN url u ON s.url_id = u.id 
+      INNER JOIN url_context uc ON uc.url_id = u.id
+      INNER JOIN context c ON c.id = uc.context_id
+      INNER JOIN providergroup p ON p.id = c.providergroup_id
+      WHERE uc.active = true
+   ) tab1
+   WHERE order_nr <=100
+   ORDER BY providergroupname, category
