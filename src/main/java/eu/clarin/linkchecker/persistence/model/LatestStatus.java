@@ -11,14 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import org.springframework.lang.Nullable;
-
 import eu.clarin.linkchecker.persistence.utils.Category;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+
 
 /**
  *
