@@ -1,10 +1,11 @@
 package eu.clarin.linkchecker.persistence.model;
 
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 
 import org.springframework.lang.Nullable;
 
@@ -18,15 +19,15 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 @Entity
+@IdClass(AggregatedStatusId.class)
 public class AggregatedStatus {
    
-   @EmbeddedId
-   private AggregatedStatusId aggregatedStatusId;
-   
    @Column(name = "name", insertable = false, updatable = false)
+   @Id
    private final String providergroupName;
    @Column(insertable = false, updatable = false)
    @Enumerated(EnumType.STRING)
+   @Id
    private final Category category;   
    @Nullable
    private Double avgDuration;
