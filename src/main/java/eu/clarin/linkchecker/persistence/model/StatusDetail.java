@@ -6,10 +6,11 @@ package eu.clarin.linkchecker.persistence.model;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 
 import eu.clarin.linkchecker.persistence.utils.Category;
 import lombok.Data;
@@ -20,27 +21,36 @@ import lombok.Data;
  */
 @Data
 @Entity
-public class LatestStatus {
+@IdClass(StatusDetailId.class)
+public class StatusDetail {
    
-   @EmbeddedId
-   private LatestStatusId latestStatusId;
+
+   @Id
+   private Long id;
+   @Id
+   private String providergroupname;
+   @Id
+   private String origin;
+     
+   private Long orderNr;
    
    private String urlname;
-   
+
    private String method;
-   
-   private Integer statusCode;   
+
+   private Integer statusCode;
+
    @Enumerated(EnumType.STRING)
    private Category category;   
 
    private String message;   
 
    private LocalDateTime checkingDate;
-   
+
    private String contentType;
-   
+
    private Long contentLength;
-   
+
    private Integer duration;
 
    private Integer redirectCount;  

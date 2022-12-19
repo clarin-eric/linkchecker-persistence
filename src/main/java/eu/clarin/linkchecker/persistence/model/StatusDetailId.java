@@ -2,21 +2,22 @@ package eu.clarin.linkchecker.persistence.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Embeddable;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
-@Embeddable
-public class LatestStatusId implements Serializable {
+@AllArgsConstructor
+@NoArgsConstructor
+public class StatusDetailId implements Serializable {
    
    private static final long serialVersionUID = 1L;
 
    private Long id;
 
    private String providergroupname;
-   
+
    private String origin;
 
 }

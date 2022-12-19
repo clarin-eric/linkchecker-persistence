@@ -25,23 +25,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import eu.clarin.linkchecker.persistence.model.Client;
 import eu.clarin.linkchecker.persistence.model.Context;
-import eu.clarin.linkchecker.persistence.model.LatestStatus;
+import eu.clarin.linkchecker.persistence.model.StatusDetail;
 import eu.clarin.linkchecker.persistence.model.Providergroup;
 import eu.clarin.linkchecker.persistence.model.Role;
 import eu.clarin.linkchecker.persistence.model.Status;
 import eu.clarin.linkchecker.persistence.model.Url;
 import eu.clarin.linkchecker.persistence.model.UrlContext;
-import eu.clarin.linkchecker.persistence.repository.LatestStatusRepository;
+import eu.clarin.linkchecker.persistence.repository.StatusDetailRepository;
 import eu.clarin.linkchecker.persistence.utils.Category;
 
 /**
  *
  */
 @SpringBootTest
-public class LatestStatusRepositoryTests extends RepositoryTests{
+public class StatusDetailRepositoryTests extends RepositoryTests{
    
    @Autowired
-   private LatestStatusRepository lRep;
+   private StatusDetailRepository lRep;
    
    private Map<String, Vector<Status>> statusMap = new HashMap<String, Vector<Status>>();
    
@@ -87,7 +87,7 @@ public class LatestStatusRepositoryTests extends RepositoryTests{
    
    @Test
    @Transactional
-   public void findAllBy() {
+   public void findAllByOrderNrLessThanEqual() {
       
       this.statusMap.forEach((providergroup, statusVec) -> {
          
@@ -95,11 +95,11 @@ public class LatestStatusRepositoryTests extends RepositoryTests{
          
          statusMap.forEach((category, statusList) -> {
             
-            try(Stream<LatestStatus> stream = lRep.findAllBy()){
+            try(Stream<StatusDetail> stream = lRep.findByOrderNrLessThanEqual(100l)){
                
                assertEquals(
                      statusList.size(), 
-                     stream.filter(lStatus -> (lStatus.getLatestStatusId().getProvidergroupname().equals(providergroup) && lStatus.getCategory() == category)).count());
+                     stream.filter(lStatus -> (lStatus.getProvidergroupname().equals(providergroup) && lStatus.getCategory() == category)).count());
             }
          });
          
