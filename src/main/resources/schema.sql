@@ -138,7 +138,7 @@ CREATE VIEW IF NOT EXISTS `aggregated_status` AS
  
 CREATE VIEW IF NOT EXISTS `status_detail` AS
    SELECT * FROM
-   (SELECT ROW_NUMBER() OVER (PARTITION BY p.name, s.category ORDER BY s.checking_date DESC) AS order_nr, s.*, u.name AS urlname, p.name AS providergroupname, c.origin
+   (SELECT ROW_NUMBER() OVER (PARTITION BY p.name, s.category ORDER BY s.checking_date DESC) AS order_nr, s.*, u.name AS urlname, p.name AS providergroupname, c.origin, uc.expected_mime_type
       FROM status s 
       INNER JOIN url u ON s.url_id = u.id 
       INNER JOIN url_context uc ON uc.url_id = u.id

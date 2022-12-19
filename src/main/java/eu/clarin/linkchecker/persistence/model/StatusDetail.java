@@ -48,6 +48,8 @@ public class StatusDetail {
    private LocalDateTime checkingDate;
 
    private String contentType;
+   
+   private String expectedMimeType;
 
    private Long contentLength;
 
