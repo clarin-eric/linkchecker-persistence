@@ -1,13 +1,16 @@
 package eu.clarin.linkchecker.persistence.service;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.clarin.cmdi.vlo.PIDUtils;
 import eu.clarin.linkchecker.persistence.model.*;
 import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
 import eu.clarin.linkchecker.persistence.repository.StatusRepository;
@@ -43,11 +46,18 @@ public class StatusService {
    }
    
    @Transactional
-   public Map<String, Status> getStatus(String... urlString){
+   public Map<String, Status> getStatus(String... urlNames){
       
-      return sRep
-            .findAllByUrlNameIn(urlString)
-            .collect(Collectors.toMap(status -> status.getUrl().getName(), status -> status));
+      final Map<String, Status> map = new HashMap<String, Status>();
+      
+      Arrays.stream(urlNames).forEach(urlName -> {
+         
+         sRep.findByUrlName(PIDUtils.getActionableLinkForPid(urlName))
+         .ifPresent(status -> map.put(urlName, status));
+
+      });     
+      
+      return map;
    
    }
 }
