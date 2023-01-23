@@ -28,8 +28,8 @@ public interface StatusRepository extends PagingAndSortingRepository<Status, Lon
    public Stream<Status> findAllByUrlUrlContextsContextClientNameAndUrlUrlContextsContextOrigin(String name, String origin);
    
    
-   @Query("SELECT s FROM Status s JOIN s.url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON p.name=?1 AND s.category=?2")
-   public Stream<Status> findAllByProvidergroupAndCategory(String providerGroupName, Category category);
+   @Query("SELECT s FROM Status s JOIN s.url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON uc.active = true AND p.name=?1 AND s.category=?2")
+   public Stream<Status> findAllByProvidergroupAndCategory(String providergroupName, Category category);
    
    @Query(
          value = """
