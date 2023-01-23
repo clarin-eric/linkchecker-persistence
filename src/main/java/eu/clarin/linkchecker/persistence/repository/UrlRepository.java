@@ -44,6 +44,6 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
    public long countByProvidergroupName(String providergroupName);
    
    @Query("SELECT DISTINCT COUNT(*) FROM Url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON p.name=?1")
-   public long countDinstinctByProvidergroupName(String providergroupName);
+   public long countDistinctByProvidergroupName(String providergroupName);
 
 }
