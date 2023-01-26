@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `url_context` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `url_id` INT NOT NULL,
   `context_id` INT NOT NULL,
-  `expected_mime_type` VARCHAR(64) DEFAULT NULL,
+  `expected_mime_type` VARCHAR(128) DEFAULT NULL,
   `ingestion_date` DATETIME NOT NULL,
   `active` BOOLEAN NOT NULL,
   PRIMARY KEY (`id`),
