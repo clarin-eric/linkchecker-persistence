@@ -113,20 +113,22 @@ public class LinkService {
    @Transactional
    public void deleteLinksOderThan(int periodInDays) {
       
-      log.info("multi step deletion of links older then {} days", periodInDays);
+      LocalDateTime oldestDate = LocalDateTime.now().minusDays(periodInDays);
+      
+      log.info("multi step deletion of links older then {} days (date: {})", periodInDays, oldestDate);
       
       int step = 1;
       
       log.info("step {}: saving status records", step);
-      sRep.saveStatusLinksOlderThan(periodInDays);
+      sRep.saveStatusLinksOlderThan(oldestDate);
       log.info("step {}: done", step++);
       
       log.info("step {}: saving history records", step);
-      hRep.saveHistoryLinksOlderThan(periodInDays);
+      hRep.saveHistoryLinksOlderThan(oldestDate);
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting url_context records", step);
-      ucRep.deleteOlderThan(LocalDateTime.now().minusDays(periodInDays));
+      ucRep.deleteOlderThan(oldestDate);
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting url records with delete cascade to status and history records", step);

@@ -1,5 +1,7 @@
 package eu.clarin.linkchecker.persistence.repository;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -26,6 +28,6 @@ public interface HistoryRepository extends PagingAndSortingRepository<History, L
          nativeQuery = true
       )
    @Modifying
-   public void saveHistoryLinksOlderThan(int persiodOfDays);
+   public void saveHistoryLinksOlderThan(LocalDateTime dateTime);
 
 }

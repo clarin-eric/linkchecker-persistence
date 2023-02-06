@@ -1,5 +1,6 @@
 package eu.clarin.linkchecker.persistence.repository;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -51,6 +52,6 @@ public interface StatusRepository extends PagingAndSortingRepository<Status, Lon
          nativeQuery = true
       )
    @Modifying
-   public void saveStatusLinksOlderThan(int periodOfDays);
+   public void saveStatusLinksOlderThan(LocalDateTime dateTime);
 
 }
