@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `url_context` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `url_id` INT NOT NULL,
   `context_id` INT NOT NULL,
-  `expected_mime_type` VARCHAR(64) DEFAULT NULL,
+  `expected_mime_type` VARCHAR(128) DEFAULT NULL,
   `ingestion_date` DATETIME NOT NULL,
   `active` BOOLEAN NOT NULL,
   PRIMARY KEY (`id`),
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `history` (
 CREATE TABLE IF NOT EXISTS `obsolete` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `url_name` VARCHAR(512) NOT NULL,
-  `client_name` int DEFAULT NULL,
+  `client_name` INT DEFAULT NULL,
   `providergroup_name` VARCHAR(256) DEFAULT NULL,
   `origin` VARCHAR(256) DEFAULT NULL,
   `expected_mime_type` VARCHAR(256) DEFAULT NULL,
@@ -135,3 +135,14 @@ CREATE VIEW IF NOT EXISTS `aggregated_status` AS
  ON (p.id=c.providergroup_id)
  WHERE uc.active=true
  GROUP BY p.name, s.category;
+ 
+CREATE VIEW IF NOT EXISTS `status_detail` AS
+   SELECT * FROM
+   (SELECT ROW_NUMBER() OVER (PARTITION BY p.name, s.category ORDER BY s.checking_date DESC) AS order_nr, s.*, u.name AS urlname, p.name AS providergroupname, c.origin, uc.expected_mime_type
+      FROM status s 
+      INNER JOIN url u ON s.url_id = u.id 
+      INNER JOIN url_context uc ON uc.url_id = u.id
+      INNER JOIN context c ON c.id = uc.context_id
+      INNER JOIN providergroup p ON p.id = c.providergroup_id
+      WHERE uc.active = true
+   ) tab1
