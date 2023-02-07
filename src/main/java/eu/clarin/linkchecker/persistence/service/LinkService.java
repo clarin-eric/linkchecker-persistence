@@ -52,28 +52,31 @@ public class LinkService {
       
       ValidationResult validation = UrlValidator.validate(urlName);
       
-      Url url = getUrl(urlName, validation);      
+      Url url = getUrl(urlName, validation, ingestionDate);      
       
       Providergroup providergroup = (providergroupName == null)?null: getProvidergroup(providergroupName);
       
       Context context = getContext(origin, providergroup, client);
          
-      getUrlContext(url, context, expectedMimeType, ingestionDate);      
+      getUrlContext(url, context, expectedMimeType, ingestionDate);          
 
-      
-      if(!validation.isValid()) { //create a status entry if Url is not valid
-         Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), ingestionDate);
-         
-         sService.save(status);
-      }
    }
    
-   private synchronized Url getUrl(String urlName, ValidationResult validation) {
+   private synchronized Url getUrl(String urlName, ValidationResult validation, LocalDateTime ingestionDate) {
       
       return uRep.findByName(urlName)
-         .orElseGet(() -> uRep.save(new  Url(urlName, validation.getHost(), validation.isValid())));
-   
+         .orElseGet(() -> {
+            Url url = uRep.save(new  Url(urlName, validation.getHost(), validation.isValid()));
+            
+            if(!validation.isValid()) { //create a status entry if Url is not valid
+               Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), ingestionDate);               
+               sService.save(status);
+            }
+            
+            return url;            
+         });
    }
+
    
    private synchronized Providergroup getProvidergroup(String providergroupName) {
       
