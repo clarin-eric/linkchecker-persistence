@@ -52,14 +52,15 @@ public class LinkService {
       
       ValidationResult validation = UrlValidator.validate(urlName);
       
+      log.trace("insert or update url");
       Url url = getUrl(urlName, validation, ingestionDate);      
-      
+      log.trace("insert or update providergroup");      
       Providergroup providergroup = (providergroupName == null)?null: getProvidergroup(providergroupName);
-      
+      log.trace("insert or update context");
       Context context = getContext(origin, providergroup, client);
-         
+      log.trace("insert or update url_context");   
       getUrlContext(url, context, expectedMimeType, ingestionDate);          
-
+      log.trace("done insert or update url_context");   
    }
    
    private synchronized Url getUrl(String urlName, ValidationResult validation, LocalDateTime ingestionDate) {
