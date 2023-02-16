@@ -3,6 +3,7 @@ package eu.clarin.linkchecker.persistence.service;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import javax.transaction.Transactional;
 
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import eu.clarin.cmdi.vlo.PIDUtils;
 import eu.clarin.linkchecker.persistence.model.*;
 import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
+import eu.clarin.linkchecker.persistence.repository.StatusDetailRepository;
 import eu.clarin.linkchecker.persistence.repository.StatusRepository;
+import eu.clarin.linkchecker.persistence.utils.Category;
 
 @Service
 @Transactional
@@ -21,6 +24,8 @@ public class StatusService {
    StatusRepository sRep;
    @Autowired
    HistoryRepository hRep;
+   @Autowired
+   StatusDetailRepository sdRep;
 
    
    @Transactional
@@ -58,5 +63,13 @@ public class StatusService {
       
       return map;
    
+   }
+   @Transactional
+   public Stream<StatusDetail> findAllDetail(Category category){
+      return sdRep.findAllByCategory(category);
+   }
+   @Transactional
+   public Stream<StatusDetail> findAllDetail(String providergroupname, Category category){
+      return sdRep.findAllByProvidergroupnameAndCategory(providergroupname, category);
    }
 }
