@@ -59,7 +59,7 @@ public class LinkService {
       log.trace("insert or update context");
       Context context = getContext(origin, providergroup, client);
       log.trace("insert or update url_context");   
-      getUrlContext(url, context, expectedMimeType, ingestionDate);          
+      insertOrUpdateUrlContext(url.getId(), context.getId(), expectedMimeType, ingestionDate);          
       log.trace("done insert or update url_context");   
    }
    
@@ -106,6 +106,10 @@ public class LinkService {
                })
                .get();
 
+   }
+   
+   private synchronized void insertOrUpdateUrlContext(Long urlId, Long contextId, String expectedMimeType, LocalDateTime ingestionDate) {
+      ucRep.insertOrUpdate(urlId, contextId, expectedMimeType, ingestionDate);
    }
    
    @Transactional
