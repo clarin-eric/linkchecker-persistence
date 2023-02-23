@@ -93,21 +93,6 @@ public class LinkService {
       
    }
    
-   private synchronized UrlContext getUrlContext(Url url, Context context, String expectedMimeType, LocalDateTime ingestionDate) {
-      
-      return ucRep.findByUrlAndContextAndExpectedMimeType(url, context, expectedMimeType)
-               .or(() -> Optional.of(new UrlContext(url, context, ingestionDate, true)))
-               .map(urlContext -> {
-                  urlContext.setExpectedMimeType(expectedMimeType);
-                  urlContext.setIngestionDate(ingestionDate);
-                  urlContext.setActive(true);
-               
-                  return ucRep.save(urlContext);
-               })
-               .get();
-
-   }
-   
    private synchronized void insertOrUpdateUrlContext(Long urlId, Long contextId, String expectedMimeType, LocalDateTime ingestionDate) {
       ucRep.insertOrUpdate(urlId, contextId, expectedMimeType, ingestionDate);
    }
