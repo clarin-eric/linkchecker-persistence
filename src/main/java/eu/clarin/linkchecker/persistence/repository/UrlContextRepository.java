@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import eu.clarin.linkchecker.persistence.model.Context;
 import eu.clarin.linkchecker.persistence.model.Url;
 import eu.clarin.linkchecker.persistence.model.UrlContext;
@@ -15,7 +17,8 @@ import eu.clarin.linkchecker.persistence.model.UrlContext;
 public interface UrlContextRepository extends CrudRepository<UrlContext, Long> {
    
    public Optional<UrlContext> findByUrlAndContextAndExpectedMimeType(Url url, Context context, String expectedMimeType);
-   
+   @Modifying()
+   @Transactional()
    @Query(
          value = """
                INSERT INTO url_context(url_id, context_id, expected_mime_type, active, ingestion_date)
