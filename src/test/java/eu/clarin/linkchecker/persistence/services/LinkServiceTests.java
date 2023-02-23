@@ -3,6 +3,7 @@ package eu.clarin.linkchecker.persistence.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.clarin.linkchecker.persistence.model.Client;
 import eu.clarin.linkchecker.persistence.model.Role;
@@ -27,13 +28,14 @@ class LinkServiceTests extends RepositoryTests{
    private LinkService lService;
 
 	@Test
+	@Transactional
 	void save() {
       
       Client client = usRep.save(new Client("wowasa", UUID.randomUUID().toString(), Role.ADMIN));
       
       IntStream.range(0, 3).forEach(i -> {
          
-         lService.save(client, "http://www.wowasa.com?page=0", "origin0", null, null);
+         lService.save(client, "http://www.wowasa.com?page=0", "origin0", null, "application/xml");
          
       });
       
