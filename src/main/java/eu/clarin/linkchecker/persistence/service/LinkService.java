@@ -1,13 +1,15 @@
 package eu.clarin.linkchecker.persistence.service;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import eu.clarin.linkchecker.persistence.model.*;
@@ -46,6 +48,25 @@ public class LinkService {
    }
    
    @Transactional
+   public void savePerOrigin(Client client, String providergroupName, String origin, Collection<Pair<String,String>> urlMimes) {
+      log.trace("insert or update providergroup"); 
+      Providergroup providergroup = (providergroupName == null)?null: getProvidergroup(providergroupName);     
+      log.trace("insert or update context");
+      Context context = getContext(origin, providergroup, client);
+      
+      urlMimes.forEach(urlMime -> {
+         String urlName = urlMime.getFirst().trim();
+         
+         ValidationResult validation = UrlValidator.validate(urlName);
+         log.trace("insert or update url");
+         Url url = getUrl(urlName, validation, LocalDateTime.now());        
+         log.trace("insert or update url_context");   
+         insertOrUpdateUrlContext(url.getId(), context.getId(), urlMime.getSecond(), LocalDateTime.now());                         
+      });
+      log.trace("done insert or update url_context"); 
+   }
+   
+   @Transactional
    public void save(Client client, String urlName, String origin, String providergroupName, String expectedMimeType, LocalDateTime ingestionDate) {
       
       urlName = urlName.trim();
@@ -63,37 +84,64 @@ public class LinkService {
       log.trace("done insert or update url_context");   
    }
    
-   private synchronized Url getUrl(String urlName, ValidationResult validation, LocalDateTime ingestionDate) {
-      
-      return uRep.findByName(urlName)
-         .orElseGet(() -> {
-            Url url = uRep.save(new  Url(urlName, validation.getHost(), validation.isValid()));
-            
-            if(!validation.isValid()) { //create a status entry if Url is not valid
-               Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), ingestionDate);               
-               sService.save(status);
+   private Url getUrl(String urlName, ValidationResult validation, LocalDateTime ingestionDate) {
+      int i = 0;
+      while(true) {
+         try {
+            return uRep.findByName(urlName)
+               .orElseGet(() -> {
+                  Url url = uRep.save(new  Url(urlName, validation.getHost(), validation.isValid()));
+                  
+                  if(!validation.isValid()) { //create a status entry if Url is not valid
+                     Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), ingestionDate);               
+                     sService.save(status);
+                  }
+                  
+                  return url;            
+               });
+         }
+         catch(DataAccessException ex) {
+            if(++i == 2) {
+               throw ex;
             }
-            
-            return url;            
-         });
+         }
+      }
    }
 
    
-   private synchronized Providergroup getProvidergroup(String providergroupName) {
-      
-      return pRep.findByName(providergroupName)
-               .orElseGet(() -> pRep.save(new Providergroup(providergroupName)));
-      
+   private Providergroup getProvidergroup(String providergroupName) {
+      int i = 0;
+      while(true) {
+         try {
+            return pRep.findByName(providergroupName)
+                  .orElseGet(() -> pRep.save(new Providergroup(providergroupName)));
+         }
+         catch(DataAccessException ex) {
+            if(++i == 2) {
+               throw ex;
+            }
+         }
+      } 
    }
    
-   private synchronized Context getContext(String origin, Providergroup providergroup, Client client){
-      
-      return cRep.findByOriginAndProvidergroupAndClient(origin, providergroup, client)
-               .orElseGet(() -> cRep.save(new Context(origin, providergroup, client)));
-      
+   private Context getContext(String origin, Providergroup providergroup, Client client){
+      int i = 0;
+      while(true) {
+         try {
+            
+            return cRep.findByOriginAndProvidergroupAndClient(origin, providergroup, client)
+                     .orElseGet(() -> cRep.save(new Context(origin, providergroup, client)));
+            
+         }
+         catch(DataAccessException ex) {
+            if(++i == 2) {
+               throw ex;
+            }
+         }
+      } 
    }
    
-   private synchronized void insertOrUpdateUrlContext(Long urlId, Long contextId, String expectedMimeType, LocalDateTime ingestionDate) {
+   private void insertOrUpdateUrlContext(Long urlId, Long contextId, String expectedMimeType, LocalDateTime ingestionDate) {
       ucRep.insertOrUpdate(urlId, contextId, expectedMimeType, ingestionDate);
    }
    
