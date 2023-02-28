@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `client` (
 CREATE TABLE IF NOT EXISTS `context` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `client_id` INT NOT NULL,
-  `origin` VARCHAR(256) NOT NULL,
+  `origin` VARCHAR(512) NOT NULL,
   `providergroup_id` INT DEFAULT NULL,
   PRIMARY KEY (`id`),  
   UNIQUE KEY (`origin`, `providergroup_id`, `client_id`),
