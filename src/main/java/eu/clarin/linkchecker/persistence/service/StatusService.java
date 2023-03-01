@@ -66,10 +66,10 @@ public class StatusService {
    }
    @Transactional
    public Stream<StatusDetail> findAllDetail(Category category){
-      return sdRep.findAllByCategory(category);
+      return sdRep.findAllByCategory(category.name());
    }
    @Transactional
    public Stream<StatusDetail> findAllDetail(String providergroupname, Category category){
-      return sdRep.findAllByProvidergroupnameAndCategory(providergroupname, category);
+      return sdRep.findAllByProvidergroupnameAndCategory(providergroupname, category.name());
    }
 }
