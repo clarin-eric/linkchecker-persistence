@@ -11,7 +11,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import eu.clarin.linkchecker.persistence.model.StatusDetail;
 import eu.clarin.linkchecker.persistence.model.StatusDetailId;
-import eu.clarin.linkchecker.persistence.utils.Category;
+
 
 /**
  *
