@@ -34,6 +34,8 @@ public class AggregatedStatus {
    @Nullable
    private Long maxDuration;
    
-   private Long number;
+   private Long numberId;
+   
+   private Long numberDuration;
 
 }

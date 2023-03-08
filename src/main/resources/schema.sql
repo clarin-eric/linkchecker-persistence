@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
 
 
 CREATE VIEW IF NOT EXISTS `aggregated_status` AS
- SELECT p.name, s.category, COUNT(s.id) AS number, AVG(s.duration) AS avg_duration, MAX(s.duration) AS max_duration
+ SELECT p.name, s.category, COUNT(s.id) AS number_id, COUNT(s.duration) AS number_duration, AVG(s.duration) AS avg_duration, MAX(s.duration) AS max_duration
  FROM url_context uc
  JOIN (status s)
  ON (uc.url_id=s.url_id)
