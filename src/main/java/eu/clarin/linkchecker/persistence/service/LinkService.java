@@ -3,14 +3,18 @@ package eu.clarin.linkchecker.persistence.service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.clarin.linkchecker.persistence.model.*;
 import eu.clarin.linkchecker.persistence.repository.ContextRepository;
@@ -25,6 +29,7 @@ import eu.clarin.linkchecker.persistence.utils.UrlValidator.ValidationResult;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Scope("prototype")
 @Slf4j
 public class LinkService {   
    
@@ -43,11 +48,17 @@ public class LinkService {
    @Autowired
    private HistoryRepository hRep;
    
+   private Map<String,Providergroup> providergroupMap = new ConcurrentHashMap<String,Providergroup>();
+   //locks
+   private Set<String> urlLock = ConcurrentHashMap.newKeySet();
+   private Set<String> contextLock = ConcurrentHashMap.newKeySet();
+   
+   
    public void save(Client client, String urlString, String origin, String providerGroupName, String expectedMimeType) {
       save(client, urlString, origin, providerGroupName, expectedMimeType, LocalDateTime.now());
    }
    
-   @Transactional
+   @Transactional(isolation = Isolation.READ_UNCOMMITTED)
    public void savePerOrigin(Client client, String providergroupName, String origin, Collection<Pair<String,String>> urlMimes) {
       log.trace("insert or update providergroup"); 
       Providergroup providergroup = (providergroupName == null)?null: getProvidergroup(providergroupName);     
@@ -85,9 +96,17 @@ public class LinkService {
    }
    
    private Url getUrl(String urlName, ValidationResult validation, LocalDateTime ingestionDate) {
-      int i = 0;
-      while(true) {
          try {
+            while(!this.urlLock.add(urlName)) {
+               
+               try {
+                  Thread.sleep(1000);
+               }
+               catch (InterruptedException e) {
+                  
+                  log.error("InterruptedException while waiting for unlock");
+               }
+            }
             return uRep.findByName(urlName)
                .orElseGet(() -> {
                   Url url = uRep.save(new  Url(urlName, validation.getHost(), validation.isValid()));
@@ -100,45 +119,41 @@ public class LinkService {
                   return url;            
                });
          }
-         catch(DataAccessException ex) {
-            if(++i == 2) {
-               throw ex;
-            }
+         finally{
+            this.urlLock.remove(urlName);
          }
-      }
+
    }
 
-   
    private Providergroup getProvidergroup(String providergroupName) {
-      int i = 0;
-      while(true) {
-         try {
-            return pRep.findByName(providergroupName)
-                  .orElseGet(() -> pRep.save(new Providergroup(providergroupName)));
-         }
-         catch(DataAccessException ex) {
-            if(++i == 2) {
-               throw ex;
-            }
-         }
-      } 
+
+      return this.providergroupMap.computeIfAbsent(providergroupName,  
+            k-> pRep.findByName(providergroupName).orElseGet(() ->  pRep.save(new Providergroup(providergroupName))));
    }
    
    private Context getContext(String origin, Providergroup providergroup, Client client){
-      int i = 0;
-      while(true) {
-         try {
+
+      try {
+         while(!this.contextLock.add(origin)) {
             
-            return cRep.findByOriginAndProvidergroupAndClient(origin, providergroup, client)
-                     .orElseGet(() -> cRep.save(new Context(origin, providergroup, client)));
-            
-         }
-         catch(DataAccessException ex) {
-            if(++i == 2) {
-               throw ex;
+            try {
+               Thread.sleep(1000);
+            }
+            catch (InterruptedException e) {
+               
+               log.error("InterruptedException while waiting for unlock");
             }
          }
-      } 
+         
+         return cRep.findByOriginAndProvidergroupAndClient(origin, providergroup, client)
+                  .orElseGet(() -> cRep.save(new Context(origin, providergroup, client)));
+         
+      }
+      finally {
+         
+         this.contextLock.remove(origin);
+      }
+
    }
    
    private void insertOrUpdateUrlContext(Long urlId, Long contextId, String expectedMimeType, LocalDateTime ingestionDate) {

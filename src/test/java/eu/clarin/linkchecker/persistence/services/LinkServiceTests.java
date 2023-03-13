@@ -3,6 +3,7 @@ package eu.clarin.linkchecker.persistence.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import eu.clarin.linkchecker.persistence.model.Client;
@@ -25,11 +26,15 @@ class LinkServiceTests extends RepositoryTests{
   
    
    @Autowired
-   private LinkService lService;
+   ApplicationContext ctx;
+   
+   //private LinkService lService;
 
 	@Test
 	@Transactional
 	void save() {
+	   
+	   LinkService lService = ctx.getBean(LinkService.class);
       
       Client client = usRep.save(new Client("wowasa", UUID.randomUUID().toString(), Role.ADMIN));
       
@@ -77,7 +82,7 @@ class LinkServiceTests extends RepositoryTests{
 	@Test
 	void multithreadedSave() {
 	   
-
+	   LinkService lService = ctx.getBean(LinkService.class);
 	   
 	   Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
 	   
@@ -117,6 +122,8 @@ class LinkServiceTests extends RepositoryTests{
    @Test
    void deactivateLinksOlderThan() {
       
+      LinkService lService = ctx.getBean(LinkService.class);
+      
       Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
       
       IntStream.range(0, 15).forEach(i -> {
@@ -134,6 +141,8 @@ class LinkServiceTests extends RepositoryTests{
    
    @Test
    void deleteLinksOlderThan() {
+      
+      LinkService lService = ctx.getBean(LinkService.class);
       
       Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
       
