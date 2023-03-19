@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `history` (
 CREATE TABLE IF NOT EXISTS `obsolete` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `url_name` VARCHAR(512) NOT NULL,
-  `client_name` INT DEFAULT NULL,
+  `client_name` VARCHAR(256) DEFAULT NULL,
   `providergroup_name` VARCHAR(256) DEFAULT NULL,
   `origin` VARCHAR(256) DEFAULT NULL,
   `expected_mime_type` VARCHAR(256) DEFAULT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
   `category` VARCHAR(25) DEFAULT NULL,
   `method` VARCHAR(10) DEFAULT NULL,
   `content_type` VARCHAR(256) DEFAULT NULL,
-  `content_length` bigint DEFAULT NULL,
+  `content_length` BIGINT DEFAULT NULL,
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME DEFAULT NULL,
   `redirect_count` INT DEFAULT NULL,
