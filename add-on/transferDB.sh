@@ -24,7 +24,7 @@ echo "removing dump file ${DUMP_FILE}"
 rm ${DUMP_FILE}
 echo "done removing"
 echo "dropping database ${MYSQL_DATABASE}"
-mysql -u root --password=${MYSQL_ROOT_PASSWORD} -e "DROP DATABASE IF EXISTS ;"
+mysql -u root --password=${MYSQL_ROOT_PASSWORD} -e "DROP DATABASE IF EXISTS ${MYSQL_DATABASE};"
 echo "done dropping"
 echo "creating new database ${MYSQL_DATABASE}"
 mysql -u root --password=${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE ${MYSQL_DATABASE} CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;"

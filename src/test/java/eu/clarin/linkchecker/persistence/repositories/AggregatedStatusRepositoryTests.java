@@ -88,7 +88,7 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
    	      stream.forEach(ag -> {
    	         assertEquals(
    	               this.statusMap.get(pgName).stream().filter(s -> s.getCategory() == ag.getCategory()).count(),
-   	               ag.getNumber()
+   	               ag.getNumberId()
                   );
    	      });  	      
    	   }

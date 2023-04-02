@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `client` (
 CREATE TABLE IF NOT EXISTS `context` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `client_id` INT NOT NULL,
-  `origin` VARCHAR(256) NOT NULL,
+  `origin` VARCHAR(512) NOT NULL,
   `providergroup_id` INT DEFAULT NULL,
   PRIMARY KEY (`id`),  
   UNIQUE KEY (`origin`, `providergroup_id`, `client_id`),
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `history` (
 CREATE TABLE IF NOT EXISTS `obsolete` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `url_name` VARCHAR(512) NOT NULL,
-  `client_name` INT DEFAULT NULL,
+  `client_name` VARCHAR(256) DEFAULT NULL,
   `providergroup_name` VARCHAR(256) DEFAULT NULL,
   `origin` VARCHAR(256) DEFAULT NULL,
   `expected_mime_type` VARCHAR(256) DEFAULT NULL,
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
   `category` VARCHAR(25) DEFAULT NULL,
   `method` VARCHAR(10) DEFAULT NULL,
   `content_type` VARCHAR(256) DEFAULT NULL,
-  `content_length` bigint DEFAULT NULL,
+  `content_length` BIGINT DEFAULT NULL,
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME DEFAULT NULL,
   `redirect_count` INT DEFAULT NULL,
@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
 
 
 CREATE VIEW IF NOT EXISTS `aggregated_status` AS
- SELECT p.name, s.category, COUNT(s.id) AS number, AVG(s.duration) AS avg_duration, MAX(s.duration) AS max_duration
+ SELECT p.name, s.category, COUNT(s.id) AS number_id, COUNT(s.duration) AS number_duration, AVG(s.duration) AS avg_duration, MAX(s.duration) AS max_duration
  FROM url_context uc
  JOIN (status s)
  ON (uc.url_id=s.url_id)
