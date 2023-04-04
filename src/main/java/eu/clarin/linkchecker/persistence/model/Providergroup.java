@@ -11,14 +11,16 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
-@Getter
-@Setter
+@Data
+@ToString(exclude = "contexts")
+@EqualsAndHashCode(exclude = "contexts")
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 @Entity
