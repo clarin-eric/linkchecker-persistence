@@ -1,4 +1,8 @@
-# version 0.0.1-alpha2
+# version 0.0.3
+- excluding mapping fields from toString() in class Url, Context and Providergroup to prevent stack overflow
+- correction in schema.sql for history table for fields message and content_length
+
+# version 0.0.2
 - modifications in schema.sql
 -- enlarging field context.origin from VARCHAR(256) to VARCHAR(512)
 -- changing type of obsolete.client_name from INT to VARCHAR(256)
