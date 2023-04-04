@@ -15,11 +15,15 @@ import javax.persistence.JoinColumn;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Data
+@ToString(exclude = {"status", "urlContexts"})
+@EqualsAndHashCode(exclude = {"status", "urlContexts"})
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 @Entity
