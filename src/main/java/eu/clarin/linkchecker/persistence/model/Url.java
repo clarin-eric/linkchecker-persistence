@@ -41,6 +41,8 @@ public class Url {
    
    private final Boolean valid;
    
+   private int priority;
+   
    @OneToOne(mappedBy = "url")
    private Status status;
 

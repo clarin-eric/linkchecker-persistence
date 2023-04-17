@@ -1,3 +1,9 @@
+# version 0.0.5
+- dependency upgrade of spring-boot-starter-parent to v2.7.10
+
+# version 0.0.4
+- shifting prioritization from status- to url table
+
 # version 0.0.3
 - excluding mapping fields from toString() in class Url, Context and Providergroup to prevent stack overflow
 - correction in schema.sql for history table for fields message and content_length

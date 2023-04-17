@@ -76,6 +76,25 @@ public class LinkService {
       log.trace("done insert or update url_context"); 
    }
    
+   @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+   public void savePerOrigin(Client client, String providergroupName, String origin, Collection<Pair<String,String>> urlMimes, int priority) {
+      log.trace("insert or update providergroup"); 
+      Providergroup providergroup = (providergroupName == null)?null: getProvidergroup(providergroupName);     
+      log.trace("insert or update context");
+      Context context = getContext(origin, providergroup, client);
+      
+      urlMimes.forEach(urlMime -> {
+         String urlName = urlMime.getFirst().trim();
+         
+         ValidationResult validation = UrlValidator.validate(urlName);
+         log.trace("insert or update url");
+         Url url = getUrl(urlName, validation, LocalDateTime.now(), priority);        
+         log.trace("insert or update url_context");   
+         insertOrUpdateUrlContext(url.getId(), context.getId(), urlMime.getSecond(), LocalDateTime.now());                         
+      });
+      log.trace("done insert or update url_context"); 
+   }
+   
    @Transactional
    public void save(Client client, String urlName, String origin, String providergroupName, String expectedMimeType, LocalDateTime ingestionDate) {
       
@@ -121,7 +140,44 @@ public class LinkService {
          finally{
             this.urlLock.remove(urlName);
          }
-
+   }
+   
+   private Url getUrl(String urlName, ValidationResult validation, LocalDateTime ingestionDate, int priority) {
+      try {
+         while(!this.urlLock.add(urlName)) {
+            
+            try {
+               Thread.sleep(1000);
+            }
+            catch (InterruptedException e) {
+               
+               log.error("InterruptedException while waiting for unlock");
+            }
+         }
+         return uRep.findByName(urlName)
+            .map(u -> {
+               u.setPriority(priority);
+               
+               return uRep.save(u);
+            })   
+            .orElseGet(() -> {
+               
+               Url url = new  Url(urlName, validation.getHost(), validation.isValid());
+               url.setPriority(priority);
+                     
+               url = uRep.save(url);
+               
+               if(!validation.isValid()) { //create a status entry if Url is not valid
+                  Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), ingestionDate);               
+                  sService.save(status);
+               }
+               
+               return url;            
+            });
+      }
+      finally{
+         this.urlLock.remove(urlName);
+      }
    }
 
    private Providergroup getProvidergroup(String providergroupName) {
@@ -152,7 +208,6 @@ public class LinkService {
          
          this.contextLock.remove(origin);
       }
-
    }
    
    private void insertOrUpdateUrlContext(Long urlId, Long contextId, String expectedMimeType, LocalDateTime ingestionDate) {

@@ -15,11 +15,14 @@ import eu.clarin.linkchecker.persistence.model.*;
 import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
 import eu.clarin.linkchecker.persistence.repository.StatusDetailRepository;
 import eu.clarin.linkchecker.persistence.repository.StatusRepository;
+import eu.clarin.linkchecker.persistence.repository.UrlRepository;
 import eu.clarin.linkchecker.persistence.utils.Category;
 
 @Service
 @Transactional
 public class StatusService {
+   @Autowired
+   UrlRepository uRep;
    @Autowired
    StatusRepository sRep;
    @Autowired
@@ -30,6 +33,12 @@ public class StatusService {
    
    @Transactional
    public void save(Status status) {
+      
+      if(status.getUrl().getPriority() > 0) { //de-prioritization when status update
+         status.getUrl().setPriority(0);
+         
+         uRep.save(status.getUrl());
+      }
       
       sRep.findByUrl(status.getUrl()).ifPresent(oldStatus -> {//save record to history
          History history = new History(oldStatus.getUrl(), oldStatus.getCategory(), oldStatus.getCheckingDate());
