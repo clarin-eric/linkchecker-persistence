@@ -1,3 +1,6 @@
+# version 0.0.5
+- dependency upgrade of spring-boot-starter-parent to v2.7.10
+
 # version 0.0.4
 - shifting prioritization from status- to url table
 
