@@ -1,5 +1,3 @@
-
-
 CREATE TABLE IF NOT EXISTS `providergroup` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(256) NOT NULL,
@@ -39,7 +37,8 @@ CREATE TABLE IF NOT EXISTS `url` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(512) NOT NULL,
   `group_key` VARCHAR(128) DEFAULT NULL,
-  `valid` boolean DEFAULT NULL, 
+  `valid` BOOLEAN DEFAULT NULL, 
+  `priority` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`name`),
   INDEX (`group_key`)
@@ -74,7 +73,6 @@ CREATE TABLE IF NOT EXISTS `status` (
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME NOT NULL,
   `redirect_count` INT DEFAULT NULL,
-  `recheck` BOOLEAN DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`url_id`),
   INDEX (`category`),
