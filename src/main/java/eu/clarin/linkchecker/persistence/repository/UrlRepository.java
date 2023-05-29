@@ -28,6 +28,7 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
                LEFT JOIN status s ON s.url_id = u.id 
                INNER JOIN url_context uc ON u.id = uc.url_id 
                WHERE u.valid=true 
+               AND u.in_process=false 
                AND uc.active = true 
                AND (s.checking_date IS NULL OR s.checking_date < ?2)
                ORDER BY u.group_key, u.priority DESC, s.checking_date) tab1

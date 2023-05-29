@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `url` (
   `group_key` VARCHAR(128) DEFAULT NULL,
   `valid` BOOLEAN DEFAULT NULL, 
   `priority` TINYINT NOT NULL DEFAULT 0,
+  `in_process` BOOLEAN NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`name`),
   INDEX (`group_key`)

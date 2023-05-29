@@ -43,6 +43,8 @@ public class Url {
    
    private int priority;
    
+   private boolean inProcess;
+   
    @OneToOne(mappedBy = "url")
    private Status status;
 
