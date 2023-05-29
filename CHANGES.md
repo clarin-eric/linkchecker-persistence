@@ -1,3 +1,7 @@
+# version 0.0.6
+- introducing new field Url.in_process, to prevent URLs in already process from consecutive look ups
+- introducing new class GenericRepository, which allows queries as method parameter  
+
 # version 0.0.5
 - dependency upgrade of spring-boot-starter-parent to v2.7.10
 
