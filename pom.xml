@@ -14,7 +14,7 @@
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <maven.compiler.source>17</maven.compiler.source>
       <maven.compiler.target>17</maven.compiler.target>
-      <vlo.version>4.11.2</vlo.version>
+      <vlo.version>4.11.3</vlo.version>
    </properties>
    <dependencies>
       <dependency>
@@ -42,14 +42,29 @@
       	<version>${vlo.version}</version>
       </dependency>
    </dependencies>
-   <distributionManagement>
-      <snapshotRepository>
-         <id>CLARIN-Snapshot</id>
-         <url>https://nexus.clarin.eu/content/repositories/clarin-snapshot/</url>
-      </snapshotRepository>
+   <repositories>
       <repository>
          <id>CLARIN</id>
+         <name>CLARIN Repository</name>
          <url>https://nexus.clarin.eu/content/repositories/Clarin/</url>
       </repository>
-   </distributionManagement> 
+      <repository>
+         <id>CLARIN-Snapshot</id>
+         <name>CLARIN Snapshot Repository</name>
+         <url>https://nexus.clarin.eu/content/repositories/clarin-snapshot/</url>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+      </repository>
+      <repository>
+         <id>sonatype-apache</id>
+         <url>https://repository.apache.org/releases</url>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+         <snapshots>
+            <enabled>false</enabled>
+         </snapshots>
+      </repository>
+   </repositories>
 </project>
