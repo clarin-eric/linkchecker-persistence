@@ -1,12 +1,14 @@
 package eu.clarin.linkchecker.persistence.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -255,9 +257,11 @@ public class LinkService {
    }
    
    
-   @Transactional
-   public List<Url> getUrlsToCheck(int maxNum, int maxNumPerGroup, LocalDateTime lastestCheck){
+   @Transactional(readOnly = true)
+   public List<Url> getUrlsToCheck(int groupLimit, int limit, LocalDateTime lastestCheck){
       
-      return (List<Url>) uRep.getNextUrlsToCheck(maxNumPerGroup, lastestCheck).limit(maxNum).collect(Collectors.toList());
+      try(Stream<Url> stream = uRep.getNextUrlsToCheck(groupLimit, lastestCheck)){
+         return stream.limit(limit).collect(Collectors.toList());
+      }
    }
 }
