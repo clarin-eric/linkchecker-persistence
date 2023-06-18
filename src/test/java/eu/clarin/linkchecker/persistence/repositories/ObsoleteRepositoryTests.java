@@ -25,7 +25,7 @@ public class ObsoleteRepositoryTests extends RepositoryTests {
    
    @Test
    @Transactional
-   public void deleteByCheckingDateBefore() {
+   void deleteByCheckingDateBefore() {
       
       LocalDateTime now = LocalDateTime.now();
       

@@ -46,5 +46,4 @@ class ProvidergroupRepositoryTests extends RepositoryTests{
 	  assertEquals(1, pRep.count());
 	   
 	}
-
 }

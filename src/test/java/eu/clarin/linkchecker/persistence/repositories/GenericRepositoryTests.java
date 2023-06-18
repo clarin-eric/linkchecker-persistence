@@ -31,7 +31,7 @@ public class GenericRepositoryTests extends RepositoryTests {
    
    @Test
    @Transactional
-   public void findAllUrl() {
+   void findAllUrl() {
       
       
       
@@ -45,7 +45,7 @@ public class GenericRepositoryTests extends RepositoryTests {
    
    @Test
    @Transactional
-   public void findAllProvidergroup() {
+   void findAllProvidergroup() {
       
       IntStream.range(0, 5).forEach(i -> pRep.save(new Providergroup("pg" +i)));      
 

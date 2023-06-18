@@ -84,6 +84,5 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       assertEquals(1, ucRep.count());
       assertEquals(false, ucRep.findByUrlAndContextAndExpectedMimeType(url, context, null).get().getActive());
-
    }
 }

@@ -87,7 +87,7 @@ public class StatusDetailRepositoryTests extends RepositoryTests{
    
    @Test
    @Transactional
-   public void findAllByOrderNrLessThanEqual() {
+   void findAllByOrderNrLessThanEqual() {
       
       this.statusMap.forEach((providergroup, statusVec) -> {
          
