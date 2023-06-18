@@ -23,7 +23,7 @@ import javax.transaction.Transactional;
 
 
 @SpringBootTest
-class UrlRepositoryTest extends RepositoryTests{
+class UrlRepositoryTests extends RepositoryTests{
    
 
 	@Test
