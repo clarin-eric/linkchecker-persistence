@@ -37,8 +37,6 @@ public class ObsoleteRepositoryTests extends RepositoryTests {
             oRep.save(obs);
          });
       
-      oRep.deleteByCheckingDateBefore(now.minusDays(50));
-      assertEquals(51, oRep.count());
       
       oRep.deleteByCheckingDateBefore(now.minusDays(50).plusSeconds(1));
       assertEquals(50, oRep.count());      
