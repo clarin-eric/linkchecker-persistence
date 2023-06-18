@@ -3,13 +3,16 @@ package eu.clarin.linkchecker.persistence.services;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import eu.clarin.linkchecker.persistence.model.Client;
+import eu.clarin.linkchecker.persistence.model.History;
+import eu.clarin.linkchecker.persistence.model.Obsolete;
 import eu.clarin.linkchecker.persistence.model.Role;
+import eu.clarin.linkchecker.persistence.model.Url;
 import eu.clarin.linkchecker.persistence.repositories.RepositoryTests;
 import eu.clarin.linkchecker.persistence.service.LinkService;
+import eu.clarin.linkchecker.persistence.utils.Category;
 import lombok.extern.slf4j.Slf4j;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,15 +29,13 @@ class LinkServiceTests extends RepositoryTests{
   
    
    @Autowired
-   ApplicationContext ctx;
+   LinkService lService;
    
    //private LinkService lService;
 
 	@Test
 	@Transactional
 	void save() {
-	   
-	   LinkService lService = ctx.getBean(LinkService.class);
       
       Client client = usRep.save(new Client("wowasa", UUID.randomUUID().toString(), Role.ADMIN));
       
@@ -82,8 +83,6 @@ class LinkServiceTests extends RepositoryTests{
 	@Test
 	void multithreadedSave() {
 	   
-	   LinkService lService = ctx.getBean(LinkService.class);
-	   
 	   Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
 	   
 	   ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(30);
@@ -122,8 +121,6 @@ class LinkServiceTests extends RepositoryTests{
    @Test
    void deactivateLinksOlderThan() {
       
-      LinkService lService = ctx.getBean(LinkService.class);
-      
       Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
       
       IntStream.range(0, 15).forEach(i -> {
@@ -142,8 +139,6 @@ class LinkServiceTests extends RepositoryTests{
    @Test
    void deleteLinksOlderThan() {
       
-      LinkService lService = ctx.getBean(LinkService.class);
-      
       Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
       
       IntStream.range(0, 100).forEach(i -> {
@@ -156,5 +151,35 @@ class LinkServiceTests extends RepositoryTests{
       
       assertEquals(30, uRep.countByUrlContextsActive(true));  
            
+   }
+   
+   @Test
+   void purgeHistory() {
+      
+      LocalDateTime now = LocalDateTime.now();
+      
+      IntStream.range(0, 100)
+         .forEach(i -> hRep.save(new History(uRep.save(new Url("http://www.wowasa.com" +i, "www.wowasa.com" +i, true)), Category.Broken, now.minusDays(i))));
+      
+      lService.purgeHistory(50);
+      assertEquals(50, hRep.count());      
+   }
+   
+   @Test
+   void purgeObsolete() {
+      
+      LocalDateTime now = LocalDateTime.now();
+      
+      IntStream.range(0, 100)         
+         .forEach(i -> {
+            Obsolete obs = new Obsolete("http://www.wowasa.com", Category.Ok, "", now);
+            
+            obs.setCheckingDate(now.minusDays(i));           
+            oRep.save(obs);
+         });
+      
+      
+      lService.purgeObsolete(50);
+      assertEquals(50, oRep.count());            
    }
 }

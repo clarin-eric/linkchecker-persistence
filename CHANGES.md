@@ -1,6 +1,7 @@
 # version 0.0.6
 - bug fix for issue #10, #11, #12
 - introducing new class GenericRepository, which allows queries as method parameter  
+- adding delete methods for history- and obsolete table and purge methods to service (issue #13) 
 
 # version 0.0.5
 - dependency upgrade of spring-boot-starter-parent to v2.7.10

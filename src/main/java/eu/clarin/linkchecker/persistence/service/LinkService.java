@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import eu.clarin.linkchecker.persistence.model.*;
 import eu.clarin.linkchecker.persistence.repository.ContextRepository;
 import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
+import eu.clarin.linkchecker.persistence.repository.ObsoleteRepository;
 import eu.clarin.linkchecker.persistence.repository.ProvidergroupRepository;
 import eu.clarin.linkchecker.persistence.repository.StatusRepository;
 import eu.clarin.linkchecker.persistence.repository.UrlContextRepository;
@@ -47,6 +48,8 @@ public class LinkService {
    private StatusRepository sRep;
    @Autowired
    private HistoryRepository hRep;
+   @Autowired
+   private ObsoleteRepository oRep;
    
    private Map<String,Providergroup> providergroupMap = new ConcurrentHashMap<String,Providergroup>();
    //locks
@@ -253,6 +256,18 @@ public class LinkService {
       log.info("step {}: deleting providerGroup records", step);
       pRep.deleteWithoutContext();
       log.info("step {}: done", step);      
+   }
+   
+   @Transactional
+   public void purgeHistory(int periodInDays) {
+      
+      hRep.deleteByCheckingDateBefore(LocalDateTime.now().minusDays(periodInDays));
+   }
+   
+   @Transactional
+   public void purgeObsolete(int periodInDays) {
+      
+      oRep.deleteByCheckingDateBefore(LocalDateTime.now().minusDays(periodInDays));
    }
    
    
