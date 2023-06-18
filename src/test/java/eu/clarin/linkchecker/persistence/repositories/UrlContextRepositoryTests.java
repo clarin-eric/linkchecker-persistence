@@ -51,11 +51,11 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       ucRep.save(urlContext);
 
-      ucRep.deleteOlderThan(LocalDateTime.now().minusDays(8));
+      ucRep.deleteByIngestionDateBefore(LocalDateTime.now().minusDays(8));
 
       assertEquals(1, ucRep.count());
 
-      ucRep.deleteOlderThan(LocalDateTime.now().minusDays(6));
+      ucRep.deleteByIngestionDateBefore(LocalDateTime.now().minusDays(6));
 
       assertEquals(0, ucRep.count());
 

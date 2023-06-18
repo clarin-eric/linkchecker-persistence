@@ -34,7 +34,7 @@ public interface UrlContextRepository extends CrudRepository<UrlContext, Long> {
    public void deactivateOlderThan(LocalDateTime dateTime);
    
    @Modifying(clearAutomatically = true, flushAutomatically = true)
-   @Query("DELETE FROM UrlContext uc WHERE uc.ingestionDate < ?1") 
-   public void deleteOlderThan(LocalDateTime dateTime);
+   @Query("DELETE FROM UrlContext uc WHERE uc.ingestionDate < :ingestionDate") 
+   public void deleteByIngestionDateBefore(@Param("ingestionDate") LocalDateTime ingestionDate);
 
 }

@@ -239,7 +239,7 @@ public class LinkService {
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting url_context records", step);
-      ucRep.deleteOlderThan(oldestDate);
+      ucRep.deleteByIngestionDateBefore(oldestDate);
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting url records with delete cascade to status and history records", step);
