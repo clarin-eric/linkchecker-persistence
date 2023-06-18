@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import eu.clarin.linkchecker.persistence.repository.ClientRepository;
 import eu.clarin.linkchecker.persistence.repository.ContextRepository;
 import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
+import eu.clarin.linkchecker.persistence.repository.ObsoleteRepository;
 import eu.clarin.linkchecker.persistence.repository.ProvidergroupRepository;
 import eu.clarin.linkchecker.persistence.repository.StatusRepository;
 import eu.clarin.linkchecker.persistence.repository.UrlContextRepository;
@@ -27,6 +28,8 @@ public class RepositoryTests {
    protected ProvidergroupRepository pRep;
    @Autowired
    protected ClientRepository usRep;
+   @Autowired
+   protected ObsoleteRepository oRep;
    
    @AfterEach
    void cleanUp() {
@@ -38,6 +41,6 @@ public class RepositoryTests {
       uRep.deleteAll();
       hRep.deleteAll();
       sRep.deleteAll();
+      oRep.deleteAll();
    }
-
 }
