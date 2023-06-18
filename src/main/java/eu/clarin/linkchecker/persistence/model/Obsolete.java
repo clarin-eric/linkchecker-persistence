@@ -42,12 +42,14 @@ public class Obsolete {
    private Long contentLength;
    private Integer duration;
    private Integer redirectCount;
+   private LocalDateTime checkingDate;
+   
    @NonNull
    @Enumerated(EnumType.STRING)
    private Category category;   
    @NonNull
    private String message;   
    @NonNull
-   private LocalDateTime checkingDate;
+   private LocalDateTime deletionDate;
 
 }
