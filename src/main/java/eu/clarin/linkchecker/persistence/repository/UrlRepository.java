@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -16,9 +15,7 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
    
    public Optional<Url> findByName(String name);
    
-   @Modifying
-   @Query("DELETE FROM Url u WHERE u.urlContexts IS EMPTY")
-   public void deleteWithoutContext();
+   public void deleteByUrlContextsIsEmpty();
    
    @Query(
          value = """

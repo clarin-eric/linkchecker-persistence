@@ -246,7 +246,7 @@ public class LinkService {
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting url records with delete cascade to status and history records", step);
-      uRep.deleteWithoutContext();
+      uRep.deleteByUrlContextsIsEmpty();
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting context records", step);
@@ -254,7 +254,7 @@ public class LinkService {
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting providerGroup records", step);
-      pRep.deleteWithoutContext();
+      pRep.deleteByContextsIsEmpty();
       log.info("step {}: done", step);      
    }
    

@@ -33,8 +33,6 @@ public interface HistoryRepository extends PagingAndSortingRepository<History, L
    @Modifying
    public void saveHistoryLinksOlderThan(LocalDateTime dateTime);
    
-   @Modifying(clearAutomatically = true, flushAutomatically = true)
-   @Query("DELETE FROM History h WHERE h.checkingDate < :checkingDate") 
    public void deleteByCheckingDateBefore(@Param("checkingDate") LocalDateTime checkingDate);
 
 }

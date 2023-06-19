@@ -53,6 +53,11 @@ public class Url {
    @LazyToOne(LazyToOneOption.NO_PROXY)
    @PrimaryKeyJoinColumn
    private Status status;
+   
+   @OneToOne(mappedBy = "url", fetch = FetchType.LAZY)
+   @LazyToOne(LazyToOneOption.NO_PROXY)
+   @PrimaryKeyJoinColumn
+   private History history;
 
    @OneToMany
    @JoinColumn(name = "url_id", referencedColumnName = "id")
