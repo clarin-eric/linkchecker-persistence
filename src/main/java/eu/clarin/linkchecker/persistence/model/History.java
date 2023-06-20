@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,6 +52,7 @@ public class History {
    private final Url url;
    
    @NonNull
+   @Enumerated(EnumType.STRING)
    private final Category category;
    
    @NonNull 
