@@ -1,5 +1,5 @@
 # version 0.0.6
-- bug fix for issue #10, #11, #12
+- bug fix for issue #10, #11, #12, #15
 - introducing new class GenericRepository, which allows queries as method parameter  
 - adding delete methods for history- and obsolete table and purge methods to service (issue #13) 
 
