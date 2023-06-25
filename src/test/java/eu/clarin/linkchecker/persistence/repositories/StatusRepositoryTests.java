@@ -119,7 +119,7 @@ class StatusRepositoryTests extends RepositoryTests {
    
    @Transactional
    @Test
-   public void findAllByUrlUrlContextsContextUserName() {
+   void findAllByUrlUrlContextsContextUserName() {
       
       Random rand = new Random();
       
@@ -148,7 +148,7 @@ class StatusRepositoryTests extends RepositoryTests {
 
    @Transactional
    @Test
-   public void findAllByUrlUrlContextsContextUserNameAndUrlUrlContextsContextOrigin() {
+   void findAllByUrlUrlContextsContextUserNameAndUrlUrlContextsContextOrigin() {
       
       Random rand = new Random();
       

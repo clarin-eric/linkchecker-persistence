@@ -8,14 +8,33 @@
    </parent>
    <groupId>eu.clarin</groupId>
    <artifactId>linkchecker-persistence</artifactId>
-   <version>0.0.5</version>
+   <version>0.0.6</version>
    <name>Linkchecker Persistence API</name>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <maven.compiler.source>17</maven.compiler.source>
       <maven.compiler.target>17</maven.compiler.target>
-      <vlo.version>4.11.2</vlo.version>
+      <vlo.version>4.11.3</vlo.version>
    </properties>
+      <build>
+      <plugins>
+      <plugin>
+          <groupId>org.hibernate.orm.tooling</groupId>
+          <artifactId>hibernate-enhance-maven-plugin</artifactId>
+          <version>${hibernate.version}</version>
+          <executions>
+              <execution>
+                  <configuration>
+                      <enableLazyInitialization>true</enableLazyInitialization>
+                  </configuration>
+                  <goals>
+                      <goal>enhance</goal>
+                  </goals>
+              </execution>
+          </executions>
+         </plugin>
+      </plugins>
+   </build>
    <dependencies>
       <dependency>
          <groupId>org.springframework.boot</groupId>
@@ -42,14 +61,41 @@
       	<version>${vlo.version}</version>
       </dependency>
    </dependencies>
-   <distributionManagement>
-      <snapshotRepository>
-         <id>CLARIN-Snapshot</id>
-         <url>https://nexus.clarin.eu/content/repositories/clarin-snapshot/</url>
-      </snapshotRepository>
+   <repositories>
       <repository>
          <id>CLARIN</id>
+         <name>CLARIN Repository</name>
          <url>https://nexus.clarin.eu/content/repositories/Clarin/</url>
       </repository>
-   </distributionManagement> 
+      <repository>
+         <id>CLARIN-Snapshot</id>
+         <name>CLARIN Snapshot Repository</name>
+         <url>https://nexus.clarin.eu/content/repositories/clarin-snapshot/</url>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+      </repository>
+      <repository>
+         <id>sonatype-apache</id>
+         <url>https://repository.apache.org/releases</url>
+         <releases>
+            <enabled>false</enabled>
+         </releases>
+         <snapshots>
+            <enabled>false</enabled>
+         </snapshots>
+      </repository>
+   </repositories>
+   <distributionManagement>
+      <repository>
+         <id>CLARIN</id>
+         <name>CLARIN Repository</name>
+         <url>https://nexus.clarin.eu/content/repositories/Clarin/</url>
+      </repository>
+      <snapshotRepository>
+         <id>CLARIN-Snapshot</id>
+         <name>CLARIN Snapshot Repository</name>
+         <url>https://nexus.clarin.eu/content/repositories/clarin-snapshot/</url>
+      </snapshotRepository>
+   </distributionManagement>
 </project>

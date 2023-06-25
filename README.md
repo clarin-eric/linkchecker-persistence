@@ -1,7 +1,7 @@
 # Linkchecker Persistence API
 
 ## Introduction
-The linkchecker persistence API (LPA) is a project, based on [Spring data JPA 2.7.1](https://spring.io/projects/spring-data-jpa), which serves as a common persistence layer for the following projects:
+The linkchecker persistence API (LPA) is a project, based on [Spring data JPA 2.7.10](https://spring.io/projects/spring-data-jpa), which serves as a common persistence layer for the following projects:
    - [Clarin Curation Dashboard](https://github.com/clarin-eric/curation-dashboard)
    - [Link Checker](https://github.com/clarin-eric/linkchecker)
    - [Link Checker Web](https://github.com/clarin-eric/linkchecker-web)
@@ -37,6 +37,8 @@ For details on Hikari properties, have a look on the [Hikari Readme page](https:
 
 ## Important notes
 
-   - We're using a schema.sql file to set up database structure with tables and views. The SQL script works for H2 and MariaDB and we strongly discourage an automatic setup via hibernate.ddl-auto=create.    
+   - linkchecker-persistence is using a schema.sql file to set up database structure with tables and views. The SQL script works for H2 and MariaDB and we strongly discourage an automatic setup via hibernate.ddl-auto=create.    
 
-   - Spring data JPA 2.7.7 uses an h2 v1.4.200 database as dependency for testing. This version doesn't have mode=MariaDB so far. Therefore we had to use mode=MYSQL     
+   - version 0.0.6+ uses the hibernate-enhance-maven-plugin to allow lazy fetching for toOne associations. This is basically important when you lookup a significant number of Url instances 
+   since otherwise for each instance a query is send to the database to look up the associated Status instance. **If you use another persistence API than hibernate, which is currently 
+   the default in Spring data JPA, you should make sure lazy loading for toOne associations.**     

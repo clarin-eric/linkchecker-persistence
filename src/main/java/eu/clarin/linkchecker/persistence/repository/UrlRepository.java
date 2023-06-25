@@ -16,9 +16,9 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
    
    public Optional<Url> findByName(String name);
    
-   @Modifying
-   @Query("DELETE FROM Url u WHERE u.urlContexts IS EMPTY")
-   public void deleteWithoutContext();
+   @Modifying(clearAutomatically = true, flushAutomatically = true)
+   @Query("DELETE FROM Url u WHERE u NOT IN (SELECT DISTINCT uc.url FROM UrlContext uc)")
+   public void deleteByUrlContextsIsEmpty();
    
    @Query(
          value = """
@@ -26,9 +26,8 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
                (SELECT ROW_NUMBER() OVER (PARTITION BY u.group_key ORDER BY u.priority DESC, s.checking_date) AS order_Nr, u.id, u.name, u.group_key, u.valid, u.priority, s.checking_date 
                FROM url u 
                LEFT JOIN status s ON s.url_id = u.id 
-               INNER JOIN url_context uc ON u.id = uc.url_id 
                WHERE u.valid=true 
-               AND uc.active = true 
+               AND u.id IN (SELECT uc.url_id FROM url_context uc WHERE uc.active = true) 
                AND (s.checking_date IS NULL OR s.checking_date < ?2)
                ORDER BY u.group_key, u.priority DESC, s.checking_date) tab1
             WHERE order_nr <= ?1 
@@ -36,7 +35,7 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
             """,
           nativeQuery = true     
       )
-   public Stream<Url> getNextUrlsToCheck(int maxPerGroup, LocalDateTime maximalCheckingDate);
+   public Stream<Url> getNextUrlsToCheck(int groupLimit, LocalDateTime maximalCheckingDate);
    
    public long countByUrlContextsActive(boolean active);
    

@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 
@@ -43,8 +49,15 @@ public class Url {
    
    private int priority;
    
-   @OneToOne(mappedBy = "url")
+   @OneToOne(mappedBy = "url", fetch = FetchType.LAZY)
+   @LazyToOne(LazyToOneOption.NO_PROXY)
+   @PrimaryKeyJoinColumn
    private Status status;
+   
+   @OneToOne(mappedBy = "url", fetch = FetchType.LAZY)
+   @LazyToOne(LazyToOneOption.NO_PROXY)
+   @PrimaryKeyJoinColumn
+   private History history;
 
    @OneToMany
    @JoinColumn(name = "url_id", referencedColumnName = "id")

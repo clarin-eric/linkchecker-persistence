@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import eu.clarin.linkchecker.persistence.model.*;
 import eu.clarin.linkchecker.persistence.repository.ContextRepository;
 import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
+import eu.clarin.linkchecker.persistence.repository.ObsoleteRepository;
 import eu.clarin.linkchecker.persistence.repository.ProvidergroupRepository;
 import eu.clarin.linkchecker.persistence.repository.StatusRepository;
 import eu.clarin.linkchecker.persistence.repository.UrlContextRepository;
@@ -46,6 +48,8 @@ public class LinkService {
    private StatusRepository sRep;
    @Autowired
    private HistoryRepository hRep;
+   @Autowired
+   private ObsoleteRepository oRep;
    
    private Map<String,Providergroup> providergroupMap = new ConcurrentHashMap<String,Providergroup>();
    //locks
@@ -238,11 +242,11 @@ public class LinkService {
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting url_context records", step);
-      ucRep.deleteOlderThan(oldestDate);
+      ucRep.deleteByIngestionDateBefore(oldestDate);
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting url records with delete cascade to status and history records", step);
-      uRep.deleteWithoutContext();
+      uRep.deleteByUrlContextsIsEmpty();
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting context records", step);
@@ -250,14 +254,28 @@ public class LinkService {
       log.info("step {}: done", step++);
       
       log.info("step {}: deleting providerGroup records", step);
-      pRep.deleteWithoutContext();
+      pRep.deleteByContextsIsEmpty();
       log.info("step {}: done", step);      
    }
    
+   @Transactional
+   public void purgeHistory(int periodInDays) {
+      
+      hRep.deleteByCheckingDateBefore(LocalDateTime.now().minusDays(periodInDays));
+   }
    
    @Transactional
-   public List<Url> getUrlsToCheck(int maxNum, int maxNumPerGroup, LocalDateTime lastestCheck){
+   public void purgeObsolete(int periodInDays) {
       
-      return (List<Url>) uRep.getNextUrlsToCheck(maxNumPerGroup, lastestCheck).limit(maxNum).collect(Collectors.toList());
+      oRep.deleteByCheckingDateBefore(LocalDateTime.now().minusDays(periodInDays));
+   }
+   
+   
+   @Transactional(readOnly = true)
+   public List<Url> getUrlsToCheck(int groupLimit, int limit, LocalDateTime lastestCheck){
+      
+      try(Stream<Url> stream = uRep.getNextUrlsToCheck(groupLimit, lastestCheck)){
+         return stream.limit(limit).collect(Collectors.toList());
+      }
    }
 }

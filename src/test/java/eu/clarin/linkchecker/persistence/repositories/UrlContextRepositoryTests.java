@@ -12,6 +12,8 @@ import eu.clarin.linkchecker.persistence.model.UrlContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
+import java.util.stream.IntStream;
+import java.util.stream.StreamSupport;
 
 import javax.transaction.Transactional;
 
@@ -39,6 +41,8 @@ class UrlContextRepositoryTests extends RepositoryTests{
    @Test
    @Transactional
    void deleteOlderThan() {
+      
+      LocalDateTime now = LocalDateTime.now();
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
@@ -46,24 +50,26 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, client));
       
-      UrlContext urlContext = new UrlContext(url, context, LocalDateTime.now().minusDays(7), false);
-      urlContext.setActive(true);
+      IntStream.range(0, 100)
+         .forEach(i -> {
+            
+            UrlContext urlContext = new UrlContext(url, context, now.minusDays(i), false);
+            urlContext.setActive(true);
+            urlContext.setExpectedMimeType("mimetype-" + i);
 
-      ucRep.save(urlContext);
+            ucRep.save(urlContext);           
+         });
 
-      ucRep.deleteOlderThan(LocalDateTime.now().minusDays(8));
+      ucRep.deleteByIngestionDateBefore(LocalDateTime.now().minusDays(50));
 
-      assertEquals(1, ucRep.count());
-
-      ucRep.deleteOlderThan(LocalDateTime.now().minusDays(6));
-
-      assertEquals(0, ucRep.count());
-
+      assertEquals(50, ucRep.count());
    }
 
    @Test
    @Transactional
    void deactivateOlderThan() {
+      
+      LocalDateTime now = LocalDateTime.now();
 
       Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
@@ -71,19 +77,18 @@ class UrlContextRepositoryTests extends RepositoryTests{
 
       Context context = cRep.save(new Context("upload" + System.currentTimeMillis(), null, client));
       
-      UrlContext urlContext = new UrlContext(url, context, LocalDateTime.now().minusDays(7), true);
-      urlContext.setActive(true);
+      IntStream.range(0, 100)
+      .forEach(i -> {
+         
+         UrlContext urlContext = new UrlContext(url, context, now.minusDays(i), false);
+         urlContext.setActive(true);
+         urlContext.setExpectedMimeType("mimetype-" + i);
 
-      ucRep.save(urlContext);
+         ucRep.save(urlContext);           
+      });
 
-      ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(8));
+      ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(50));
 
-      assertEquals(true, ucRep.findByUrlAndContextAndExpectedMimeType(url, context, null).get().getActive());
-
-      ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(6));
-
-      assertEquals(1, ucRep.count());
-      assertEquals(false, ucRep.findByUrlAndContextAndExpectedMimeType(url, context, null).get().getActive());
-
+      assertEquals(50, StreamSupport.stream(ucRep.findAll().spliterator(), false).filter(UrlContext::getActive).count());
    }
 }

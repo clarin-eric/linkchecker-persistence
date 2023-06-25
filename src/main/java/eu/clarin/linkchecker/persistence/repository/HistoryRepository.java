@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
 import eu.clarin.linkchecker.persistence.model.History;
 
@@ -31,5 +32,9 @@ public interface HistoryRepository extends PagingAndSortingRepository<History, L
       )
    @Modifying
    public void saveHistoryLinksOlderThan(LocalDateTime dateTime);
+   
+   @Modifying(clearAutomatically = true, flushAutomatically = true)
+   @Query("DELETE FROM History h WHERE h.checkingDate < :checkingDate")
+   public void deleteByCheckingDateBefore(@Param("checkingDate") LocalDateTime checkingDate);
 
 }

@@ -42,9 +42,8 @@ class ProvidergroupRepositoryTests extends RepositoryTests{
 	   assertEquals(2, pRep.count());
 	   assertEquals(1, cRep.count());
 	   
-	  pRep.deleteWithoutContext();
+	  pRep.deleteByContextsIsEmpty();
 	  assertEquals(1, pRep.count());
 	   
 	}
-
 }

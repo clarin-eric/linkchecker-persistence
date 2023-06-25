@@ -30,11 +30,11 @@ public interface UrlContextRepository extends CrudRepository<UrlContext, Long> {
    public void insertOrUpdate(@Param("urlId") Long urlId, @Param("contextId") Long contextId, @Param("expectedMimeType") String expectedMimeType, @Param("ingestionDate") LocalDateTime ingestionDate);
    
    @Modifying(clearAutomatically = true, flushAutomatically = true)
-   @Query("UPDATE UrlContext uc SET uc.active = false WHERE uc.active = true AND uc.ingestionDate < ?1")
-   public void deactivateOlderThan(LocalDateTime dateTime);
+   @Query("UPDATE UrlContext uc SET uc.active = false WHERE uc.active = true AND uc.ingestionDate < :ingestionDate")
+   public void deactivateOlderThan(@Param("ingestionDate") LocalDateTime ingestionDate);
    
    @Modifying(clearAutomatically = true, flushAutomatically = true)
-   @Query("DELETE FROM UrlContext uc WHERE uc.ingestionDate < ?1") 
-   public void deleteOlderThan(LocalDateTime dateTime);
+   @Query("DELETE FROM UrlContext uc WHERE uc.ingestionDate < :ingestionDate")
+   public void deleteByIngestionDateBefore(@Param("ingestionDate") LocalDateTime ingestionDate);
 
 }
