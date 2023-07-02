@@ -1,6 +1,7 @@
 package eu.clarin.linkchecker.persistence.repository;
 
 import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +11,10 @@ import org.springframework.data.repository.query.Param;
 import eu.clarin.linkchecker.persistence.model.History;
 
 public interface HistoryRepository extends PagingAndSortingRepository<History, Long> {
+   
+   public Stream<History> findAllByUrlName(String name);
+   
+   public Stream<History> findAllByUrlNameIn(String... names);
    
    @Query(
          value = """
