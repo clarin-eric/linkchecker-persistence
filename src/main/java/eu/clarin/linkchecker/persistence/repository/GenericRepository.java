@@ -6,12 +6,14 @@ package eu.clarin.linkchecker.persistence.repository;
 
 import java.util.stream.Stream;
 
+import javax.persistence.Tuple;
+
 
 /**
  *
  */
-public interface GenericRepository<T> {
+public interface GenericRepository {
    
-   public Stream<T> findAll(String nativeQuery);
+   public Stream<Tuple> findAll(String query, boolean isNative);
 
 }

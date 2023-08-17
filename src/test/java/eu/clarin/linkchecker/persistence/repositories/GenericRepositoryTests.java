@@ -7,12 +7,12 @@ package eu.clarin.linkchecker.persistence.repositories;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import javax.persistence.Tuple;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 
 import eu.clarin.linkchecker.persistence.model.Providergroup;
 import eu.clarin.linkchecker.persistence.model.Url;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class GenericRepositoryTests extends RepositoryTests {
    
    @Autowired
-   ApplicationContext ctx;
+   GenericRepository gRep;
    
    @Test
    @Transactional
@@ -36,11 +36,12 @@ public class GenericRepositoryTests extends RepositoryTests {
       
       
       IntStream.range(0, 5).forEach(i -> uRep.save(new Url("http://www.wowasa.com" +i, "wowasa.com", true)));      
-
-      GenericRepository<Url> gRep = ctx.getBean(GenericRepository.class);
-      Stream<Url> stream = gRep.findAll("select * from url");       
+      //native query
+      Stream<Tuple> stream = gRep.findAll("select * from url", true);       
       assertEquals(5, stream.count());
-      
+      // jpql query
+      stream = gRep.findAll("select u from Url u", false);
+      assertEquals(5, stream.count());
    }
    
    @Test
@@ -48,10 +49,11 @@ public class GenericRepositoryTests extends RepositoryTests {
    void findAllProvidergroup() {
       
       IntStream.range(0, 5).forEach(i -> pRep.save(new Providergroup("pg" +i)));      
-
-      GenericRepository<Providergroup> gRep = ctx.getBean(GenericRepository.class);
-      Stream<Providergroup> stream = gRep.findAll("select * from providergroup"); 
-      
+      // native query
+      Stream<Tuple> stream = gRep.findAll("select * from providergroup", true);       
+      assertEquals(5, stream.count());      
+      // jpql query
+      stream = gRep.findAll("select p from Providergroup p", false);       
       assertEquals(5, stream.count());      
    }
 }
