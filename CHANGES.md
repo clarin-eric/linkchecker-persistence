@@ -1,3 +1,6 @@
+# version 0.0.7
+- GenericRepository with findAll method, to pass an SQL/JPQL query as parameter (issue #18) and to receive a Stream of Tuple
+
 # version 0.0.6
 - bug fix for issue #10, #11, #12, #15
 - introducing new class GenericRepository, which allows queries as method parameter  
