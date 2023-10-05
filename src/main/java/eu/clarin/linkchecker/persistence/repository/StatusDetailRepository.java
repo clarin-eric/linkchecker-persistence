@@ -6,8 +6,10 @@ package eu.clarin.linkchecker.persistence.repository;
 
 import java.util.stream.Stream;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import eu.clarin.linkchecker.persistence.model.StatusDetail;
 import eu.clarin.linkchecker.persistence.model.StatusDetailId;
@@ -16,7 +18,7 @@ import eu.clarin.linkchecker.persistence.model.StatusDetailId;
 /**
  *
  */
-public interface StatusDetailRepository extends CrudRepository<StatusDetail, StatusDetailId>{
+public interface StatusDetailRepository extends PagingAndSortingRepository<StatusDetail, StatusDetailId>{
    
    @Query(
       value = """
@@ -31,7 +33,7 @@ public interface StatusDetailRepository extends CrudRepository<StatusDetail, Sta
             """,
       nativeQuery = true
    )
-   public Stream<StatusDetail> findAllByCategory(String categoryName);
+   public Page<StatusDetail> findAllByCategory(String categoryName, Pageable pageable);
    @Query(
       value = """
          SELECT NULL AS order_nr, s.*, u.name AS urlname, p.name AS providergroupname, c.origin, uc.expected_mime_type
@@ -46,7 +48,7 @@ public interface StatusDetailRepository extends CrudRepository<StatusDetail, Sta
             """,
       nativeQuery = true
    )
-   public Stream<StatusDetail> findAllByProvidergroupnameAndCategory(String providergroupname, String categoryName);
+   public Page<StatusDetail> findAllByProvidergroupnameAndCategory(String providergroupname, String categoryName, Pageable pageable);
    
    public Stream<StatusDetail> findByOrderNrLessThanEqual(Long orderNr);
 
