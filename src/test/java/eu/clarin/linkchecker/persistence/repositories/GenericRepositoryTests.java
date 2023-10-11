@@ -7,12 +7,12 @@ package eu.clarin.linkchecker.persistence.repositories;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import javax.persistence.Tuple;
-import javax.transaction.Transactional;
+import jakarta.persistence.Tuple;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.clarin.linkchecker.persistence.model.Providergroup;
 import eu.clarin.linkchecker.persistence.model.Url;

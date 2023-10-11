@@ -6,14 +6,14 @@ import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import eu.clarin.linkchecker.persistence.model.Status;
 import eu.clarin.linkchecker.persistence.model.Url;
 import eu.clarin.linkchecker.persistence.utils.Category;
 
 
-public interface StatusRepository extends PagingAndSortingRepository<Status, Long> {
+public interface StatusRepository extends CrudRepository<Status, Long> {
    
    
    public Optional<Status> findByUrl(Url url);  

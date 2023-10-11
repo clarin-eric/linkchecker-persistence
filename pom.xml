@@ -3,12 +3,12 @@
    <parent>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-parent</artifactId>
-      <version>2.7.10</version>
+      <version>3.1.4</version>
       <relativePath /> <!-- lookup parent from repository -->
    </parent>
    <groupId>eu.clarin</groupId>
    <artifactId>linkchecker-persistence</artifactId>
-   <version>0.0.8-SNAPSHOT</version>
+   <version>1.0.0-SNAPSHOT</version>
    <name>Linkchecker Persistence API</name>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

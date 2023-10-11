@@ -2,9 +2,9 @@ package eu.clarin.linkchecker.persistence.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 import eu.clarin.linkchecker.persistence.utils.Category;
 import lombok.Data;

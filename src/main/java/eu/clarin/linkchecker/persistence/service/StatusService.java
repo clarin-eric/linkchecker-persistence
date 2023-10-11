@@ -3,13 +3,11 @@ package eu.clarin.linkchecker.persistence.service;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.transaction.Transactional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.clarin.cmdi.vlo.PIDUtils;
 import eu.clarin.linkchecker.persistence.model.*;
@@ -75,13 +73,11 @@ public class StatusService {
    
    }
    @Transactional
-   public Page<StatusDetail> findAllDetail(Category category, Pageable pageable){
-      
-      return sdRep.findAllByCategory(category.name(), pageable);
+   public Stream<StatusDetail> findAllDetail(Category category){
+      return sdRep.findAllByCategory(category.name());
    }
    @Transactional
-   public Page<StatusDetail> findAllDetail(String providergroupname, Category category, Pageable pageable){
-      
-      return sdRep.findAllByProvidergroupnameAndCategory(providergroupname, category.name(), pageable);
+   public Stream<StatusDetail> findAllDetail(String providergroupname, Category category){
+      return sdRep.findAllByProvidergroupnameAndCategory(providergroupname, category.name());
    }
 }

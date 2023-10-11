@@ -6,7 +6,7 @@ package eu.clarin.linkchecker.persistence.repository;
 
 import java.util.stream.Stream;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 
 /**

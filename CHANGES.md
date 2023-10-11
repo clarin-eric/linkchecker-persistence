@@ -1,3 +1,6 @@
+# version 1.0.0
+- upgrading Spring Boot to 3.1.4
+
 # version 0.0.7
 - GenericRepository with findAll method, to pass an SQL/JPQL query as parameter (issue #18) and to receive a Stream of Tuple
 
