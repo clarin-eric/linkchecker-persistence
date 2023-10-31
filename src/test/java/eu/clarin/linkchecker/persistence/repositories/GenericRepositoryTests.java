@@ -4,8 +4,9 @@
  */
 package eu.clarin.linkchecker.persistence.repositories;
 
+import java.util.List;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
+
 
 import jakarta.persistence.Tuple;
 
@@ -37,11 +38,11 @@ public class GenericRepositoryTests extends RepositoryTests {
       
       IntStream.range(0, 5).forEach(i -> uRep.save(new Url("http://www.wowasa.com" +i, "wowasa.com", true)));      
       //native query
-      Stream<Tuple> stream = gRep.findAll("select * from url", true);       
-      assertEquals(5, stream.count());
+      List<Tuple> list = gRep.findAll("select * from url", true);       
+      assertEquals(5, list.size());
       // jpql query
-      stream = gRep.findAll("select u from Url u", false);
-      assertEquals(5, stream.count());
+      list = gRep.findAll("select u from Url u", false);
+      assertEquals(5, list.size());
    }
    
    @Test
@@ -50,10 +51,10 @@ public class GenericRepositoryTests extends RepositoryTests {
       
       IntStream.range(0, 5).forEach(i -> pRep.save(new Providergroup("pg" +i)));      
       // native query
-      Stream<Tuple> stream = gRep.findAll("select * from providergroup", true);       
-      assertEquals(5, stream.count());      
+      List<Tuple> list = gRep.findAll("select * from providergroup", true);       
+      assertEquals(5, list.size());      
       // jpql query
-      stream = gRep.findAll("select p from Providergroup p", false);       
-      assertEquals(5, stream.count());      
+      list = gRep.findAll("select p from Providergroup p", false);       
+      assertEquals(5, list.size());      
    }
 }

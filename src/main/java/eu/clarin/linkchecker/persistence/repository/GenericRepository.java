@@ -4,7 +4,7 @@
  */
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 import jakarta.persistence.Tuple;
 
@@ -14,6 +14,6 @@ import jakarta.persistence.Tuple;
  */
 public interface GenericRepository {
    
-   public Stream<Tuple> findAll(String query, boolean isNative);
+   public List<Tuple> findAll(String query, boolean isNative);
 
 }
