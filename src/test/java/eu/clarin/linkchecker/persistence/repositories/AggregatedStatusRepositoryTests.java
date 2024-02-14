@@ -3,6 +3,7 @@ package eu.clarin.linkchecker.persistence.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.clarin.linkchecker.persistence.model.AggregatedStatus;
 import eu.clarin.linkchecker.persistence.model.Client;
@@ -24,8 +25,6 @@ import java.util.Random;
 import java.util.Vector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
 

@@ -6,7 +6,10 @@ package eu.clarin.linkchecker.persistence.repository;
 
 import java.util.stream.Stream;
 
+import jakarta.persistence.QueryHint;
+
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.CrudRepository;
 
 import eu.clarin.linkchecker.persistence.model.StatusDetail;
@@ -31,6 +34,11 @@ public interface StatusDetailRepository extends CrudRepository<StatusDetail, Sta
             """,
       nativeQuery = true
    )
+   @QueryHints(value = {
+         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_FETCH_SIZE, value = "1"), 
+         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_CACHEABLE, value = "false"),
+         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_READ_ONLY, value = "true")
+   })
    public Stream<StatusDetail> findAllByCategory(String categoryName);
    @Query(
       value = """
@@ -46,6 +54,11 @@ public interface StatusDetailRepository extends CrudRepository<StatusDetail, Sta
             """,
       nativeQuery = true
    )
+   @QueryHints(value = {
+         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_FETCH_SIZE, value = "1"), 
+         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_CACHEABLE, value = "false"),
+         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_READ_ONLY, value = "true")
+   })
    public Stream<StatusDetail> findAllByProvidergroupnameAndCategory(String providergroupname, String categoryName);
    
    public Stream<StatusDetail> findByOrderNrLessThanEqual(Long orderNr);

@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
   `url_name` VARCHAR(512) NOT NULL,
   `client_name` VARCHAR(256) DEFAULT NULL,
   `providergroup_name` VARCHAR(256) DEFAULT NULL,
-  `origin` VARCHAR(256) DEFAULT NULL,
+  `origin` VARCHAR(512) DEFAULT NULL,
   `expected_mime_type` VARCHAR(256) DEFAULT NULL,
   `ingestion_date` DATETIME DEFAULT NULL,
   `status_code` INT DEFAULT NULL,

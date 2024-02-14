@@ -4,14 +4,16 @@
  */
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.util.stream.Stream;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Tuple;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Tuple;
+import java.util.List;
 
 import org.springframework.context.annotation.Scope;
+
 import org.springframework.stereotype.Component;
+
 
 /**
  *
@@ -25,8 +27,9 @@ public class GenericRepositoryImpl implements GenericRepository {
  
    @SuppressWarnings("unchecked")
    @Override
-   public Stream<Tuple> findAll(String query, boolean isNative) {
+   public List<Tuple> findAll(String query, boolean isNative) {
       
-      return (isNative?em.createNativeQuery(query, Tuple.class):em.createQuery(query, Tuple.class)).getResultStream();   
+      return (isNative?em.createNativeQuery(query, Tuple.class):em.createQuery(query, Tuple.class))
+            .getResultList();
    }
 }

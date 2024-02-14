@@ -3,21 +3,18 @@ package eu.clarin.linkchecker.persistence.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
-
-import javax.persistence.Index;
-import javax.persistence.JoinColumn;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -50,12 +47,10 @@ public class Url {
    private int priority;
    
    @OneToOne(mappedBy = "url", fetch = FetchType.LAZY)
-   @LazyToOne(LazyToOneOption.NO_PROXY)
    @PrimaryKeyJoinColumn
    private Status status;
    
    @OneToOne(mappedBy = "url", fetch = FetchType.LAZY)
-   @LazyToOne(LazyToOneOption.NO_PROXY)
    @PrimaryKeyJoinColumn
    private History history;
 

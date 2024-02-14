@@ -3,6 +3,7 @@ package eu.clarin.linkchecker.persistence.repositories;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.clarin.linkchecker.persistence.model.Client;
 import eu.clarin.linkchecker.persistence.model.Context;
@@ -20,8 +21,6 @@ import java.time.LocalDateTime;
 import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import javax.transaction.Transactional;
 
 @SpringBootTest
 class StatusRepositoryTests extends RepositoryTests {

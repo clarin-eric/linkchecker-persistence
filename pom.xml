@@ -3,12 +3,12 @@
    <parent>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-parent</artifactId>
-      <version>2.7.10</version>
+      <version>3.2.2</version>
       <relativePath /> <!-- lookup parent from repository -->
    </parent>
    <groupId>eu.clarin</groupId>
    <artifactId>linkchecker-persistence</artifactId>
-   <version>0.0.7</version>
+   <version>1.0.1</version>
    <name>Linkchecker Persistence API</name>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -59,6 +59,12 @@
       	<groupId>eu.clarin.cmdi</groupId>
       	<artifactId>vlo-commons</artifactId>
       	<version>${vlo.version}</version>
+      	<exclusions>
+      		<exclusion>
+      			<groupId>*</groupId>
+      			<artifactId>*</artifactId>
+      		</exclusion>
+      	</exclusions>
       </dependency>
    </dependencies>
    <repositories>

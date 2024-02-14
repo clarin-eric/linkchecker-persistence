@@ -2,6 +2,7 @@ package eu.clarin.linkchecker.persistence.repositories;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import eu.clarin.linkchecker.persistence.model.History;
 import eu.clarin.linkchecker.persistence.model.Url;
@@ -11,8 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
-
-import javax.transaction.Transactional;
 
 @SpringBootTest
 class HistoryRepositoryTests extends RepositoryTests {
