@@ -8,7 +8,7 @@
    </parent>
    <groupId>eu.clarin</groupId>
    <artifactId>linkchecker-persistence</artifactId>
-   <version>1.0.1-SNAPSHOT</version>
+   <version>1.0.1</version>
    <name>Linkchecker Persistence API</name>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
