@@ -1,6 +1,9 @@
+# version 1.0.3
+- upgrading Spring Boot to 3.3.3
+
 # version 1.0.2
 - upgrading Spring Boot to 3.2.5
-- 
+
 # version 1.0.1
 - upgrading Spring Boot to 3.2.2
 
