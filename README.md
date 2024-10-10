@@ -4,7 +4,7 @@
 The linkchecker persistence API (LPA) is a project, based on [Spring data JPA 2.7.10](https://spring.io/projects/spring-data-jpa), which serves as a common persistence layer for the following projects:
    - [Clarin Curation Dashboard](https://github.com/clarin-eric/curation-dashboard)
    - [Link Checker](https://github.com/clarin-eric/linkchecker)
-   - [Link Checker Web](https://github.com/clarin-eric/linkchecker-web)
+   - [Link Checker API](https://github.com/clarin-eric/linkchecker-api)
    - [Virtual Language Observatory](https://github.com/clarin-eric/VLO)
    
 ## Set up   
