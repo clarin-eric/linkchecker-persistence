@@ -42,7 +42,7 @@ public class StatusDetailRepositoryTests extends RepositoryTests{
    @Autowired
    private StatusDetailRepository lRep;
    
-   private Map<String, Vector<Status>> statusMap = new HashMap<String, Vector<Status>>();
+   private final Map<String, Vector<Status>> statusMap = new HashMap<String, Vector<Status>>();
    
    @BeforeEach
    void init() {
@@ -84,8 +84,9 @@ public class StatusDetailRepositoryTests extends RepositoryTests{
       }); 
    }
    
+
+   @Transactional(readOnly = true)
    @Test
-   @Transactional
    void findAllByOrderNrLessThanEqual() {
       
       this.statusMap.forEach((providergroup, statusVec) -> {
@@ -94,7 +95,7 @@ public class StatusDetailRepositoryTests extends RepositoryTests{
          
          statusMap.forEach((category, statusList) -> {
             
-            try(Stream<StatusDetail> stream = lRep.findByOrderNrLessThanEqual(100l)){
+            try(Stream<StatusDetail> stream = lRep.findByOrderNrLessThanEqual(100L)){
                
                assertEquals(
                      statusList.size(), 

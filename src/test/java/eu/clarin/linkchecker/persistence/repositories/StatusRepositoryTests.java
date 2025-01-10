@@ -25,147 +25,148 @@ import java.util.stream.Stream;
 @SpringBootTest
 class StatusRepositoryTests extends RepositoryTests {
 
-   @Test
-   void save() {
+    @Test
+    void save() {
 
-      Url url = new Url("http://www.wowasa.com", "www.wowasa.com", true);
-      uRep.save(url);
+        Url url = new Url("http://www.wowasa.com", "www.wowasa.com", true);
+        uRep.save(url);
 
-      Status status = new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now());
+        Status status = new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now());
 
-      sRep.save(status);
+        sRep.save(status);
 
-      assertEquals(1, sRep.count());
+        assertEquals(1, sRep.count());
 
-      // must fail because only one status per URL is allowed
-      assertThrows(DataAccessException.class,
-            () -> sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now())));
+        // must fail because only one status per URL is allowed
+        assertThrows(DataAccessException.class,
+                () -> sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now())));
 
-      // none of the four constructor parameters must be null
+        // none of the four constructor parameters must be null
 
-      assertThrows(NullPointerException.class,
-            () -> sRep.save(new Status(null, Category.Blocked_By_Robots_txt, "", LocalDateTime.now())));
-      assertThrows(NullPointerException.class, () -> sRep.save(new Status(url, null, "", LocalDateTime.now())));
-      assertThrows(NullPointerException.class,
-            () -> sRep.save(new Status(url, Category.Blocked_By_Robots_txt, null, LocalDateTime.now())));
-      assertThrows(NullPointerException.class,
-            () -> sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", null)));
+        assertThrows(NullPointerException.class,
+                () -> sRep.save(new Status(null, Category.Blocked_By_Robots_txt, "", LocalDateTime.now())));
+        assertThrows(NullPointerException.class, () -> sRep.save(new Status(url, null, "", LocalDateTime.now())));
+        assertThrows(NullPointerException.class,
+                () -> sRep.save(new Status(url, Category.Blocked_By_Robots_txt, null, LocalDateTime.now())));
+        assertThrows(NullPointerException.class,
+                () -> sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", null)));
 
-   }
+    }
 
-   @Test
-	@Transactional
-	void findAllByCategory() {
-	   Url url1 = uRep.save(new Url("http://www.wowasa.com/page1", "www.wowasa.com", true));
-	   Url url2 = uRep.save(new Url("http://www.wowasa.com/page2", "www.wowasa.com", true));
-	   
-	   sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
-	   sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
-	   
-      try(Stream<Status> stream = sRep.findAllByCategory(Category.Ok)){
-         
-         assertEquals(0, stream.count()); 
-      
-      }
-      
-      try(Stream<Status> stream = sRep.findAllByCategory(Category.Blocked_By_Robots_txt)){ 
-         
-         assertEquals(1, stream.count()); 
-      
-      }
+    @Transactional(readOnly = true)
+    @Test
+    void findAllByCategory() {
+        Url url1 = uRep.save(new Url("http://www.wowasa.com/page1", "www.wowasa.com", true));
+        Url url2 = uRep.save(new Url("http://www.wowasa.com/page2", "www.wowasa.com", true));
 
-      
-      try(Stream<Status> stream = sRep.findAllByCategory(Category.Broken)){
+        sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
+        sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
 
-         assertEquals(1, stream.count());
-         
-      }
-	}
-   
-   @Test
-   void findByUrlUrl() {
-      Url url1 = uRep.save(new Url("http://www.wowasa.com/page1", "www.wowasa.com", true));
-      Url url2 = uRep.save(new Url("http://www.wowasa.com/page2", "www.wowasa.com", true));
-      
-      sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
-      sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
-      
-      assertNotNull(sRep.findByUrlName("http://www.wowasa.com/page1"));
-   }
-   
-   @Transactional
-   @Test
-   void findAllByUrlUrlIn() {
-      
-      Url url1 = uRep.save(new Url("http://www.wowasa.com/page1", "www.wowasa.com", true));
-      Url url2 = uRep.save(new Url("http://www.wowasa.com/page2", "www.wowasa.com", true));
-      
-      sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
-      sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
-      
-      try(Stream<Status> stream = sRep.findAllByUrlNameIn("http://www.wowasa.com/page1", "http://www.wowasa.com/page2")){
-      
-         assertEquals(2, stream.count());
-         
-      }    
-      
-      try(Stream<Status> stream = sRep.findAllByUrlNameIn("http://www.wowasa.com/page1", "http://www.wowasa.com/page2")){
-         
-         stream.forEach(status -> assertNotNull(status.getUrl()));
-      
-      } 
-   }
-   
-   @Transactional
-   @Test
-   void findAllByUrlUrlContextsContextUserName() {
-      
-      Random rand = new Random();
-      
-      Client[] clients = {usRep.save(new Client("wowasa1", "pw", Role.USER)), usRep.save(new Client("wowasa2", "pw", Role.USER))};
-      Context[] contexts = new Context[100];
-      
-      IntStream.range(0, 100).forEach(i -> {
-         Url url = uRep.save(new Url("http://www.wowasa.com/page" +i, "www.wowasa.com", true));
-         
-         sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
-         
-         contexts[i] = cRep.save(new Context("upload" + i, null, clients[rand.nextInt(2)]));
-         
-         ucRep.save(new UrlContext(url, contexts[i], LocalDateTime.now(), true));
-      });
-      
-      Stream.of("wowasa1", "wowasa2").forEach(name -> {
-         
-         assertEquals(
-               Stream.of(contexts).filter(context -> context.getClient().getName().equals(name)).count(), 
-               sRep.findAllByUrlUrlContextsContextClientName(name).count()
-            );         
-      });            
-   }
-   
+        try (Stream<Status> stream = sRep.findAllByCategory(Category.Ok)) {
 
-   @Transactional
-   @Test
-   void findAllByUrlUrlContextsContextUserNameAndUrlUrlContextsContextOrigin() {
-      
-      Random rand = new Random();
-      
-      Client[] clients = {usRep.save(new Client("wowasa1", "pw", Role.USER)), usRep.save(new Client("wowasa2", "pw", Role.USER))};
-      Context[] contexts = new Context[100];
-      
-      IntStream.range(0, 100).forEach(i -> {
-         Url url = uRep.save(new Url("http://www.wowasa.com/page" +i, "www.wowasa.com", true));
-         
-         sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
-         
-         contexts[i] = cRep.save(new Context("upload" + i, null, clients[rand.nextInt(2)]));
-         
-         ucRep.save(new UrlContext(url, contexts[i], LocalDateTime.now(), true));
-      }); 
-      
-      Stream.of(contexts).forEach(context -> {
-         assertEquals(1, sRep.findAllByUrlUrlContextsContextClientNameAndUrlUrlContextsContextOrigin(context.getClient().getName(), context.getOrigin()).count());
-      });
-   }
+            assertEquals(0, stream.count());
+
+        }
+
+        try (Stream<Status> stream = sRep.findAllByCategory(Category.Blocked_By_Robots_txt)) {
+
+            assertEquals(1, stream.count());
+
+        }
+
+
+        try (Stream<Status> stream = sRep.findAllByCategory(Category.Broken)) {
+
+            assertEquals(1, stream.count());
+
+        }
+    }
+
+    @Test
+    void findByUrlUrl() {
+        Url url1 = uRep.save(new Url("http://www.wowasa.com/page1", "www.wowasa.com", true));
+        Url url2 = uRep.save(new Url("http://www.wowasa.com/page2", "www.wowasa.com", true));
+
+        sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
+        sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
+
+        assertNotNull(sRep.findByUrlName("http://www.wowasa.com/page1"));
+    }
+
+
+    @Test
+    @Transactional(readOnly = true)
+    void findAllByUrlUrlIn() {
+
+        Url url1 = uRep.save(new Url("http://www.wowasa.com/page1", "www.wowasa.com", true));
+        Url url2 = uRep.save(new Url("http://www.wowasa.com/page2", "www.wowasa.com", true));
+
+        sRep.save(new Status(url1, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
+        sRep.save(new Status(url2, Category.Broken, "", LocalDateTime.now()));
+
+        try (Stream<Status> stream = sRep.findAllByUrlNameIn("http://www.wowasa.com/page1", "http://www.wowasa.com/page2")) {
+
+            assertEquals(2, stream.count());
+
+        }
+
+        try (Stream<Status> stream = sRep.findAllByUrlNameIn("http://www.wowasa.com/page1", "http://www.wowasa.com/page2")) {
+
+            stream.forEach(status -> assertNotNull(status.getUrl()));
+
+        }
+    }
+
+    @Transactional(readOnly = true)
+    @Test
+    void findAllByUrlUrlContextsContextUserName() {
+
+        Random rand = new Random();
+
+        Client[] clients = {usRep.save(new Client("wowasa1", "pw", Role.USER)), usRep.save(new Client("wowasa2", "pw", Role.USER))};
+        Context[] contexts = new Context[100];
+
+        IntStream.range(0, 100).forEach(i -> {
+            Url url = uRep.save(new Url("http://www.wowasa.com/page" + i, "www.wowasa.com", true));
+
+            sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
+
+            contexts[i] = cRep.save(new Context("upload" + i, null, clients[rand.nextInt(2)]));
+
+            ucRep.save(new UrlContext(url, contexts[i], LocalDateTime.now(), true));
+        });
+
+        Stream.of("wowasa1", "wowasa2").forEach(name -> {
+
+            assertEquals(
+                    Stream.of(contexts).filter(context -> context.getClient().getName().equals(name)).count(),
+                    sRep.findAllByUrlUrlContextsContextClientName(name).count()
+            );
+        });
+    }
+
+
+    @Transactional(readOnly = true)
+    @Test
+    void findAllByUrlUrlContextsContextUserNameAndUrlUrlContextsContextOrigin() {
+
+        Random rand = new Random();
+
+        Client[] clients = {usRep.save(new Client("wowasa1", "pw", Role.USER)), usRep.save(new Client("wowasa2", "pw", Role.USER))};
+        Context[] contexts = new Context[100];
+
+        IntStream.range(0, 100).forEach(i -> {
+            Url url = uRep.save(new Url("http://www.wowasa.com/page" + i, "www.wowasa.com", true));
+
+            sRep.save(new Status(url, Category.Blocked_By_Robots_txt, "", LocalDateTime.now()));
+
+            contexts[i] = cRep.save(new Context("upload" + i, null, clients[rand.nextInt(2)]));
+
+            ucRep.save(new UrlContext(url, contexts[i], LocalDateTime.now(), true));
+        });
+
+        Stream.of(contexts).forEach(context -> {
+            assertEquals(1, sRep.findAllByUrlUrlContextsContextClientNameAndUrlUrlContextsContextOrigin(context.getClient().getName(), context.getOrigin()).count());
+        });
+    }
 }

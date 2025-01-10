@@ -1,3 +1,7 @@
+# version 2.0.0
+- based on Java 21
+- upgrading Spring Boot to 3.4.1
+
 # version 1.0.3
 - upgrading Spring Boot to 3.3.3
 

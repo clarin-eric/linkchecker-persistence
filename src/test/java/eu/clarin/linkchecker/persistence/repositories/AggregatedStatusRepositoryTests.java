@@ -35,14 +35,14 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
    @Autowired
    private AggregatedStatusRepository aRep;
    
-   private Map<String, Vector<Status>> statusMap = new HashMap<String, Vector<Status>>();
+   private final Map<String, Vector<Status>> statusMap = new HashMap<>();
    
    @BeforeEach
    void init() {
       
       Random random = new Random();
       
-      final Vector<Url> urls = new Vector<Url>();
+      final Vector<Url> urls = new Vector<>();
       
       final Providergroup[] providergroups = {pRep.save(new Providergroup("wowasa's pg")), pRep.save(new Providergroup("other's pg"))};
       
@@ -72,25 +72,24 @@ class AggregatedStatusRepositoryTests extends RepositoryTests{
          
          sRep.save(status);
          
-         statusMap.computeIfAbsent(context.getProvidergroup().getName(), name -> new Vector<Status>()).add(status);
+         statusMap.computeIfAbsent(context.getProvidergroup().getName(), name -> new Vector<>()).add(status);
          
       });  
    }
-	
-   @Transactional
+    @Transactional(readOnly = true)
 	@Test
 	void findAllByProviderGroupName() {
 	   
       Stream.of("wowasa's pg", "other's pg").forEach(pgName -> {
-         
-   	   try(Stream<AggregatedStatus> stream = aRep.findAllByProvidergroupName(pgName)){   
-   	      stream.forEach(ag -> {
+
+   	   try(Stream<AggregatedStatus> stream = aRep.findAllByProvidergroupName(pgName)){
+   	      stream.forEach((AggregatedStatus ag) -> {
    	         assertEquals(
    	               this.statusMap.get(pgName).stream().filter(s -> s.getCategory() == ag.getCategory()).count(),
    	               ag.getNumberId()
                   );
-   	      });  	      
+   	      });
    	   }
-      });	   
+      });
 	}
 }

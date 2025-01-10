@@ -8,7 +8,6 @@ import eu.clarin.linkchecker.persistence.model.AggregatedStatus;
 import eu.clarin.linkchecker.persistence.model.AggregatedStatusId;
 
 public interface AggregatedStatusRepository extends CrudRepository<AggregatedStatus, AggregatedStatusId> {
-   
-   Stream<AggregatedStatus> findAllByProvidergroupName(String providergroupName);
-   
+
+    Stream<AggregatedStatus> findAllByProvidergroupName(String providergroupName);
 }
