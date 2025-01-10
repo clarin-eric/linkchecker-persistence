@@ -9,6 +9,6 @@ import eu.clarin.linkchecker.persistence.model.Client;
 public interface ClientRepository extends CrudRepository<Client, Long> {
    
    
-   public Optional<Client> findByName(String name);
+   Optional<Client> findByName(String name);
 
 }

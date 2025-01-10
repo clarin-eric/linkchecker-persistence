@@ -14,11 +14,11 @@ import eu.clarin.linkchecker.persistence.model.Url;
 @Repository
 public interface UrlRepository extends CrudRepository<Url, Long> {
    
-   public Optional<Url> findByName(String name);
+   Optional<Url> findByName(String name);
    
    @Modifying(clearAutomatically = true, flushAutomatically = true)
    @Query("DELETE FROM Url u WHERE u NOT IN (SELECT DISTINCT uc.url FROM UrlContext uc)")
-   public void deleteByUrlContextsIsEmpty();
+   void deleteByUrlContextsIsEmpty();
    
    @Query(
          value = """
@@ -35,14 +35,14 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
             """,
           nativeQuery = true     
       )
-   public Stream<Url> getNextUrlsToCheck(int groupLimit, LocalDateTime maximalCheckingDate);
+   Stream<Url> getNextUrlsToCheck(int groupLimit, LocalDateTime maximalCheckingDate);
    
-   public long countByUrlContextsActive(boolean active);
+   long countByUrlContextsActive(boolean active);
    
    @Query("SELECT COUNT(*) FROM Url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON p.name=?1")
-   public long countByProvidergroupName(String providergroupName);
+   long countByProvidergroupName(String providergroupName);
    
    @Query("SELECT DISTINCT COUNT(u.id) FROM Url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON p.name=?1")
-   public long countDistinctByProvidergroupName(String providergroupName);
+   long countDistinctByProvidergroupName(String providergroupName);
 
 }

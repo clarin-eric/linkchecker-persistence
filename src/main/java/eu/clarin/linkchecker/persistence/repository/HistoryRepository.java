@@ -12,9 +12,9 @@ import eu.clarin.linkchecker.persistence.model.History;
 
 public interface HistoryRepository extends CrudRepository<History, Long> {
    
-   public Stream<History> findAllByUrlName(String name);
+   Stream<History> findAllByUrlName(String name);
    
-   public Stream<History> findAllByUrlNameIn(String... names);
+   Stream<History> findAllByUrlNameIn(String... names);
    
    @Query(
          value = """
@@ -36,10 +36,10 @@ public interface HistoryRepository extends CrudRepository<History, Long> {
          nativeQuery = true
       )
    @Modifying
-   public void saveHistoryLinksOlderThan(LocalDateTime dateTime);
+   void saveHistoryLinksOlderThan(LocalDateTime dateTime);
    
    @Modifying(clearAutomatically = true, flushAutomatically = true)
    @Query("DELETE FROM History h WHERE h.checkingDate < :checkingDate")
-   public void deleteByCheckingDateBefore(@Param("checkingDate") LocalDateTime checkingDate);
+   void deleteByCheckingDateBefore(@Param("checkingDate") LocalDateTime checkingDate);
 
 }

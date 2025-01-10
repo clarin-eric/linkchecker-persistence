@@ -39,7 +39,7 @@ public interface StatusDetailRepository extends CrudRepository<StatusDetail, Sta
          @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_CACHEABLE, value = "false"),
          @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_READ_ONLY, value = "true")
    })
-   public Stream<StatusDetail> findAllByCategory(String categoryName);
+   Stream<StatusDetail> findAllByCategory(String categoryName);
    @Query(
       value = """
          SELECT NULL AS order_nr, s.*, u.name AS urlname, p.name AS providergroupname, c.origin, uc.expected_mime_type
@@ -59,8 +59,8 @@ public interface StatusDetailRepository extends CrudRepository<StatusDetail, Sta
          @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_CACHEABLE, value = "false"),
          @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_READ_ONLY, value = "true")
    })
-   public Stream<StatusDetail> findAllByProvidergroupnameAndCategory(String providergroupname, String categoryName);
+   Stream<StatusDetail> findAllByProvidergroupnameAndCategory(String providergroupname, String categoryName);
    
-   public Stream<StatusDetail> findByOrderNrLessThanEqual(Long orderNr);
+   Stream<StatusDetail> findByOrderNrLessThanEqual(Long orderNr);
 
 }

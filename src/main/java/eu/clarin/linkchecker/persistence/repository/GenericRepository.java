@@ -14,6 +14,6 @@ import jakarta.persistence.Tuple;
  */
 public interface GenericRepository {
    
-   public List<Tuple> findAll(String query, boolean isNative);
+   List<Tuple> findAll(String query, boolean isNative);
 
 }

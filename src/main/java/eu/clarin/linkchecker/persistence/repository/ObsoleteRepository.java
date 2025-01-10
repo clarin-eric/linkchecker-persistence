@@ -13,6 +13,6 @@ public interface ObsoleteRepository extends CrudRepository<Obsolete, Long> {
    
    @Modifying(clearAutomatically = true, flushAutomatically = true)
    @Query("DELETE FROM Obsolete o WHERE o.checkingDate < :checkingDate")
-   public void deleteByCheckingDateBefore(@Param("checkingDate") LocalDateTime checkingDate);   
+   void deleteByCheckingDateBefore(@Param("checkingDate") LocalDateTime checkingDate);
 
 }

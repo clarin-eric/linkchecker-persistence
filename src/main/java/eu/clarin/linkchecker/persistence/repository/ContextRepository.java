@@ -12,9 +12,9 @@ import eu.clarin.linkchecker.persistence.model.Providergroup;
 
 public interface ContextRepository extends CrudRepository<Context, Long> {
    
-   public Optional<Context> findByOriginAndProvidergroupAndClient(String origin, Providergroup providergroup, Client client); 
+   Optional<Context> findByOriginAndProvidergroupAndClient(String origin, Providergroup providergroup, Client client);
    
    @Modifying(clearAutomatically = true, flushAutomatically = true)
    @Query("DELETE FROM Context c WHERE c NOT IN (SELECT uc.context FROM UrlContext uc)")
-   public void deleteWithoutContext();
+   void deleteWithoutContext();
 }

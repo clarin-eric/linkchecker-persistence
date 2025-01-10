@@ -136,13 +136,10 @@ class StatusRepositoryTests extends RepositoryTests {
             ucRep.save(new UrlContext(url, contexts[i], LocalDateTime.now(), true));
         });
 
-        Stream.of("wowasa1", "wowasa2").forEach(name -> {
-
-            assertEquals(
-                    Stream.of(contexts).filter(context -> context.getClient().getName().equals(name)).count(),
-                    sRep.findAllByUrlUrlContextsContextClientName(name).count()
-            );
-        });
+        Stream.of("wowasa1", "wowasa2").forEach(name -> assertEquals(
+                Stream.of(contexts).filter(context -> context.getClient().getName().equals(name)).count(),
+                sRep.findAllByUrlUrlContextsContextClientName(name).count()
+        ));
     }
 
 
@@ -165,8 +162,6 @@ class StatusRepositoryTests extends RepositoryTests {
             ucRep.save(new UrlContext(url, contexts[i], LocalDateTime.now(), true));
         });
 
-        Stream.of(contexts).forEach(context -> {
-            assertEquals(1, sRep.findAllByUrlUrlContextsContextClientNameAndUrlUrlContextsContextOrigin(context.getClient().getName(), context.getOrigin()).count());
-        });
+        Stream.of(contexts).forEach(context -> assertEquals(1, sRep.findAllByUrlUrlContextsContextClientNameAndUrlUrlContextsContextOrigin(context.getClient().getName(), context.getOrigin()).count()));
     }
 }

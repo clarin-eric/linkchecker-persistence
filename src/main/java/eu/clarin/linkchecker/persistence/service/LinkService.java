@@ -51,10 +51,10 @@ public class LinkService {
    @Autowired
    private ObsoleteRepository oRep;
    
-   private Map<String,Providergroup> providergroupMap = new ConcurrentHashMap<String,Providergroup>();
+   private final Map<String,Providergroup> providergroupMap = new ConcurrentHashMap<String,Providergroup>();
    //locks
-   private Set<String> urlLock = ConcurrentHashMap.newKeySet();
-   private Set<String> contextLock = ConcurrentHashMap.newKeySet();
+   private final Set<String> urlLock = ConcurrentHashMap.newKeySet();
+   private final Set<String> contextLock = ConcurrentHashMap.newKeySet();
    
    
    public void save(Client client, String urlString, String origin, String providerGroupName, String expectedMimeType) {

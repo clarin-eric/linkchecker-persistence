@@ -16,21 +16,21 @@ import eu.clarin.linkchecker.persistence.utils.Category;
 public interface StatusRepository extends CrudRepository<Status, Long> {
    
    
-   public Optional<Status> findByUrl(Url url);  
+   Optional<Status> findByUrl(Url url);
    
-   public Optional<Status> findByUrlName(String name);
+   Optional<Status> findByUrlName(String name);
    
-   public Stream<Status> findAllByUrlNameIn(String... names);
+   Stream<Status> findAllByUrlNameIn(String... names);
    
-   public Stream<Status> findAllByCategory(Category category);
+   Stream<Status> findAllByCategory(Category category);
    
-   public Stream<Status> findAllByUrlUrlContextsContextClientName(String name);
+   Stream<Status> findAllByUrlUrlContextsContextClientName(String name);
    
-   public Stream<Status> findAllByUrlUrlContextsContextClientNameAndUrlUrlContextsContextOrigin(String name, String origin);
+   Stream<Status> findAllByUrlUrlContextsContextClientNameAndUrlUrlContextsContextOrigin(String name, String origin);
    
    
    @Query("SELECT s FROM Status s JOIN s.url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON uc.active = true AND p.name=?1 AND s.category=?2")
-   public Stream<Status> findAllByProvidergroupAndCategory(String providergroupName, Category category);
+   Stream<Status> findAllByProvidergroupAndCategory(String providergroupName, Category category);
    
    @Query(
          value = """
@@ -52,6 +52,6 @@ public interface StatusRepository extends CrudRepository<Status, Long> {
          nativeQuery = true
       )
    @Modifying
-   public void saveStatusLinksOlderThan(LocalDateTime dateTime);
+   void saveStatusLinksOlderThan(LocalDateTime dateTime);
 
 }
