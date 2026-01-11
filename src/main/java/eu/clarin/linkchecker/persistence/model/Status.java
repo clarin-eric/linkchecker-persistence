@@ -23,7 +23,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @RequiredArgsConstructor
 @Entity
 @Table(name = "status", indexes = {@Index(columnList = "url_id", unique = true), @Index(columnList = "category", unique = false)})
@@ -40,7 +40,7 @@ public class Status {
 
    private Integer redirectCount;
    
-   @OneToOne(cascade = CascadeType.REMOVE)
+   @OneToOne
    @JoinColumn(name = "url_id")
    @NonNull
    private final Url url;

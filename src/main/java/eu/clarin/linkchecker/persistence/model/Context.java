@@ -3,15 +3,7 @@ package eu.clarin.linkchecker.persistence.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -23,7 +15,7 @@ import lombok.ToString;
 @Data
 @ToString(exclude = "urlContexts")
 @EqualsAndHashCode(exclude = "urlContexts")
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @RequiredArgsConstructor
 @Entity
 @Table(name="context", indexes = {@Index(columnList = "origin, providergroup_id, client_id", unique = true)})
@@ -35,7 +27,7 @@ public class Context {
    
    private final String origin;
    
-   @OneToOne(optional = true)
+   @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "providergroup_id")
    private final Providergroup providergroup;
    

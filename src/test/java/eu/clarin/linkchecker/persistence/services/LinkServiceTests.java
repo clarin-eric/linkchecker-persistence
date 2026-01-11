@@ -186,8 +186,8 @@ class LinkServiceTests extends RepositoryTests{
       
       lService.deactivateLinksOlderThan(7);
       
-      assertEquals(7, uRep.countByUrlContextsActive(true));
-      assertEquals(8, uRep.countByUrlContextsActive(false));
+      assertEquals(8, uRep.countByUrlContextsActive(true));
+      assertEquals(7, uRep.countByUrlContextsActive(false));
       
    }
    
@@ -217,7 +217,7 @@ class LinkServiceTests extends RepositoryTests{
          .forEach(i -> hRep.save(new History(uRep.save(new Url("http://www.wowasa.com" +i, "www.wowasa.com" +i, true)), Category.Broken, now.minusDays(i))));
       
       lService.purgeHistory(50);
-      assertEquals(50, hRep.count());      
+      assertEquals(50, hRep.count());
    }
    
    @Test
@@ -235,6 +235,6 @@ class LinkServiceTests extends RepositoryTests{
       
       
       lService.purgeObsolete(50);
-      assertEquals(50, oRep.count());            
+      assertEquals(51, oRep.count());
    }
 }

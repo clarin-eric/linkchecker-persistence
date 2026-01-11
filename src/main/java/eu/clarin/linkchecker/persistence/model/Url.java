@@ -3,18 +3,7 @@ package eu.clarin.linkchecker.persistence.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.Table;
-
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.*;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -27,7 +16,7 @@ import lombok.ToString;
 @Data
 @ToString(exclude = {"status", "urlContexts"})
 @EqualsAndHashCode(exclude = {"status", "urlContexts"})
-@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @RequiredArgsConstructor
 @Entity
 @Table(name="url", indexes = {@Index(columnList = "name", unique = true)})
@@ -46,11 +35,11 @@ public class Url {
    
    private int priority;
    
-   @OneToOne(mappedBy = "url", fetch = FetchType.LAZY)
+   @OneToOne(mappedBy = "url", fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
    @PrimaryKeyJoinColumn
    private Status status;
    
-   @OneToOne(mappedBy = "url", fetch = FetchType.LAZY)
+   @OneToOne(mappedBy = "url", fetch = FetchType.LAZY,   cascade = CascadeType.ALL)
    @PrimaryKeyJoinColumn
    private History history;
 
