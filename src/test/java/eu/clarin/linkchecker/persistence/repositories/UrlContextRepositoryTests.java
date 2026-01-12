@@ -59,7 +59,7 @@ class UrlContextRepositoryTests extends RepositoryTests{
             ucRep.save(urlContext);           
          });
 
-      ucRep.deleteByIngestionDateBefore(LocalDateTime.now().minusDays(50));
+      ucRep.deleteByIngestionDateBefore(now.minusDays(50));
 
       assertEquals(50, ucRep.count());
    }
@@ -86,7 +86,7 @@ class UrlContextRepositoryTests extends RepositoryTests{
          ucRep.save(urlContext);           
       });
 
-      ucRep.deactivateOlderThan(LocalDateTime.now().minusDays(50));
+      ucRep.deactivateOlderThan(now.minusDays(50));
 
       assertEquals(50, StreamSupport.stream(ucRep.findAll().spliterator(), false).filter(UrlContext::getActive).count());
    }

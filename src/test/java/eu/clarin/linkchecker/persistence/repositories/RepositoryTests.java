@@ -12,35 +12,35 @@ import eu.clarin.linkchecker.persistence.repository.StatusRepository;
 import eu.clarin.linkchecker.persistence.repository.UrlContextRepository;
 import eu.clarin.linkchecker.persistence.repository.UrlRepository;
 
-public class RepositoryTests {
-   
-   @Autowired
-   protected UrlRepository uRep;
-   @Autowired
-   protected StatusRepository sRep;
-   @Autowired
-   protected HistoryRepository hRep;
-   @Autowired
-   protected UrlContextRepository ucRep;
-   @Autowired
-   protected ContextRepository cRep;
-   @Autowired
-   protected ProvidergroupRepository pRep;
-   @Autowired
-   protected ClientRepository usRep;
-   @Autowired
-   protected ObsoleteRepository oRep;
-   
-   @AfterEach
-   void cleanUp() {
+public abstract class RepositoryTests {
 
-      ucRep.deleteAll();
-      cRep.deleteAll();
-      pRep.deleteAll();
-      usRep.deleteAll();
-      uRep.deleteAll();
-      hRep.deleteAll();
-      sRep.deleteAll();
-      oRep.deleteAll();
-   }
+    @Autowired
+    protected UrlRepository uRep;
+    @Autowired
+    protected StatusRepository sRep;
+    @Autowired
+    protected HistoryRepository hRep;
+    @Autowired
+    protected UrlContextRepository ucRep;
+    @Autowired
+    protected ContextRepository cRep;
+    @Autowired
+    protected ProvidergroupRepository pRep;
+    @Autowired
+    protected ClientRepository usRep;
+    @Autowired
+    protected ObsoleteRepository oRep;
+
+    @AfterEach
+    void cleanUp() {
+
+        ucRep.deleteAll();
+        cRep.deleteAll();
+        pRep.deleteAll();
+        usRep.deleteAll();
+        oRep.deleteAll();
+        hRep.deleteAll();
+        sRep.deleteAll();
+        uRep.deleteAll();
+    }
 }
