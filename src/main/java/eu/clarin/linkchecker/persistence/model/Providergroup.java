@@ -1,6 +1,6 @@
 package eu.clarin.linkchecker.persistence.model;
 
-import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -28,7 +28,7 @@ public class Providergroup {
    @NonNull
    private final String name;
    
-   @OneToMany(mappedBy = "providergroup", fetch = FetchType.LAZY)
-   private List<Context> contexts;
+   @OneToMany(mappedBy = "providergroup", fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
+   private Set<Context> contexts;
 
 }

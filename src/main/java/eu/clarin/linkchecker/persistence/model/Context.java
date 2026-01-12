@@ -1,7 +1,6 @@
 package eu.clarin.linkchecker.persistence.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -31,12 +30,12 @@ public class Context {
    @JoinColumn(name = "providergroup_id")
    private final Providergroup providergroup;
    
-   @OneToOne
+   @OneToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "client_id")
    private final Client client;
    
-   @OneToMany(mappedBy = "context")
-   private List<UrlContext> urlContexts = new ArrayList<UrlContext>();
+   @OneToMany(mappedBy = "context",  fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
+   private Set<UrlContext> urlContexts;
    
 
 }

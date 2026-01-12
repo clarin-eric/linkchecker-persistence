@@ -2,17 +2,7 @@ package eu.clarin.linkchecker.persistence.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import eu.clarin.linkchecker.persistence.utils.Category;
 import lombok.AccessLevel;
@@ -47,7 +37,7 @@ public class History {
    
    private Integer redirectCount;
    
-   @OneToOne
+   @OneToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "url_id")
    private final Url url;
    

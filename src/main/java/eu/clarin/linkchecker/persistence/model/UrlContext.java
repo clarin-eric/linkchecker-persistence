@@ -2,14 +2,7 @@ package eu.clarin.linkchecker.persistence.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Index;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -28,12 +21,12 @@ public class UrlContext {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
    
-   @ManyToOne
+   @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "url_id")
    @NonNull
    private final Url url;
    
-   @ManyToOne
+   @ManyToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "context_id")
    @NonNull
    private final Context context;

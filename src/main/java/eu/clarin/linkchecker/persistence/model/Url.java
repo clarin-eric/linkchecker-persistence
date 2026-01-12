@@ -1,7 +1,7 @@
 package eu.clarin.linkchecker.persistence.model;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.*;
 
@@ -36,15 +36,12 @@ public class Url {
    private int priority;
    
    @OneToOne(mappedBy = "url", fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
-   @PrimaryKeyJoinColumn
    private Status status;
    
    @OneToOne(mappedBy = "url", fetch = FetchType.LAZY,   cascade = CascadeType.ALL)
-   @PrimaryKeyJoinColumn
    private History history;
 
-   @OneToMany
-   @JoinColumn(name = "url_id", referencedColumnName = "id")
-   private List<UrlContext> urlContexts = new ArrayList<UrlContext>();
+   @OneToMany(mappedBy = "url", fetch =  FetchType.LAZY, cascade = CascadeType.ALL)
+   private Set<UrlContext> urlContexts;
 
 }

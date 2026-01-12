@@ -1,18 +1,22 @@
+# version 2.1.0
+- upgrading to Spring Boot 4.0.1
+- corrections in model 
+
 # version 2.0.1
-- upgrading Spring Boot to 3.4.4
-- 
+- upgrading to Spring Boot 3.4.4
+
 # version 2.0.0
 - based on Java 21
-- upgrading Spring Boot to 3.4.1
+- upgrading to Spring Boot 3.4.1
 
 # version 1.0.3
-- upgrading Spring Boot to 3.3.3
+- upgrading to Spring Boot 3.3.3
 
 # version 1.0.2
-- upgrading Spring Boot to 3.2.5
+- upgrading to Spring Boot 3.2.5
 
 # version 1.0.1
-- upgrading Spring Boot to 3.2.2
+- upgrading to Spring Boot 3.2.2
 
 # version 1.0.0
 - upgrading Spring Boot to 3.1.4
