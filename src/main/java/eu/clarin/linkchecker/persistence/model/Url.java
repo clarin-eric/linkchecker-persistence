@@ -1,17 +1,9 @@
 package eu.clarin.linkchecker.persistence.model;
 
-import java.util.ArrayList;
-import java.util.Set;
-
 import jakarta.persistence.*;
+import lombok.*;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import java.util.Set;
 
 @Data
 @ToString(exclude = {"status", "urlContexts"})

@@ -1,5 +1,18 @@
 package eu.clarin.linkchecker.persistence.service;
 
+import eu.clarin.linkchecker.persistence.model.*;
+import eu.clarin.linkchecker.persistence.repository.*;
+import eu.clarin.linkchecker.persistence.utils.Category;
+import eu.clarin.linkchecker.persistence.utils.UrlValidator;
+import eu.clarin.linkchecker.persistence.utils.UrlValidator.ValidationResult;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.data.util.Pair;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -8,26 +21,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.data.util.Pair;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
-
-import eu.clarin.linkchecker.persistence.model.*;
-import eu.clarin.linkchecker.persistence.repository.ContextRepository;
-import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
-import eu.clarin.linkchecker.persistence.repository.ObsoleteRepository;
-import eu.clarin.linkchecker.persistence.repository.ProvidergroupRepository;
-import eu.clarin.linkchecker.persistence.repository.StatusRepository;
-import eu.clarin.linkchecker.persistence.repository.UrlContextRepository;
-import eu.clarin.linkchecker.persistence.repository.UrlRepository;
-import eu.clarin.linkchecker.persistence.utils.Category;
-import eu.clarin.linkchecker.persistence.utils.UrlValidator;
-import eu.clarin.linkchecker.persistence.utils.UrlValidator.ValidationResult;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Scope("prototype")

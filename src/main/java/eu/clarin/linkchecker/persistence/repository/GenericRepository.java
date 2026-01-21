@@ -4,9 +4,9 @@
  */
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.util.List;
-
 import jakarta.persistence.Tuple;
+
+import java.util.List;
 
 
 /**

@@ -1,20 +1,10 @@
 package eu.clarin.linkchecker.persistence.model;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
 import eu.clarin.linkchecker.persistence.utils.Category;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)

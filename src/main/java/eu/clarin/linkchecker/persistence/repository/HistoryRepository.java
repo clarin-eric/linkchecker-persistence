@@ -1,14 +1,13 @@
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.time.LocalDateTime;
-import java.util.stream.Stream;
-
+import eu.clarin.linkchecker.persistence.model.History;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import eu.clarin.linkchecker.persistence.model.History;
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
 public interface HistoryRepository extends CrudRepository<History, Long> {
    

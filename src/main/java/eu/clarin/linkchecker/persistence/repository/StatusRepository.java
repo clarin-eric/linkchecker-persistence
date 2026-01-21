@@ -1,19 +1,18 @@
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import eu.clarin.linkchecker.persistence.model.AggregatedStatus;
+import eu.clarin.linkchecker.persistence.model.Status;
 import eu.clarin.linkchecker.persistence.model.StatusDetail;
+import eu.clarin.linkchecker.persistence.model.Url;
+import eu.clarin.linkchecker.persistence.utils.Category;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-
-import eu.clarin.linkchecker.persistence.model.Status;
-import eu.clarin.linkchecker.persistence.model.Url;
-import eu.clarin.linkchecker.persistence.utils.Category;
 import org.springframework.data.repository.query.Param;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 
 public interface StatusRepository extends CrudRepository<Status, Long> {
@@ -43,7 +42,8 @@ public interface StatusRepository extends CrudRepository<Status, Long> {
                                 JOIN c.urlContexts uc
                                         JOIN uc.url u 
                                                 JOIN u.status s
-                                                        GROUP BY p.id, s.category
+                                                        WHERE uc.active = true
+                                                                GROUP BY p.id, s.category
         """
    )
    Stream<AggregatedStatus> findAggregatedStatus();
@@ -70,9 +70,10 @@ public interface StatusRepository extends CrudRepository<Status, Long> {
                                     JOIN c.urlContexts uc
                                             JOIN uc.url u
                                                     JOIN u.status s
-                                                            WHERE p.name = :providergroupName
-                                                                    AND s.category = :category
-                                                                            ORDER BY s.checkingDate DESC 
+                                                            WHERE uc.active = true
+                                                                    AND p.name = :providergroupName
+                                                                        AND s.category = :category
+                                                                                ORDER BY s.checkingDate DESC 
         """
    )
    Stream<StatusDetail> findStatusDetail(@Param("providergroupName") String providergroupName, @Param("category") Category  category);
@@ -99,8 +100,9 @@ public interface StatusRepository extends CrudRepository<Status, Long> {
                                         JOIN c.urlContexts uc
                                                 JOIN uc.url u
                                                         JOIN u.status s
-                                                                WHERE s.category = :category
-                                                                        ORDER BY s.checkingDate DESC 
+                                                                    WHERE uc.active = true
+                                                                            AND s.category = :category
+                                                                                    ORDER BY s.checkingDate DESC 
             """
     )
     Stream<StatusDetail> findStatusDetail(@Param("category") Category  category);

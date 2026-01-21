@@ -1,21 +1,22 @@
 package eu.clarin.linkchecker.persistence.service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
-
+import eu.clarin.cmdi.vlo.PIDUtils;
+import eu.clarin.linkchecker.persistence.model.History;
+import eu.clarin.linkchecker.persistence.model.Status;
+import eu.clarin.linkchecker.persistence.model.StatusDetail;
+import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
+import eu.clarin.linkchecker.persistence.repository.StatusRepository;
+import eu.clarin.linkchecker.persistence.repository.UrlRepository;
+import eu.clarin.linkchecker.persistence.utils.Category;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.clarin.cmdi.vlo.PIDUtils;
-import eu.clarin.linkchecker.persistence.model.*;
-import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
-import eu.clarin.linkchecker.persistence.repository.StatusRepository;
-import eu.clarin.linkchecker.persistence.repository.UrlRepository;
-import eu.clarin.linkchecker.persistence.utils.Category;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 @Service
 @Transactional

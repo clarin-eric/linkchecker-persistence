@@ -1,8 +1,9 @@
 package eu.clarin.linkchecker.persistence.model;
 
-import lombok.*;
-
 import eu.clarin.linkchecker.persistence.utils.Category;
+import lombok.Data;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor

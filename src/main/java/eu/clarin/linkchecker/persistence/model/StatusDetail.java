@@ -4,11 +4,11 @@
  */
 package eu.clarin.linkchecker.persistence.model;
 
-import java.time.LocalDateTime;
-
 import eu.clarin.linkchecker.persistence.utils.Category;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
 
 
 /**
