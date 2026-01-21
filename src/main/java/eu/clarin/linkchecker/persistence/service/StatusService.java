@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import eu.clarin.cmdi.vlo.PIDUtils;
 import eu.clarin.linkchecker.persistence.model.*;
 import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
-import eu.clarin.linkchecker.persistence.repository.StatusDetailRepository;
 import eu.clarin.linkchecker.persistence.repository.StatusRepository;
 import eu.clarin.linkchecker.persistence.repository.UrlRepository;
 import eu.clarin.linkchecker.persistence.utils.Category;
@@ -28,8 +27,7 @@ public class StatusService {
     StatusRepository sRep;
     @Autowired
     HistoryRepository hRep;
-    @Autowired
-    StatusDetailRepository sdRep;
+
 
 
     public void save(Status status) {
@@ -67,7 +65,7 @@ public class StatusService {
 
     public Map<String, Status> getStatus(String... urlNames) {
 
-        final Map<String, Status> map = new HashMap<String, Status>();
+        final Map<String, Status> map = new HashMap<>();
 
         Arrays.stream(urlNames).forEach(urlName -> {
 
@@ -81,10 +79,10 @@ public class StatusService {
     }
 
     public Stream<StatusDetail> findAllDetail(Category category) {
-        return sdRep.findAllByCategory(category.name());
+        return sRep.findStatusDetail(category);
     }
 
     public Stream<StatusDetail> findAllDetail(String providergroupname, Category category) {
-        return sdRep.findAllByProvidergroupnameAndCategory(providergroupname, category.name());
+        return sRep.findStatusDetail(providergroupname, category);
     }
 }

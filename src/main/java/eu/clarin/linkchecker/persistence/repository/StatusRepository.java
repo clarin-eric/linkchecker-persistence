@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import eu.clarin.linkchecker.persistence.model.AggregatedStatus;
+import eu.clarin.linkchecker.persistence.model.StatusDetail;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -11,6 +13,7 @@ import org.springframework.data.repository.CrudRepository;
 import eu.clarin.linkchecker.persistence.model.Status;
 import eu.clarin.linkchecker.persistence.model.Url;
 import eu.clarin.linkchecker.persistence.utils.Category;
+import org.springframework.data.repository.query.Param;
 
 
 public interface StatusRepository extends CrudRepository<Status, Long> {
@@ -31,6 +34,76 @@ public interface StatusRepository extends CrudRepository<Status, Long> {
    
    @Query("SELECT s FROM Status s JOIN s.url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON uc.active = true AND p.name=?1 AND s.category=?2")
    Stream<Status> findAllByProvidergroupAndCategory(String providergroupName, Category category);
+
+   @Query(
+        """
+        SELECT new eu.clarin.linkchecker.persistence.model.AggregatedStatus(p.name, s.category, avg(s.duration), max(s.duration), count(u.id), sum(CASE WHEN s.duration IS NULL THEN 1 ELSE 0 END))
+                FROM Providergroup p
+                        JOIN p.contexts c
+                                JOIN c.urlContexts uc
+                                        JOIN uc.url u 
+                                                JOIN u.status s
+                                                        GROUP BY p.id, s.category
+        """
+   )
+   Stream<AggregatedStatus> findAggregatedStatus();
+
+   @Query(
+        """
+            SELECT new eu.clarin.linkchecker.persistence.model.StatusDetail(
+                        p.name, 
+                        c.origin, 
+                        u.name, 
+                        s.method, 
+                        s.statusCode, 
+                        s.category, 
+                        s.message, 
+                        s.checkingDate, 
+                        s.contentType, 
+                        uc.expectedMimeType, 
+                        s.contentLength, 
+                        s.duration, 
+                        s.redirectCount
+                    )
+                    FROM Providergroup p
+                            JOIN p.contexts c
+                                    JOIN c.urlContexts uc
+                                            JOIN uc.url u
+                                                    JOIN u.status s
+                                                            WHERE p.name = :providergroupName
+                                                                    AND s.category = :category
+                                                                            ORDER BY s.checkingDate DESC 
+        """
+   )
+   Stream<StatusDetail> findStatusDetail(@Param("providergroupName") String providergroupName, @Param("category") Category  category);
+
+    @Query(
+            """
+                SELECT new eu.clarin.linkchecker.persistence.model.StatusDetail(
+                            p.name, 
+                            c.origin, 
+                            u.name, 
+                            s.method, 
+                            s.statusCode, 
+                            s.category, 
+                            s.message, 
+                            s.checkingDate, 
+                            s.contentType, 
+                            uc.expectedMimeType, 
+                            s.contentLength, 
+                            s.duration, 
+                            s.redirectCount
+                        )
+                        FROM Providergroup p
+                                JOIN p.contexts c
+                                        JOIN c.urlContexts uc
+                                                JOIN uc.url u
+                                                        JOIN u.status s
+                                                                WHERE s.category = :category
+                                                                        ORDER BY s.checkingDate DESC 
+            """
+    )
+    Stream<StatusDetail> findStatusDetail(@Param("category") Category  category);
    
    @Query(
          value = """

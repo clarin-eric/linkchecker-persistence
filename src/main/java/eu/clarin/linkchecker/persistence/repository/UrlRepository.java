@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import eu.clarin.linkchecker.persistence.model.UrlCount;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -44,5 +45,17 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
    
    @Query("SELECT DISTINCT COUNT(u.id) FROM Url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON p.name=?1")
    long countDistinctByProvidergroupName(String providergroupName);
+
+   @Query(
+            """
+            SELECT new eu.clarin.linkchecker.persistence.model.UrlCount(p.name, COUNT(u.id), COUNT(DISTINCT u.id))
+                        FROM Url u
+                                    JOIN u.urlContexts uc
+                                                JOIN uc.context c
+                                                            JOIN c.providergroup p
+                                                                        GROUP BY p.id           
+            """
+   )
+   Stream<UrlCount> aggregateCountUrl();
 
 }

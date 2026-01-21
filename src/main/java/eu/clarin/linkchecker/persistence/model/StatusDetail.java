@@ -6,55 +6,41 @@ package eu.clarin.linkchecker.persistence.model;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-
 import eu.clarin.linkchecker.persistence.utils.Category;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 
 /**
  *
  */
 @Data
-@Entity
-@IdClass(StatusDetailId.class)
+@RequiredArgsConstructor
 public class StatusDetail {
+
+   private final String providergroupname;
+
+   private final String origin;
    
+   private final String urlname;
 
-   @Id
-   private Long id;
-   @Id
-   private String providergroupname;
-   @Id
-   private String origin;
-     
-   private Long orderNr;
+   private final String method;
+
+   private final Integer statusCode;
+
+   private final Category category;
+
+   private final String message;
+
+   private final LocalDateTime checkingDate;
+
+   private final String contentType;
    
-   private String urlname;
+   private final String expectedMimeType;
 
-   private String method;
+   private final Long contentLength;
 
-   private Integer statusCode;
+   private final Integer duration;
 
-   @Enumerated(EnumType.STRING)
-   private Category category;   
-
-   private String message;   
-
-   private LocalDateTime checkingDate;
-
-   private String contentType;
-   
-   private String expectedMimeType;
-
-   private Long contentLength;
-
-   private Integer duration;
-
-   private Integer redirectCount;  
-
+   private final Integer redirectCount;
 }
