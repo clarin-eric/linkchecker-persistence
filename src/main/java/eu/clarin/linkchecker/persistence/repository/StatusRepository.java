@@ -31,8 +31,8 @@ public interface StatusRepository extends CrudRepository<Status, Long> {
    Stream<Status> findAllByUrlUrlContextsContextClientNameAndUrlUrlContextsContextOrigin(String name, String origin);
    
    
-   @Query("SELECT s FROM Status s JOIN s.url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON uc.active = true AND p.name=?1 AND s.category=?2")
-   Stream<Status> findAllByProvidergroupAndCategory(String providergroupName, Category category);
+   @Query("SELECT s FROM Status s JOIN s.url u JOIN u.urlContexts uc JOIN uc.context c JOIN c.providergroup p ON uc.active = true AND p.name= :providergroupName AND s.category= :category")
+   Stream<Status> findAllByProvidergroupAndCategory(@Param("providergroupName") String providergroupName, @Param("category") Category category);
 
    @Query(
         """
@@ -40,7 +40,7 @@ public interface StatusRepository extends CrudRepository<Status, Long> {
                 FROM Providergroup p
                         JOIN p.contexts c
                                 JOIN c.urlContexts uc
-                                        JOIN uc.url u 
+                                        JOIN uc.url u
                                                 JOIN u.status s
                                                         WHERE uc.active = true
                                                                 GROUP BY p.id, s.category
@@ -81,18 +81,18 @@ public interface StatusRepository extends CrudRepository<Status, Long> {
     @Query(
             """
                 SELECT new eu.clarin.linkchecker.persistence.model.StatusDetail(
-                            p.name, 
-                            c.origin, 
-                            u.name, 
-                            s.method, 
-                            s.statusCode, 
-                            s.category, 
-                            s.message, 
-                            s.checkingDate, 
-                            s.contentType, 
-                            uc.expectedMimeType, 
-                            s.contentLength, 
-                            s.duration, 
+                            p.name,
+                            c.origin,
+                            u.name,
+                            s.method,
+                            s.statusCode,
+                            s.category,
+                            s.message,
+                            s.checkingDate,
+                            s.contentType,
+                            uc.expectedMimeType,
+                            s.contentLength,
+                            s.duration,
                             s.redirectCount
                         )
                         FROM Providergroup p
@@ -102,27 +102,27 @@ public interface StatusRepository extends CrudRepository<Status, Long> {
                                                         JOIN u.status s
                                                                     WHERE uc.active = true
                                                                             AND s.category = :category
-                                                                                    ORDER BY s.checkingDate DESC 
+                                                                                    ORDER BY s.checkingDate DESC
             """
     )
     Stream<StatusDetail> findStatusDetail(@Param("category") Category  category);
    
    @Query(
          value = """
-               INSERT INTO obsolete (url_name, client_name, providergroup_name, origin, expected_mime_type, ingestion_date, status_code, message, category, method, content_type, content_length, duration, checking_date, redirect_count, deletion_date) 
-               SELECT u.name, cl.name, p.name, c.origin, uc.expected_mime_type, uc.ingestion_date, s.status_code, s.message, s.category, s.method, s.content_type, s.content_length, s.duration, s.checking_date, s.redirect_count, NOW() 
-               FROM url_context uc 
-               INNER JOIN (url u) 
-               ON u.id=uc.url_id 
-               INNER JOIN (context c) 
-               ON c.id=uc.context_id 
-               INNER JOIN providergroup p 
-               ON p.id=c.providergroup_id 
-               INNER JOIN status s 
-               ON s.url_id=u.id 
-               INNER JOIN client cl 
-               ON cl.id=c.client_id 
-               WHERE uc.ingestion_date < ?1
+                INSERT INTO obsolete (url_name, client_name, providergroup_name, origin, expected_mime_type, ingestion_date, status_code, message, category, method, content_type, content_length, duration, checking_date, redirect_count, deletion_date) 
+                SELECT u.name, cl.name, p.name, c.origin, uc.expected_mime_type, uc.ingestion_date, s.status_code, s.message, s.category, s.method, s.content_type, s.content_length, s.duration, s.checking_date, s.redirect_count, NOW() 
+                FROM url_context uc 
+                INNER JOIN (url u) 
+                ON u.id=uc.url_id 
+                INNER JOIN (context c) 
+                ON c.id=uc.context_id 
+                INNER JOIN providergroup p 
+                ON p.id=c.providergroup_id 
+                INNER JOIN status s 
+                ON s.url_id=u.id 
+                INNER JOIN client cl 
+                ON cl.id=c.client_id 
+                WHERE uc.ingestion_date < ?1
                """, 
          nativeQuery = true
       )
