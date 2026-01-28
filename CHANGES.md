@@ -1,3 +1,7 @@
+# version 2.2.0
+- removing views from model
+- replacing native SQL by JPQL (where possible)
+
 # version 2.1.0
 - upgrading to Spring Boot 4.0.1
 - corrections in model 
