@@ -19,50 +19,50 @@ import java.time.LocalDateTime;
 @SpringBootTest
 class ContextRepositoryTests extends RepositoryTests {
 
-   @Test
-   @Transactional
-   void deleteWithoutContext() {
+    @Test
+    @Transactional
+    void deleteWithoutContext() {
 
-      Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
+        Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
 
-      Client client = usRep.save(new Client("wowasa", "########", Role.ADMIN));
+        Client client = usRep.save(new Client("wowasa", "########", Role.ADMIN));
 
-      Context contextWith = cRep.save(new Context("origin1", null, client));
+        Context contextWith = cRep.save(new Context("origin1", null, client));
 
-      cRep.save(new Context("origin2", null, client));
-      
-      UrlContext urlContext = new UrlContext(url, contextWith, LocalDateTime.now(), true);
-      urlContext.setActive(true);     
+        cRep.save(new Context("origin2", null, client));
 
-      ucRep.save(urlContext);
+        UrlContext urlContext = new UrlContext(url, contextWith, LocalDateTime.now(), true);
+        urlContext.setActive(true);
 
-      assertEquals(2, cRep.count());
+        ucRep.save(urlContext);
 
-      cRep.deleteWithoutContext();
+        assertEquals(2, cRep.count());
 
-      assertEquals(1, cRep.count());
+        cRep.deleteWithoutContext();
 
-   }
+        assertEquals(1, cRep.count());
 
-   @Test
-   void findByOriginAndProvidergroupAndClient() {
+    }
 
-      Client client = usRep.save(new Client("wowasa", "########", Role.ADMIN));
+    @Test
+    void findByOriginAndProvidergroupAndClient() {
 
-      cRep.save(new Context("origin1", null, client));
+        Client client = usRep.save(new Client("wowasa", "########", Role.ADMIN));
 
-      Providergroup providergroup = pRep.save(new Providergroup("wowasa's pg"));
+        cRep.save(new Context("origin1", null, client));
 
-      Context context = new Context("origin1", providergroup, client);
+        Providergroup providergroup = pRep.save(new Providergroup("wowasa's pg"));
 
-      cRep.save(context);
+        Context context = new Context("origin1", providergroup, client);
 
-      assertEquals(2, cRep.count());
+        cRep.save(context);
 
-      assertFalse(cRep.findByOriginAndProvidergroupAndClient("origin1", null, client).isEmpty());
+        assertEquals(2, cRep.count());
 
-      assertFalse(cRep.findByOriginAndProvidergroupAndClient("origin1", providergroup, client).isEmpty());
+        assertFalse(cRep.findByOriginAndProvidergroupAndClient("origin1", null, client).isEmpty());
 
-   }
+        assertFalse(cRep.findByOriginAndProvidergroupAndClient("origin1", providergroup, client).isEmpty());
+
+    }
 
 }

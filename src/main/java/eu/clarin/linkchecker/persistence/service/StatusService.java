@@ -30,7 +30,6 @@ public class StatusService {
     HistoryRepository hRep;
 
 
-
     public void save(Status status) {
 
         if (status.getUrl().getPriority() > 0) { //de-prioritization when status update

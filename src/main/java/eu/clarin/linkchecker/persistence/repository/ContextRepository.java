@@ -10,10 +10,10 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface ContextRepository extends CrudRepository<Context, Long> {
-   
-   Optional<Context> findByOriginAndProvidergroupAndClient(String origin, Providergroup providergroup, Client client);
-   
-   @Modifying(clearAutomatically = true, flushAutomatically = true)
-   @Query("DELETE FROM Context c WHERE c NOT IN (SELECT uc.context FROM UrlContext uc)")
-   void deleteWithoutContext();
+
+    Optional<Context> findByOriginAndProvidergroupAndClient(String origin, Providergroup providergroup, Client client);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("DELETE FROM Context c WHERE c NOT IN (SELECT uc.context FROM UrlContext uc)")
+    void deleteWithoutContext();
 }

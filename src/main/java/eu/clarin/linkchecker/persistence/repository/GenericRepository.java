@@ -13,7 +13,7 @@ import java.util.List;
  *
  */
 public interface GenericRepository {
-   
-   List<Tuple> findAll(String query, boolean isNative);
+
+    List<Tuple> findAll(String query, boolean isNative);
 
 }

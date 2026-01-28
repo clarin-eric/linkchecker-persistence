@@ -19,15 +19,15 @@ import java.util.List;
 @Component
 @Scope("prototype")
 public class GenericRepositoryImpl implements GenericRepository {
-   
-   @PersistenceContext
-   EntityManager em;
- 
-   @SuppressWarnings("unchecked")
-   @Override
-   public List<Tuple> findAll(String query, boolean isNative) {
-      
-      return (isNative?em.createNativeQuery(query, Tuple.class):em.createQuery(query, Tuple.class))
-            .getResultList();
-   }
+
+    @PersistenceContext
+    EntityManager em;
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Tuple> findAll(String query, boolean isNative) {
+
+        return (isNative ? em.createNativeQuery(query, Tuple.class) : em.createQuery(query, Tuple.class))
+                .getResultList();
+    }
 }

@@ -26,35 +26,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @SpringBootTest
 public class GenericRepositoryTests extends RepositoryTests {
-   
-   @Autowired
-   GenericRepository gRep;
-   
-   @Test
-   @Transactional
-   void findAllUrl() {
-      
-      
-      
-      IntStream.range(0, 5).forEach(i -> uRep.save(new Url("http://www.wowasa.com" +i, "wowasa.com", true)));      
-      //native query
-      List<Tuple> list = gRep.findAll("select * from url", true);       
-      assertEquals(5, list.size());
-      // jpql query
-      list = gRep.findAll("select u from Url u", false);
-      assertEquals(5, list.size());
-   }
-   
-   @Test
-   @Transactional
-   void findAllProvidergroup() {
-      
-      IntStream.range(0, 5).forEach(i -> pRep.save(new Providergroup("pg" +i)));      
-      // native query
-      List<Tuple> list = gRep.findAll("select * from providergroup", true);       
-      assertEquals(5, list.size());      
-      // jpql query
-      list = gRep.findAll("select p from Providergroup p", false);       
-      assertEquals(5, list.size());      
-   }
+
+    @Autowired
+    GenericRepository gRep;
+
+    @Test
+    @Transactional
+    void findAllUrl() {
+
+
+        IntStream.range(0, 5).forEach(i -> uRep.save(new Url("http://www.wowasa.com" + i, "wowasa.com", true)));
+        //native query
+        List<Tuple> list = gRep.findAll("select * from url", true);
+        assertEquals(5, list.size());
+        // jpql query
+        list = gRep.findAll("select u from Url u", false);
+        assertEquals(5, list.size());
+    }
+
+    @Test
+    @Transactional
+    void findAllProvidergroup() {
+
+        IntStream.range(0, 5).forEach(i -> pRep.save(new Providergroup("pg" + i)));
+        // native query
+        List<Tuple> list = gRep.findAll("select * from providergroup", true);
+        assertEquals(5, list.size());
+        // jpql query
+        list = gRep.findAll("select p from Providergroup p", false);
+        assertEquals(5, list.size());
+    }
 }

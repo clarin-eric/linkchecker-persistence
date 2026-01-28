@@ -21,23 +21,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @SpringBootTest
 public class ObsoleteRepositoryTests extends RepositoryTests {
-   
-   @Test
-   @Transactional
-   void deleteByCheckingDateBefore() {
-      
-      LocalDateTime now = LocalDateTime.now();
-      
-      IntStream.range(0, 100)         
-         .forEach(i -> {
-            Obsolete obs = new Obsolete("http://www.wowasa.com", Category.Ok, "", now);
-            
-            obs.setCheckingDate(now.minusDays(i));           
-            oRep.save(obs);
-         });
-      
-      
-      oRep.deleteByCheckingDateBefore(now.minusDays(50).plusSeconds(1));
-      assertEquals(50, oRep.count());      
-   }
+
+    @Test
+    @Transactional
+    void deleteByCheckingDateBefore() {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        IntStream.range(0, 100)
+                .forEach(i -> {
+                    Obsolete obs = new Obsolete("http://www.wowasa.com", Category.Ok, "", now);
+
+                    obs.setCheckingDate(now.minusDays(i));
+                    oRep.save(obs);
+                });
+
+
+        oRep.deleteByCheckingDateBefore(now.minusDays(50).plusSeconds(1));
+        assertEquals(50, oRep.count());
+    }
 }
