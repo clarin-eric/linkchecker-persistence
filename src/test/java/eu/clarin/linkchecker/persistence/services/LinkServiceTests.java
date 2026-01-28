@@ -176,7 +176,7 @@ class LinkServiceTests extends RepositoryTests {
     @Test
     void deactivateLinksOlderThan() {
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().minusHours(1);
 
         Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
 
@@ -196,7 +196,7 @@ class LinkServiceTests extends RepositoryTests {
     @Test
     void deleteLinksOlderThan() {
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().minusHours(1);
 
         Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
 
