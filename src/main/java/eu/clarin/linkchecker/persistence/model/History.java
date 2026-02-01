@@ -32,7 +32,7 @@ public class History {
 
     private Integer redirectCount;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "url_id")
     private final Url url;
 

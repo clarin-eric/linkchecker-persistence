@@ -30,8 +30,8 @@ public class Url {
     @OneToOne(mappedBy = "url", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Status status;
 
-    @OneToOne(mappedBy = "url", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private History history;
+    @OneToMany(mappedBy = "url", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<History> history;
 
     @OneToMany(mappedBy = "url", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<UrlContext> urlContexts;
