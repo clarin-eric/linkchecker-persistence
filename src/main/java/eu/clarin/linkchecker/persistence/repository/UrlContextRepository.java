@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UrlContextRepository extends CrudRepository<UrlContext, Long> {
 
@@ -37,12 +38,13 @@ public interface UrlContextRepository extends CrudRepository<UrlContext, Long> {
     void deleteByIngestionDateBefore(@Param("ingestionDate") LocalDateTime ingestionDate);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Transactional
     @Query("""
             UPDATE UrlContext uc SET uc.ingestionDate = LOCAL_DATETIME
                     WHERE uc.active = TRUE
                             AND uc.context IN
                                     (SELECT c FROM Context c JOIN c.providergroup p
-                                            WHERE p.name = :providergroupName)
+                                            WHERE p.name IN :providergroupNames)
             """)
-    void updateIngestionDate(@Param("providergroupName") String providergroupName);
+    void updateIngestionDate(@Param("providergroupNames") Set<String> providergroupNames);
 }

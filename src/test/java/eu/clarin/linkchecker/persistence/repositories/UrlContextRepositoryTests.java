@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -122,7 +123,7 @@ class UrlContextRepositoryTests extends RepositoryTests {
         // since inserted with ingestion date (fixedDateTime - 1 day), all 40 have an ingestion date before fixedDateTime
         assertEquals(40, StreamSupport.stream(ucRep.findAll().spliterator(), false).filter(uc -> uc.getIngestionDate().isBefore(fixedDateTime)).count());
         // we update the ingestionDate to now(), which is after fixedDateTime
-        ucRep.updateIngestionDate("pg1");
+        ucRep.updateIngestionDate(Set.of("pg1"));
         // 30 entries remain unchanged
         assertEquals(30, StreamSupport.stream(ucRep.findAll().spliterator(), false).filter(uc -> uc.getIngestionDate().isBefore(fixedDateTime)).count());
         // but for the 10 active url-contexts of providergroup1 (with context1) we set ingestionDate to now() > fixedDateTime

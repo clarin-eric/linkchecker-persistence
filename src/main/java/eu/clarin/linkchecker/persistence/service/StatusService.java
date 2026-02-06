@@ -5,6 +5,7 @@ import eu.clarin.linkchecker.persistence.model.History;
 import eu.clarin.linkchecker.persistence.model.Status;
 import eu.clarin.linkchecker.persistence.model.StatusDetail;
 import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
+import eu.clarin.linkchecker.persistence.repository.StatusDetailRepository;
 import eu.clarin.linkchecker.persistence.repository.StatusRepository;
 import eu.clarin.linkchecker.persistence.repository.UrlRepository;
 import eu.clarin.linkchecker.persistence.utils.Category;
@@ -28,6 +29,8 @@ public class StatusService {
     StatusRepository sRep;
     @Autowired
     HistoryRepository hRep;
+    @Autowired
+    StatusDetailRepository sdRep;
 
 
     public void save(Status status) {
@@ -79,10 +82,10 @@ public class StatusService {
     }
 
     public Stream<StatusDetail> findAllDetail(Category category) {
-        return sRep.findStatusDetail(category);
+        return sdRep.findByCategory(category);
     }
 
     public Stream<StatusDetail> findAllDetail(String providergroupname, Category category) {
-        return sRep.findStatusDetail(providergroupname, category);
+        return sdRep.findByProvidergroupnameAndCategory(providergroupname, category);
     }
 }
