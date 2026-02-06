@@ -11,7 +11,7 @@ public interface AggregatedStatusRepository extends Repository<AggregatedStatus,
 
     @Query(
             """
-                    SELECT new eu.clarin.linkchecker.persistence.model.AggregatedStatus(p.name, s.category, avg(s.duration), max(s.duration), count(u), count(s.duration))
+                    SELECT new AggregatedStatus(p.name, s.category, avg(s.duration), max(s.duration), count(u), count(s.duration))
                             FROM Providergroup p
                                     JOIN p.contexts c
                                             JOIN c.urlContexts uc
