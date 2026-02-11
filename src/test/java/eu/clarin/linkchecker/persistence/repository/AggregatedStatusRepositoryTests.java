@@ -1,9 +1,8 @@
-package eu.clarin.linkchecker.persistence.repositories;
+package eu.clarin.linkchecker.persistence.repository;
 
 import eu.clarin.linkchecker.persistence.model.*;
 import eu.clarin.linkchecker.persistence.utils.Category;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -11,7 +10,6 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
 public class AggregatedStatusRepositoryTests extends RepositoryTests {
 
     @Test

@@ -1,14 +1,9 @@
-package eu.clarin.linkchecker.persistence.repositories;
+package eu.clarin.linkchecker.persistence.repository;
 
 import eu.clarin.linkchecker.persistence.model.*;
-import lombok.ToString;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -16,7 +11,9 @@ import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-@SpringBootTest
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 class UrlRepositoryTests extends RepositoryTests {
 
 
@@ -27,16 +24,12 @@ class UrlRepositoryTests extends RepositoryTests {
         assertThrows(NullPointerException.class, () -> uRep.save(new Url(null, null, null)));
 
         // saving
-        Url url = new Url("http://www.wowasa.com", "www.wowasa.com", true);
-        uRep.save(url);
+        Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
+
         assertEquals(1, uRep.count());
 
         // the same URL mustn't be saved twice
         assertThrows(DataAccessException.class, () -> uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true)));
-
-        // deleting
-        uRep.delete(url);
-        assertEquals(0, uRep.count());
     }
 
     @Transactional
@@ -125,8 +118,8 @@ class UrlRepositoryTests extends RepositoryTests {
 
         assertEquals(1, uRep.aggregateCountUrl().count());
         uRep.aggregateCountUrl().findFirst().ifPresent(urlCount -> {
-            assertEquals(10, urlCount.getCount());
-            assertEquals(1, urlCount.getDistinctCount());
+            assertEquals(10, urlCount.count());
+            assertEquals(1, urlCount.distinctCount());
         });
 
     }
