@@ -1,5 +1,6 @@
 # version 2.2.0
-- removing views from model
+- removing views from schema
+- corrections in model
 - replacing native SQL by JPQL (where possible)
 
 # version 2.1.0
