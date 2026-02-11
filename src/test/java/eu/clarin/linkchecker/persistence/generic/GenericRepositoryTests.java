@@ -2,22 +2,21 @@
  * @author Wolfgang Walter SAUER (wowasa) &lt;clarin@wowasa.com&gt;
  *
  */
-package eu.clarin.linkchecker.persistence.repositories;
+package eu.clarin.linkchecker.persistence.generic;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
-
+import eu.clarin.linkchecker.persistence.model.Providergroup;
+import eu.clarin.linkchecker.persistence.model.Url;
+import eu.clarin.linkchecker.persistence.repository.ProvidergroupRepository;
+import eu.clarin.linkchecker.persistence.repository.UrlRepository;
 import jakarta.persistence.Tuple;
-
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.clarin.linkchecker.persistence.model.Providergroup;
-import eu.clarin.linkchecker.persistence.model.Url;
-import eu.clarin.linkchecker.persistence.repository.GenericRepository;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -25,8 +24,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  *
  */
 @SpringBootTest
-public class GenericRepositoryTests extends RepositoryTests {
+public class GenericRepositoryTests {
 
+    @Autowired
+    UrlRepository uRep;
+    @Autowired
+    ProvidergroupRepository pRep;
     @Autowired
     GenericRepository gRep;
 
@@ -55,5 +58,11 @@ public class GenericRepositoryTests extends RepositoryTests {
         // jpql query
         list = gRep.findAll("select p from Providergroup p", false);
         assertEquals(5, list.size());
+    }
+
+    @AfterEach
+    void deleteAll() {
+        uRep.deleteAll();
+        pRep.deleteAll();
     }
 }

@@ -1,24 +1,31 @@
-package eu.clarin.linkchecker.persistence.services;
+package eu.clarin.linkchecker.persistence.service;
 
 import eu.clarin.linkchecker.persistence.model.History;
+import eu.clarin.linkchecker.persistence.model.Status;
+import eu.clarin.linkchecker.persistence.model.Url;
+import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
+import eu.clarin.linkchecker.persistence.repository.StatusRepository;
+import eu.clarin.linkchecker.persistence.repository.UrlRepository;
+import eu.clarin.linkchecker.persistence.utils.Category;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-
-import eu.clarin.linkchecker.persistence.model.Status;
-import eu.clarin.linkchecker.persistence.model.Url;
-import eu.clarin.linkchecker.persistence.repositories.RepositoryTests;
-import eu.clarin.linkchecker.persistence.service.StatusService;
-import eu.clarin.linkchecker.persistence.utils.Category;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
-class StatusServiceTests extends RepositoryTests {
+class StatusServiceTests {
+
+    @Autowired
+    UrlRepository uRep;
+    @Autowired
+    StatusRepository sRep;
+    @Autowired
+    HistoryRepository hRep;
 
 
     @Autowired
@@ -71,6 +78,13 @@ class StatusServiceTests extends RepositoryTests {
         assertEquals(0, sService.getStatus("http://www.wowasa.com/page100").size());
         assertEquals(1, sService.getStatus("http://www.wowasa.com/page100", "http://www.wowasa.com/page0").size());
         assertEquals(2, sService.getStatus("http://www.wowasa.com/page1", "http://www.wowasa.com/page0").size());
+    }
+
+    @AfterEach
+    void deleteAll() {
+        sRep.deleteAll();
+        hRep.deleteAll();
+        uRep.deleteAll();
     }
 
 }
