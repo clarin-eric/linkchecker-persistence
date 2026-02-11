@@ -3,7 +3,6 @@ package eu.clarin.linkchecker.persistence.repository;
 import eu.clarin.linkchecker.persistence.model.StatusDetail;
 import eu.clarin.linkchecker.persistence.model.StatusDetailId;
 import eu.clarin.linkchecker.persistence.utils.Category;
-import jakarta.persistence.SqlResultSetMapping;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;

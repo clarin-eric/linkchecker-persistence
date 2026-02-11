@@ -4,15 +4,14 @@
  */
 package eu.clarin.linkchecker.persistence.model;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.*;
-
 import eu.clarin.linkchecker.persistence.utils.Category;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
 
 
 /**

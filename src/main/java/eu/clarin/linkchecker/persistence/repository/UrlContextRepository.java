@@ -44,7 +44,18 @@ public interface UrlContextRepository extends CrudRepository<UrlContext, Long> {
                     WHERE uc.active = TRUE
                             AND uc.context IN
                                     (SELECT c FROM Context c JOIN c.providergroup p
+                                            WHERE p.name = :providergroupName)
+            """)
+    void updateIngestionDateByProvidergroupName(@Param("providergroupName") String providergroupName);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Transactional
+    @Query("""
+            UPDATE UrlContext uc SET uc.ingestionDate = LOCAL_DATETIME
+                    WHERE uc.active = TRUE
+                            AND uc.context IN
+                                    (SELECT c FROM Context c JOIN c.providergroup p
                                             WHERE p.name IN :providergroupNames)
             """)
-    void updateIngestionDate(@Param("providergroupNames") Set<String> providergroupNames);
+    void updateIngestionDateByProvidergroupNames(@Param("providergroupNames") Set<String> providergroupNames);
 }

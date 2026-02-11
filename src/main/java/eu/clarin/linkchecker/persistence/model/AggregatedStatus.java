@@ -1,16 +1,11 @@
 package eu.clarin.linkchecker.persistence.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-
-import lombok.*;
-import org.springframework.lang.Nullable;
-
 import eu.clarin.linkchecker.persistence.utils.Category;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)

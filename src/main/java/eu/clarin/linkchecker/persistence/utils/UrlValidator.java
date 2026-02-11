@@ -1,7 +1,5 @@
 package eu.clarin.linkchecker.persistence.utils;
 
-import lombok.Data;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -34,14 +32,7 @@ public class UrlValidator {
         }
     }
 
-    @Data
-    public static class ValidationResult {
-
-        private final boolean isValid;
-
-        private final String host;
-
-        private final String message;
+    public record ValidationResult(boolean isValid, String host, String message) {
 
     }
 

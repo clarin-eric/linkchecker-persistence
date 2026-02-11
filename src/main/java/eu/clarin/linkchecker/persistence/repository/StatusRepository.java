@@ -1,8 +1,6 @@
 package eu.clarin.linkchecker.persistence.repository;
 
-import eu.clarin.linkchecker.persistence.model.AggregatedStatus;
 import eu.clarin.linkchecker.persistence.model.Status;
-import eu.clarin.linkchecker.persistence.model.StatusDetail;
 import eu.clarin.linkchecker.persistence.model.Url;
 import eu.clarin.linkchecker.persistence.utils.Category;
 import org.springframework.data.jpa.repository.Modifying;

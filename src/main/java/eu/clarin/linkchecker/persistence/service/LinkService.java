@@ -124,10 +124,10 @@ public class LinkService {
             }
             return uRep.findByName(urlName)
                     .orElseGet(() -> {
-                        Url url = uRep.save(new Url(urlName, validation.getHost(), validation.isValid()));
+                        Url url = uRep.save(new Url(urlName, validation.host(), validation.isValid()));
 
                         if (!validation.isValid()) { //create a status entry if Url is not valid
-                            Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), ingestionDate);
+                            Status status = new Status(url, Category.Invalid_URL, validation.message(), ingestionDate);
                             sService.save(status);
                         }
 
@@ -158,13 +158,13 @@ public class LinkService {
                     })
                     .orElseGet(() -> {
 
-                        Url url = new Url(urlName, validation.getHost(), validation.isValid());
+                        Url url = new Url(urlName, validation.host(), validation.isValid());
                         url.setPriority(priority);
 
                         url = uRep.save(url);
 
                         if (!validation.isValid()) { //create a status entry if Url is not valid
-                            Status status = new Status(url, Category.Invalid_URL, validation.getMessage(), ingestionDate);
+                            Status status = new Status(url, Category.Invalid_URL, validation.message(), ingestionDate);
                             sService.save(status);
                         }
 

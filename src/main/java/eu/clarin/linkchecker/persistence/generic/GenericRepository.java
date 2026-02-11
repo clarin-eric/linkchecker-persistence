@@ -2,7 +2,7 @@
  * @author Wolfgang Walter SAUER (wowasa) &lt;clarin@wowasa.com&gt;
  *
  */
-package eu.clarin.linkchecker.persistence.repository;
+package eu.clarin.linkchecker.persistence.generic;
 
 import jakarta.persistence.Tuple;
 
