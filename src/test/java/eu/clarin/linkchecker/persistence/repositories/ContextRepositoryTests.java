@@ -1,20 +1,14 @@
 package eu.clarin.linkchecker.persistence.repositories;
 
+import eu.clarin.linkchecker.persistence.model.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.clarin.linkchecker.persistence.model.Client;
-import eu.clarin.linkchecker.persistence.model.Context;
-import eu.clarin.linkchecker.persistence.model.Providergroup;
-import eu.clarin.linkchecker.persistence.model.Role;
-import eu.clarin.linkchecker.persistence.model.Url;
-import eu.clarin.linkchecker.persistence.model.UrlContext;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-
-import java.time.LocalDateTime;
 
 @SpringBootTest
 class ContextRepositoryTests extends RepositoryTests {

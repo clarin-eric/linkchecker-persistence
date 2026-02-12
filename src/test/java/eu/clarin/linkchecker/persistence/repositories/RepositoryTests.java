@@ -1,16 +1,8 @@
 package eu.clarin.linkchecker.persistence.repositories;
 
+import eu.clarin.linkchecker.persistence.repository.*;
 import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import eu.clarin.linkchecker.persistence.repository.ClientRepository;
-import eu.clarin.linkchecker.persistence.repository.ContextRepository;
-import eu.clarin.linkchecker.persistence.repository.HistoryRepository;
-import eu.clarin.linkchecker.persistence.repository.ObsoleteRepository;
-import eu.clarin.linkchecker.persistence.repository.ProvidergroupRepository;
-import eu.clarin.linkchecker.persistence.repository.StatusRepository;
-import eu.clarin.linkchecker.persistence.repository.UrlContextRepository;
-import eu.clarin.linkchecker.persistence.repository.UrlRepository;
 
 public abstract class RepositoryTests {
 

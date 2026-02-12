@@ -1,14 +1,9 @@
 package eu.clarin.linkchecker.persistence.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+import lombok.*;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @RequiredArgsConstructor

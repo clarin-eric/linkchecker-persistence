@@ -4,16 +4,14 @@
  */
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.util.stream.Stream;
-
+import eu.clarin.linkchecker.persistence.model.StatusDetail;
+import eu.clarin.linkchecker.persistence.model.StatusDetailId;
 import jakarta.persistence.QueryHint;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.CrudRepository;
 
-import eu.clarin.linkchecker.persistence.model.StatusDetail;
-import eu.clarin.linkchecker.persistence.model.StatusDetailId;
+import java.util.stream.Stream;
 
 
 /**

@@ -1,11 +1,10 @@
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.util.stream.Stream;
-
-import org.springframework.data.repository.CrudRepository;
-
 import eu.clarin.linkchecker.persistence.model.AggregatedStatus;
 import eu.clarin.linkchecker.persistence.model.AggregatedStatusId;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.stream.Stream;
 
 public interface AggregatedStatusRepository extends CrudRepository<AggregatedStatus, AggregatedStatusId> {
 

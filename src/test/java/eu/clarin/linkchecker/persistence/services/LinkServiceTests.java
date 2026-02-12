@@ -1,21 +1,14 @@
 package eu.clarin.linkchecker.persistence.services;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.util.Pair;
-
-import eu.clarin.linkchecker.persistence.model.Client;
-import eu.clarin.linkchecker.persistence.model.History;
-import eu.clarin.linkchecker.persistence.model.Obsolete;
-import eu.clarin.linkchecker.persistence.model.Role;
-import eu.clarin.linkchecker.persistence.model.Url;
+import eu.clarin.linkchecker.persistence.model.*;
 import eu.clarin.linkchecker.persistence.repositories.RepositoryTests;
 import eu.clarin.linkchecker.persistence.service.LinkService;
 import eu.clarin.linkchecker.persistence.utils.Category;
 import lombok.extern.slf4j.Slf4j;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.util.Pair;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -24,6 +17,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Slf4j

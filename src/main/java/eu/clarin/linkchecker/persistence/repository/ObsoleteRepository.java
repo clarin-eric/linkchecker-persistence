@@ -1,13 +1,12 @@
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.time.LocalDateTime;
-
+import eu.clarin.linkchecker.persistence.model.Obsolete;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import eu.clarin.linkchecker.persistence.model.Obsolete;
+import java.time.LocalDateTime;
 
 public interface ObsoleteRepository extends CrudRepository<Obsolete, Long> {
    

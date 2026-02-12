@@ -1,13 +1,12 @@
 package eu.clarin.linkchecker.persistence.model;
 
-import java.io.Serializable;
-
+import eu.clarin.linkchecker.persistence.utils.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-
-import eu.clarin.linkchecker.persistence.utils.Category;
 import lombok.Data;
+
+import java.io.Serializable;
 
 
 @Data

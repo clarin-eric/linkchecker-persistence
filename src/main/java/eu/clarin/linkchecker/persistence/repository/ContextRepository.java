@@ -1,14 +1,13 @@
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.util.Optional;
-
+import eu.clarin.linkchecker.persistence.model.Client;
+import eu.clarin.linkchecker.persistence.model.Context;
+import eu.clarin.linkchecker.persistence.model.Providergroup;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import eu.clarin.linkchecker.persistence.model.Client;
-import eu.clarin.linkchecker.persistence.model.Context;
-import eu.clarin.linkchecker.persistence.model.Providergroup;
+import java.util.Optional;
 
 public interface ContextRepository extends CrudRepository<Context, Long> {
    

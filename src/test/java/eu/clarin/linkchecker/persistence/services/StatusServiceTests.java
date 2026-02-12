@@ -1,21 +1,19 @@
 package eu.clarin.linkchecker.persistence.services;
 
 import eu.clarin.linkchecker.persistence.model.History;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-
 import eu.clarin.linkchecker.persistence.model.Status;
 import eu.clarin.linkchecker.persistence.model.Url;
 import eu.clarin.linkchecker.persistence.repositories.RepositoryTests;
 import eu.clarin.linkchecker.persistence.service.StatusService;
 import eu.clarin.linkchecker.persistence.utils.Category;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class StatusServiceTests extends RepositoryTests{

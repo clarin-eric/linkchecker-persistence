@@ -4,34 +4,22 @@
  */
 package eu.clarin.linkchecker.persistence.repositories;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Vector;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
+import eu.clarin.linkchecker.persistence.model.*;
+import eu.clarin.linkchecker.persistence.repository.StatusDetailRepository;
+import eu.clarin.linkchecker.persistence.utils.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.clarin.linkchecker.persistence.model.Client;
-import eu.clarin.linkchecker.persistence.model.Context;
-import eu.clarin.linkchecker.persistence.model.StatusDetail;
-import eu.clarin.linkchecker.persistence.model.Providergroup;
-import eu.clarin.linkchecker.persistence.model.Role;
-import eu.clarin.linkchecker.persistence.model.Status;
-import eu.clarin.linkchecker.persistence.model.Url;
-import eu.clarin.linkchecker.persistence.model.UrlContext;
-import eu.clarin.linkchecker.persistence.repository.StatusDetailRepository;
-import eu.clarin.linkchecker.persistence.utils.Category;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  *

@@ -1,10 +1,9 @@
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.util.Optional;
-
+import eu.clarin.linkchecker.persistence.model.Client;
 import org.springframework.data.repository.CrudRepository;
 
-import eu.clarin.linkchecker.persistence.model.Client;
+import java.util.Optional;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
    

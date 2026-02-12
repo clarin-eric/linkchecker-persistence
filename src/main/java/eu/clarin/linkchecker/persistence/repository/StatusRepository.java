@@ -1,16 +1,15 @@
 package eu.clarin.linkchecker.persistence.repository;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.stream.Stream;
-
+import eu.clarin.linkchecker.persistence.model.Status;
+import eu.clarin.linkchecker.persistence.model.Url;
+import eu.clarin.linkchecker.persistence.utils.Category;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
-import eu.clarin.linkchecker.persistence.model.Status;
-import eu.clarin.linkchecker.persistence.model.Url;
-import eu.clarin.linkchecker.persistence.utils.Category;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 
 public interface StatusRepository extends CrudRepository<Status, Long> {

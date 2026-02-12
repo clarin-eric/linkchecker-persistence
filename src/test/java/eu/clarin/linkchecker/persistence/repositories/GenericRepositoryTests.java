@@ -4,20 +4,17 @@
  */
 package eu.clarin.linkchecker.persistence.repositories;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
-
+import eu.clarin.linkchecker.persistence.model.Providergroup;
+import eu.clarin.linkchecker.persistence.model.Url;
+import eu.clarin.linkchecker.persistence.repository.GenericRepository;
 import jakarta.persistence.Tuple;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.clarin.linkchecker.persistence.model.Providergroup;
-import eu.clarin.linkchecker.persistence.model.Url;
-import eu.clarin.linkchecker.persistence.repository.GenericRepository;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

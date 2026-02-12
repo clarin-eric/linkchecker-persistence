@@ -7,12 +7,10 @@ package eu.clarin.linkchecker.persistence.repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Tuple;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
-import org.springframework.context.annotation.Scope;
-
-import org.springframework.stereotype.Component;
 
 
 /**

@@ -4,15 +4,14 @@
  */
 package eu.clarin.linkchecker.persistence.repositories;
 
-import java.time.LocalDateTime;
-import java.util.stream.IntStream;
-
+import eu.clarin.linkchecker.persistence.model.Obsolete;
+import eu.clarin.linkchecker.persistence.utils.Category;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.clarin.linkchecker.persistence.model.Obsolete;
-import eu.clarin.linkchecker.persistence.utils.Category;
+import java.time.LocalDateTime;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

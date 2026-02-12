@@ -4,16 +4,11 @@
  */
 package eu.clarin.linkchecker.persistence.model;
 
-import java.time.LocalDateTime;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-
 import eu.clarin.linkchecker.persistence.utils.Category;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 
 /**
