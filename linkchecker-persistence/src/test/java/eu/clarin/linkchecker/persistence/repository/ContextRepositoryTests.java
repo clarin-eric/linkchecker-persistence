@@ -56,5 +56,4 @@ class ContextRepositoryTests extends RepositoryTests {
         assertFalse(cRep.findByOriginAndProvidergroupAndClient("origin1", providergroup, client).isEmpty());
 
     }
-
 }

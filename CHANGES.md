@@ -1,3 +1,6 @@
+# version 2.3.0
+- modularization of database model (issue https://github.com/clarin-eric/linkchecker-persistence/issues/24)
+
 # version 2.2.0
 - upgrading to Spring Boot 4.0.2
 - removing views from schema
