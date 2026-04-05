@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 
 public interface ObsoleteRepository extends CrudRepository<Obsolete, Long> {
-   
-   @Modifying(clearAutomatically = true, flushAutomatically = true)
-   @Query("DELETE FROM Obsolete o WHERE o.checkingDate < :checkingDate")
-   void deleteByCheckingDateBefore(@Param("checkingDate") LocalDateTime checkingDate);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("DELETE FROM Obsolete o WHERE o.checkingDate < :checkingDate")
+    void deleteByCheckingDateBefore(@Param("checkingDate") LocalDateTime checkingDate);
 
 }

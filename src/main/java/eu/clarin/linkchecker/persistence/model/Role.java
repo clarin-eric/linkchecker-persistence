@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package eu.clarin.linkchecker.persistence.model;
 
@@ -8,5 +8,5 @@ package eu.clarin.linkchecker.persistence.model;
  *
  */
 public enum Role {
-   ADMIN, USER
+    ADMIN, USER
 }

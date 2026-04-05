@@ -22,7 +22,7 @@ public enum Category {
     Ok,
     Undetermined,
     Restricted_Access,
-    Blocked_By_Robots_txt, 
+    Blocked_By_Robots_txt,
     Broken,
     Invalid_URL
 }

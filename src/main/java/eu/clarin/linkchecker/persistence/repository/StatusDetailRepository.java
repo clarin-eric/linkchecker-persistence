@@ -1,64 +1,46 @@
-/**
- * @author Wolfgang Walter SAUER (wowasa) &lt;clarin@wowasa.com&gt;
- *
- */
 package eu.clarin.linkchecker.persistence.repository;
 
 import eu.clarin.linkchecker.persistence.model.StatusDetail;
 import eu.clarin.linkchecker.persistence.model.StatusDetailId;
-import jakarta.persistence.QueryHint;
+import eu.clarin.linkchecker.persistence.utils.Category;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.QueryHints;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.stream.Stream;
 
+public interface StatusDetailRepository extends Repository<StatusDetail, StatusDetailId> {
 
-/**
- *
- */
-public interface StatusDetailRepository extends CrudRepository<StatusDetail, StatusDetailId>{
-   
-   @Query(
-      value = """
-         SELECT NULL AS order_nr, s.*, u.name AS urlname, p.name AS providergroupname, c.origin, uc.expected_mime_type
-            FROM status s 
-            INNER JOIN url u ON s.url_id = u.id 
-            INNER JOIN url_context uc ON uc.url_id = u.id
-            INNER JOIN context c ON c.id = uc.context_id
-            INNER JOIN providergroup p ON p.id = c.providergroup_id
-            WHERE s.category = ?1
-            AND uc.active = true       
-            """,
-      nativeQuery = true
-   )
-   @QueryHints(value = {
-         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_FETCH_SIZE, value = "1"), 
-         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_CACHEABLE, value = "false"),
-         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_READ_ONLY, value = "true")
-   })
-   Stream<StatusDetail> findAllByCategory(String categoryName);
-   @Query(
-      value = """
-         SELECT NULL AS order_nr, s.*, u.name AS urlname, p.name AS providergroupname, c.origin, uc.expected_mime_type
-            FROM status s 
-            INNER JOIN url u ON s.url_id = u.id 
-            INNER JOIN url_context uc ON uc.url_id = u.id
-            INNER JOIN context c ON c.id = uc.context_id
-            INNER JOIN providergroup p ON p.id = c.providergroup_id
-            WHERE s.category = ?2
-            AND p.name = ?1
-            AND uc.active = true       
-            """,
-      nativeQuery = true
-   )
-   @QueryHints(value = {
-         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_FETCH_SIZE, value = "1"), 
-         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_CACHEABLE, value = "false"),
-         @QueryHint(name = org.hibernate.jpa.AvailableHints.HINT_READ_ONLY, value = "true")
-   })
-   Stream<StatusDetail> findAllByProvidergroupnameAndCategory(String providergroupname, String categoryName);
-   
-   Stream<StatusDetail> findByOrderNrLessThanEqual(Long orderNr);
 
+
+    @Query(
+            """
+            SELECT new StatusDetail(p.name, c.origin, uc.expectedMimeType, u.name, s.method, s.statusCode, s.category, s.message, s.checkingDate, s.contentType, s.contentLength, s.duration, s.redirectCount)
+            FROM Providergroup p
+                    JOIN p.contexts c
+                            JOIN c.urlContexts uc
+                                    JOIN uc.url u
+                                            JOIN u.status s
+                                                    WHERE uc.active = true
+                                                            AND p.name = :providergroupName
+                                                                AND s.category = :category
+                                                                        ORDER BY s.checkingDate DESC 
+                    """
+    )
+    Stream<StatusDetail> findByProvidergroupnameAndCategory(@Param("providergroupName") String providergroupName, @Param("category") Category category);
+
+    @Query(
+            """
+            SELECT new StatusDetail(p.name, c.origin, uc.expectedMimeType, u.name, s.method, s.statusCode, s.category, s.message, s.checkingDate, s.contentType, s.contentLength, s.duration, s.redirectCount)
+            FROM Providergroup p
+                    JOIN p.contexts c
+                            JOIN c.urlContexts uc
+                                    JOIN uc.url u
+                                            JOIN u.status s
+                                                        WHERE uc.active = true
+                                                                AND s.category = :category
+                                                                        ORDER BY s.checkingDate DESC
+                    """
+    )
+    Stream<StatusDetail> findByCategory(@Param("category") Category category);
 }

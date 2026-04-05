@@ -13,15 +13,15 @@ import java.util.Set;
 @Entity
 @Table(indexes = {@Index(columnList = "name", unique = true)})
 public class Providergroup {
-   
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
-   
-   @NonNull
-   private final String name;
-   
-   @OneToMany(mappedBy = "providergroup", fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
-   private Set<Context> contexts;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NonNull
+    private final String name;
+
+    @OneToMany(mappedBy = "providergroup", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Context> contexts;
 
 }

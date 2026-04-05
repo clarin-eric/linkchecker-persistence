@@ -1,9 +1,8 @@
-package eu.clarin.linkchecker.persistence.repositories;
+package eu.clarin.linkchecker.persistence.repository;
 
 import eu.clarin.linkchecker.persistence.model.*;
 import eu.clarin.linkchecker.persistence.utils.Category;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +13,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
 class StatusRepositoryTests extends RepositoryTests {
 
     @Test

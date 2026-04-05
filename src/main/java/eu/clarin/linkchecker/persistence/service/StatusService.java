@@ -68,7 +68,7 @@ public class StatusService {
 
     public Map<String, Status> getStatus(String... urlNames) {
 
-        final Map<String, Status> map = new HashMap<String, Status>();
+        final Map<String, Status> map = new HashMap<>();
 
         Arrays.stream(urlNames).forEach(urlName -> {
 
@@ -82,10 +82,10 @@ public class StatusService {
     }
 
     public Stream<StatusDetail> findAllDetail(Category category) {
-        return sdRep.findAllByCategory(category.name());
+        return sdRep.findByCategory(category);
     }
 
     public Stream<StatusDetail> findAllDetail(String providergroupname, Category category) {
-        return sdRep.findAllByProvidergroupnameAndCategory(providergroupname, category.name());
+        return sdRep.findByProvidergroupnameAndCategory(providergroupname, category);
     }
 }

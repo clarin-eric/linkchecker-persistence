@@ -1,9 +1,11 @@
-package eu.clarin.linkchecker.persistence.repositories;
+package eu.clarin.linkchecker.persistence.repository;
 
-import eu.clarin.linkchecker.persistence.repository.*;
-import org.junit.jupiter.api.AfterEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public abstract class RepositoryTests {
 
     @Autowired
@@ -22,17 +24,8 @@ public abstract class RepositoryTests {
     protected ClientRepository usRep;
     @Autowired
     protected ObsoleteRepository oRep;
-
-    @AfterEach
-    void cleanUp() {
-
-        ucRep.deleteAll();
-        cRep.deleteAll();
-        pRep.deleteAll();
-        usRep.deleteAll();
-        oRep.deleteAll();
-        hRep.deleteAll();
-        sRep.deleteAll();
-        uRep.deleteAll();
-    }
+    @Autowired
+    protected AggregatedStatusRepository asRep;
+    @Autowired
+    protected StatusDetailRepository sdRep;
 }

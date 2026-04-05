@@ -14,21 +14,19 @@ import org.springframework.lang.Nullable;
 @Entity
 @IdClass(AggregatedStatusId.class)
 public class AggregatedStatus {
-   
-   @Column(name = "name", insertable = false, updatable = false)
+
    @Id
    private final String providergroupName;
-   @Column(insertable = false, updatable = false)
    @Enumerated(EnumType.STRING)
    @Id
    private final Category category;   
-   @Nullable
-   private Double avgDuration;
-   @Nullable
-   private Long maxDuration;
+
+   private final Double avgDuration;
+
+   private final Integer maxDuration;
    
-   private Long numberId;
+   private final Long number;
    
-   private Long numberDuration;
+   private final Long numberWithDuration;
 
 }
