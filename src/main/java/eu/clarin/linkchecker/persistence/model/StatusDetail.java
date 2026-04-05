@@ -6,7 +6,10 @@ package eu.clarin.linkchecker.persistence.model;
 
 import eu.clarin.linkchecker.persistence.utils.Category;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -17,39 +20,36 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @IdClass(StatusDetailId.class)
+@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class StatusDetail {
-   
 
-   @Id
-   private Long id;
-   @Id
-   private String providergroupname;
-   @Id
-   private String origin;
-     
-   private Long orderNr;
-   
-   private String urlname;
+    @Id
+    private final String providergroupName;
+    @Id
+    private final String origin;
+    @Id
+    private final String expectedMimeType;
 
-   private String method;
+    private final String urlName;
 
-   private Integer statusCode;
+    private final String method;
 
-   @Enumerated(EnumType.STRING)
-   private Category category;   
+    private final Integer statusCode;
 
-   private String message;   
+    @Enumerated(EnumType.STRING)
+    private final Category category;
 
-   private LocalDateTime checkingDate;
+    private final String message;
 
-   private String contentType;
-   
-   private String expectedMimeType;
+    private final LocalDateTime checkingDate;
 
-   private Long contentLength;
+    private final String contentType;
 
-   private Integer duration;
+    private final Long contentLength;
 
-   private Integer redirectCount;  
+    private final Integer duration;
+
+    private final Integer redirectCount;
 
 }

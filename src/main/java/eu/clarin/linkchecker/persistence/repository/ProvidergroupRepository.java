@@ -8,11 +8,11 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface ProvidergroupRepository extends CrudRepository<Providergroup, Long> {
-   
-   Optional<Providergroup> findByName(String name);
-   
-   @Modifying(clearAutomatically = true, flushAutomatically = true)
-   @Query("DELETE FROM Providergroup p WHERE p NOT IN (SELECT DISTINCT c.providergroup FROM Context c)")
-   void deleteByContextsIsEmpty();
+
+    Optional<Providergroup> findByName(String name);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("DELETE FROM Providergroup p WHERE p NOT IN (SELECT DISTINCT c.providergroup FROM Context c)")
+    void deleteByContextsIsEmpty();
 
 }

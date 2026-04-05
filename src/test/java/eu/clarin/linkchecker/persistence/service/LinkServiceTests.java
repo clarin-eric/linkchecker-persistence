@@ -1,10 +1,10 @@
-package eu.clarin.linkchecker.persistence.services;
+package eu.clarin.linkchecker.persistence.service;
 
 import eu.clarin.linkchecker.persistence.model.*;
-import eu.clarin.linkchecker.persistence.repositories.RepositoryTests;
-import eu.clarin.linkchecker.persistence.service.LinkService;
+import eu.clarin.linkchecker.persistence.repository.*;
 import eu.clarin.linkchecker.persistence.utils.Category;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,9 +22,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Slf4j
-class LinkServiceTests extends RepositoryTests {
+class LinkServiceTests {
 
-
+    @Autowired
+    protected UrlRepository uRep;
+    @Autowired
+    StatusRepository sRep;
+    @Autowired
+    protected HistoryRepository hRep;
+    @Autowired
+    protected UrlContextRepository ucRep;
+    @Autowired
+    protected ContextRepository cRep;
+    @Autowired
+    protected ProvidergroupRepository pRep;
+    @Autowired
+    protected ClientRepository usRep;
+    @Autowired
+    protected ObsoleteRepository oRep;
     @Autowired
     private LinkService lService;
 
@@ -171,7 +186,7 @@ class LinkServiceTests extends RepositoryTests {
     @Test
     void deactivateLinksOlderThan() {
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().minusHours(1);
 
         Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
 
@@ -191,7 +206,7 @@ class LinkServiceTests extends RepositoryTests {
     @Test
     void deleteLinksOlderThan() {
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().minusHours(1);
 
         Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
 
@@ -210,7 +225,7 @@ class LinkServiceTests extends RepositoryTests {
     @Test
     void purgeHistory() {
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().minusHours(1);
 
         IntStream.range(0, 100)
                 .forEach(i -> hRep.save(new History(uRep.save(new Url("http://www.wowasa.com" + i, "www.wowasa.com" + i, true)), Category.Broken, now.minusDays(i))));
@@ -222,7 +237,7 @@ class LinkServiceTests extends RepositoryTests {
     @Test
     void purgeObsolete() {
 
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().minusHours(1);
 
         IntStream.range(0, 100)
                 .forEach(i -> {
@@ -235,5 +250,17 @@ class LinkServiceTests extends RepositoryTests {
 
         lService.purgeObsolete(50);
         assertEquals(50, oRep.count());
+    }
+
+    @AfterEach
+    void deleteAll() {
+
+        sRep.deleteAll();
+        hRep.deleteAll();
+        uRep.deleteAll();
+        pRep.deleteAll();
+        cRep.deleteAll();
+        ucRep.deleteAll();
+        usRep.deleteAll();
     }
 }
