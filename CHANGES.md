@@ -1,3 +1,6 @@
+# version 2.2.1
+- upgrading to Spring Boot 4.1.0
+
 # version 2.2.0
 - upgrading to Spring Boot 4.0.2
 - removing views from schema
