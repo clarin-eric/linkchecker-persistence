@@ -1,3 +1,9 @@
+# version 3.0.0
+- change in database model (issue https://github.com/clarin-eric/linkchecker-persistence/issues/30)
+- adding delete method to StatusRepository to purge table from outdated checks (issue https://github.com/clarin-eric/linkchecker-persistence/issues/29)
+- replacing purgeObsolete and purgeHistory-method from LinkService by purgeChecksOlderThan method (issue https://github.com/clarin-eric/linkchecker-persistence/issues/28)
+
+
 # version 2.2.1
 - upgrading to Spring Boot 4.1.0
 
