@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `url` (
   `group_key` VARCHAR(128) DEFAULT NULL,
   `valid` BOOLEAN DEFAULT NULL, 
   `priority` TINYINT NOT NULL DEFAULT 0,
+  `exclude_checking` BOOLEAN DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`name`),
   INDEX (`group_key`)
@@ -73,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `status` (
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME NOT NULL,
   `redirect_count` INT DEFAULT NULL,
+  `final_url`  VARCHAR(512) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`url_id`),
   INDEX (`category`),

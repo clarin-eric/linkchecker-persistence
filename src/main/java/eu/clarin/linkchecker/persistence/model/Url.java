@@ -27,6 +27,8 @@ public class Url {
 
     private int priority;
 
+    private Boolean excludeChecking;
+
     @OneToOne(mappedBy = "url", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Status status;
 

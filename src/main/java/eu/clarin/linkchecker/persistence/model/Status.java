@@ -24,6 +24,8 @@ public class Status {
 
     private Integer redirectCount;
 
+    private String finalUrl;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "url_id")
     @NonNull
