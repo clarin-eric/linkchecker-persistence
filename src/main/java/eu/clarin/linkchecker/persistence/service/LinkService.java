@@ -248,16 +248,16 @@ public class LinkService {
         log.info("step {}: done", step);
     }
 
-    @Transactional
-    public void purgeHistory(int periodInDays) {
+    @Transactional()
+    public void purgeChecksOlderThan(int periodInDays){
 
-        hRep.deleteByCheckingDateBefore(LocalDateTime.now().minusDays(periodInDays));
-    }
+        final LocalDateTime referenceDate = LocalDateTime.now().minusDays(periodInDays);
 
-    @Transactional
-    public void purgeObsolete(int periodInDays) {
+        sRep.deleteByCheckingDateBefore(referenceDate);
 
-        oRep.deleteByCheckingDateBefore(LocalDateTime.now().minusDays(periodInDays));
+        hRep.deleteByCheckingDateBefore(referenceDate);
+
+        oRep.deleteByCheckingDateBefore(referenceDate);
     }
 
 

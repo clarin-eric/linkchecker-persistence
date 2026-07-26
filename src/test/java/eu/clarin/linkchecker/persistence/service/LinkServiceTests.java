@@ -223,33 +223,32 @@ class LinkServiceTests {
     }
 
     @Test
-    void purgeHistory() {
-
-        LocalDateTime now = LocalDateTime.now().minusHours(1);
-
-        IntStream.range(0, 100)
-                .forEach(i -> hRep.save(new History(uRep.save(new Url("http://www.wowasa.com" + i, "www.wowasa.com" + i, true)), Category.Broken, now.minusDays(i))));
-
-        lService.purgeHistory(50);
-        assertEquals(50, hRep.count());
-    }
-
-    @Test
-    void purgeObsolete() {
+    void purgeChecksOlderThan() {
 
         LocalDateTime now = LocalDateTime.now().minusHours(1);
 
         IntStream.range(0, 100)
                 .forEach(i -> {
-                    Obsolete obs = new Obsolete("http://www.wowasa.com", Category.Ok, "", now);
+                    Url url = uRep.save(new Url("http://www.wowasa.com" + i, "www.wowasa.com" + i, true));
+
+                    sRep.save(new Status(url, Category.Broken, "", now.minusDays(i)));
+
+                    hRep.save(new History(url, Category.Broken, now.minusDays(i)));
+
+                    Obsolete obs = new Obsolete(url.getName(), Category.Ok, "", now);
 
                     obs.setCheckingDate(now.minusDays(i));
                     oRep.save(obs);
                 });
 
 
-        lService.purgeObsolete(50);
+        lService.purgeChecksOlderThan(50);
+
+        assertEquals(50, sRep.count());
+        assertEquals(50, hRep.count());
         assertEquals(50, oRep.count());
+
+
     }
 
     @AfterEach
