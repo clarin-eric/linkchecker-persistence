@@ -56,4 +56,10 @@ public interface StatusRepository extends CrudRepository<Status, Long> {
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     void saveStatusLinksOlderThan(@Param("dateTime") LocalDateTime dateTime);
 
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    //@Query necessary to create just one singe statement! (see https://www.baeldung.com/spring-data-jpa-delete)
+    @Query("DELETE FROM Status s WHERE s.checkingDate < :checkingDate")
+    void deleteByCheckingDateBefore(@Param("checkingDate") LocalDateTime checkingDate);
+
+
 }

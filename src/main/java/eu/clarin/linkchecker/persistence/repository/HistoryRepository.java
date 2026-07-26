@@ -38,6 +38,7 @@ public interface HistoryRepository extends CrudRepository<History, Long> {
     void saveHistoryLinksOlderThan(LocalDateTime dateTime);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
+    //@Query necessary to create just one singe statement! (see https://www.baeldung.com/spring-data-jpa-delete)
     @Query("DELETE FROM History h WHERE h.checkingDate < :checkingDate")
     void deleteByCheckingDateBefore(@Param("checkingDate") LocalDateTime checkingDate);
 
