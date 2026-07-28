@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `history` (
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME NOT NULL,
   `redirect_count` INT DEFAULT NULL,
+  `final_url` VARCHAR(512) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY (`url_id`,`checking_date`),
   FOREIGN KEY (`url_id`) REFERENCES `url` (`id`)

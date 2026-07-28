@@ -32,6 +32,8 @@ public class History {
 
     private Integer redirectCount;
 
+    private String finalUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "url_id")
     private final Url url;

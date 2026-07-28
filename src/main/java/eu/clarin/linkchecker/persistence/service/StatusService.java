@@ -50,6 +50,7 @@ public class StatusService {
             history.setDuration(oldStatus.getDuration());
             history.setContentLength(oldStatus.getContentLength());
             history.setRedirectCount(oldStatus.getRedirectCount());
+            history.setFinalUrl(oldStatus.getFinalUrl());
 
             // the try/catch block was necessary since we had frequently some records which were already
             // copied from status history table

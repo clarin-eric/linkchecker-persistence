@@ -259,13 +259,4 @@ public class LinkService {
 
         oRep.deleteByCheckingDateBefore(referenceDate);
     }
-
-
-    @Transactional(readOnly = true)
-    public List<Url> getUrlsToCheck(int groupLimit, int limit, LocalDateTime lastestCheck) {
-
-        try (Stream<Url> stream = uRep.getNextUrlsToCheck(groupLimit, lastestCheck)) {
-            return stream.limit(limit).collect(Collectors.toList());
-        }
-    }
 }
