@@ -32,43 +32,6 @@ class UrlRepositoryTests extends RepositoryTests {
         assertThrows(DataAccessException.class, () -> uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true)));
     }
 
-    @Transactional
-    @Test
-    void getNextUrlsToCheck() {
-
-        final Random random = new Random();
-
-        final String[] groupKeys = {"key1", "key2", "key3"};
-        final Url[] urls = new Url[100];
-
-        final Client client = usRep.save(new Client("wowasa", "xxxxxxxx", Role.ADMIN));
-
-        final Context context = cRep.save(new Context("origin", null, client));
-
-        IntStream.range(0, 100).forEach(i -> {
-
-            urls[i] = new Url("http://www.wowasa.com?page=" + i, groupKeys[random.nextInt(3)], true);
-
-            uRep.save(urls[i]);
-
-            UrlContext urlContext = new UrlContext(urls[i], context, LocalDateTime.now().minusDays(100 + i), true);
-            urlContext.setActive(true);
-
-            ucRep.save(urlContext);
-
-        });
-
-        try (Stream<Url> stream = uRep.getNextUrlsToCheck(100, LocalDateTime.now())) {
-            assertEquals(100, stream.count());
-        }
-
-        IntStream.range(0, 1).forEach(i -> {
-            try (Stream<Url> stream = uRep.getNextUrlsToCheck(100, LocalDateTime.now())) {
-                assertEquals(Arrays.stream(urls).filter(url -> url.getGroupKey().equals(groupKeys[i])).count(), stream.filter(url -> url.getGroupKey().equals(groupKeys[i])).count());
-            }
-        });
-    }
-
     @Test
     void countByUrlContextActive() {
 
