@@ -86,4 +86,10 @@ class UrlRepositoryTests extends RepositoryTests {
         });
 
     }
+
+    @Test
+    void getGroupKeysToCheck(){
+
+        uRep.getGroupKeysToCheck(LocalDateTime.now());
+    }
 }

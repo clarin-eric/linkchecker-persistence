@@ -42,4 +42,32 @@ public interface UrlRepository extends CrudRepository<Url, Long> {
     )
     Stream<UrlCount> aggregateCountUrl();
 
+    @Query(
+            """
+            SELECT DISTINCT u.groupKey FROM Url u 
+            LEFT JOIN u.status  
+            JOIN u.urlContexts uc                    
+            WHERE u.valid = TRUE 
+            AND u.excludeChecking != TRUE 
+            AND uc.active = TRUE             
+            AND u.status IS NULL OR u.status.checkingDate <  :checkedBefore
+            """
+    )
+    Stream<String> getGroupKeysToCheck(@Param("checkedBefore") LocalDateTime checkedBefore);
+
+    @Query(
+            """
+            SELECT DISTINCT u FROM Url u
+            LEFT JOIN u.status
+            JOIN u.urlContexts uc
+            WHERE u.groupKey = :groupKey
+            AND u.valid = TRUE 
+            AND u.excludeChecking != TRUE 
+            AND uc.active = TRUE             
+            AND u.status IS NULL OR u.status.checkingDate <  :checkedBefore
+            ORDER BY u.priority, u.status.checkingDate DESC
+            """
+    )
+    Stream<Url> getUrlsToCheck(@Param("checkedBefore") LocalDateTime checkedBefore, @Param("groupKey") String groupKey);
+
 }
