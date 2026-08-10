@@ -41,6 +41,11 @@ public class StatusService {
             uRep.save(status.getUrl());
         }
 
+        if(status.getRedirectCount() == 0){
+
+            status.setFinalUrl(null); //we only want to save the final URL in case of redirects
+        }
+
         sRep.findByUrl(status.getUrl()).ifPresent(oldStatus -> {//save record to history
             History history = new History(oldStatus.getUrl(), oldStatus.getCategory(), oldStatus.getCheckingDate());
             history.setMethod(oldStatus.getMethod());
