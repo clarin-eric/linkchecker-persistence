@@ -13,5 +13,7 @@ public class UrlToCheck {
 
     private Long urlId;
 
+    private Long statusId;
+
     private String urlName;
 }
