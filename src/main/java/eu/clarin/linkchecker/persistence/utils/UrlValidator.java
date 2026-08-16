@@ -17,26 +17,33 @@ public class UrlValidator {
 
             URL url = new URL(urlString);
 
-            String host = url.getHost();
+            String groupKey = url.getHost();
 
-            if (host == null || host.length() < 3 || host.contains("localhost") || host.contains("127.0.0")) {
-                return new ValidationResult(false, host, "invalid host");
+            if (groupKey == null || groupKey.length() < 3 || groupKey.contains("localhost") || groupKey.contains("127.0.0")) {
+                return new ValidationResult(false, groupKey, "invalid host");
             }
 
             if (!VALID_PROTOCOLS.contains(url.getProtocol())) {
-                return new ValidationResult(false, host, "invalid protocol");
+                return new ValidationResult(false, groupKey, "invalid protocol");
             }
 
-            return new ValidationResult(true, host, "ok");
+            if(groupKey.equals("hdl.handle.net")){ // in case of handles we group by handle prefix
+
+                String[] parts = urlString.split("/");
+
+                if(parts.length > 3){
+                    return new ValidationResult(true, parts[3], "ok");
+                }
+            }
+
+            return new ValidationResult(true, groupKey, "ok");
         }
         catch (MalformedURLException ex) {
             return new ValidationResult(false, null, "malformed URL");
         }
     }
 
-    public record ValidationResult(boolean isValid, String host, String message) {
+    public record ValidationResult(boolean isValid, String groupKey, String message) {
 
     }
-
-
 }
