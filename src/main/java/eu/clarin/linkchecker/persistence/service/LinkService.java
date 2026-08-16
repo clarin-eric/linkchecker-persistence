@@ -111,31 +111,8 @@ public class LinkService {
     }
 
     private Url getUrl(String urlName, ValidationResult validation, LocalDateTime ingestionDate) {
-        try {
-            while (!this.urlLock.add(urlName)) {
 
-                try {
-                    Thread.sleep(1000);
-                }
-                catch (InterruptedException e) {
-
-                    log.error("InterruptedException while waiting for unlock");
-                }
-            }
-            return uRep.findByName(urlName)
-                    .orElseGet(() -> {
-                        Url url = uRep.save(new Url(urlName, validation.host(), validation.isValid()));
-
-                        if (!validation.isValid()) { //create a status entry if Url is not valid
-                            Status status = new Status(url, Category.Invalid_URL, validation.message(), ingestionDate);
-                            sService.save(status);
-                        }
-
-                        return url;
-                    });
-        } finally {
-            this.urlLock.remove(urlName);
-        }
+        return getUrl(urlName, validation, ingestionDate, 0);
     }
 
     private Url getUrl(String urlName, ValidationResult validation, LocalDateTime ingestionDate, int priority) {
@@ -158,7 +135,7 @@ public class LinkService {
                     })
                     .orElseGet(() -> {
 
-                        Url url = new Url(urlName, validation.host(), validation.isValid());
+                        Url url = new Url(urlName, validation.groupKey(), validation.isValid());
                         url.setPriority(priority);
 
                         url = uRep.save(url);
