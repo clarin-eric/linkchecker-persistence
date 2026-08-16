@@ -113,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
   `duration` INT DEFAULT NULL,
   `checking_date` DATETIME DEFAULT NULL,
   `redirect_count` INT DEFAULT NULL,
-  `deletion_date` DATETIME NOT NULL,
+  `deletion_date` DATETIME NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `url_to_check` (
@@ -121,4 +121,4 @@ CREATE TABLE IF NOT EXISTS `url_to_check` (
     `url_id` INT NOT NULL,
     `status_id` INT DEFAULT NULL,
     `url_name` VARCHAR(512)
-)
+);
