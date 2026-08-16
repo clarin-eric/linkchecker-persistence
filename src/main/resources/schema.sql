@@ -1,29 +1,26 @@
 CREATE TABLE IF NOT EXISTS `providergroup` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(256) NOT NULL,
-  PRIMARY KEY (`id`),
   UNIQUE KEY (`name`)
 );
 
 CREATE TABLE IF NOT EXISTS `client` (
-   `id` INT NOT NULL AUTO_INCREMENT,
+   `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
    `name` VARCHAR(256) NOT NULL,
    `password` VARCHAR(128) NOT NULL,
    `email` VARCHAR(256) DEFAULT NULL,
    `quota` INT DEFAULT NULL, 
    `role` VARCHAR(64) NOT NULL,
    `enabled` BOOLEAN DEFAULT NULL,
-   PRIMARY KEY (`id`),
    UNIQUE KEY (`name`)
 );
 
 
 CREATE TABLE IF NOT EXISTS `context` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `client_id` INT NOT NULL,
   `origin` VARCHAR(512) NOT NULL,
   `providergroup_id` INT DEFAULT NULL,
-  PRIMARY KEY (`id`),  
   UNIQUE KEY (`origin`, `providergroup_id`, `client_id`),
   INDEX (`providergroup_id`),
   FOREIGN KEY (`providergroup_id`) REFERENCES `providergroup` (`id`),
@@ -34,26 +31,24 @@ CREATE TABLE IF NOT EXISTS `context` (
 
 
 CREATE TABLE IF NOT EXISTS `url` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(512) NOT NULL,
   `group_key` VARCHAR(128) DEFAULT NULL,
   `valid` BOOLEAN DEFAULT NULL, 
   `priority` TINYINT NOT NULL DEFAULT 0,
   `exclude_checking` BOOLEAN DEFAULT NULL,
-  PRIMARY KEY (`id`),
   UNIQUE KEY (`name`),
   INDEX (`group_key`)
 );
 
 
 CREATE TABLE IF NOT EXISTS `url_context` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `url_id` INT NOT NULL,
   `context_id` INT NOT NULL,
   `expected_mime_type` VARCHAR(128) DEFAULT NULL,
   `ingestion_date` DATETIME NOT NULL,
   `active` BOOLEAN NOT NULL,
-  PRIMARY KEY (`id`),
   INDEX (`url_id`, `active`, `context_id`),
   INDEX (`context_id`, `active`, `url_id`),
   UNIQUE KEY (`url_id`, `context_id`, `expected_mime_type`),
@@ -63,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `url_context` (
 
 
 CREATE TABLE IF NOT EXISTS `status` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `url_id` INT NOT NULL,
   `status_code` INT DEFAULT NULL,
   `message` VARCHAR(1024) NOT NULL,
@@ -75,7 +70,6 @@ CREATE TABLE IF NOT EXISTS `status` (
   `checking_date` DATETIME NOT NULL,
   `redirect_count` INT DEFAULT NULL,
   `final_url` VARCHAR(512) DEFAULT NULL,
-  PRIMARY KEY (`id`),
   UNIQUE KEY (`url_id`),
   INDEX (`category`),
   INDEX (`checking_date`),
@@ -85,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `status` (
 
 
 CREATE TABLE IF NOT EXISTS `history` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `url_id` INT DEFAULT NULL,
   `status_code` INT DEFAULT NULL,
   `message` VARCHAR(1024) DEFAULT NULL,
@@ -97,14 +91,13 @@ CREATE TABLE IF NOT EXISTS `history` (
   `checking_date` DATETIME NOT NULL,
   `redirect_count` INT DEFAULT NULL,
   `final_url` VARCHAR(512) DEFAULT NULL,
-  PRIMARY KEY (`id`),
   UNIQUE KEY (`url_id`,`checking_date`),
   FOREIGN KEY (`url_id`) REFERENCES `url` (`id`)
   ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `obsolete` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `url_name` VARCHAR(512) NOT NULL,
   `client_name` VARCHAR(256) DEFAULT NULL,
   `providergroup_name` VARCHAR(256) DEFAULT NULL,
@@ -121,5 +114,11 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
   `checking_date` DATETIME DEFAULT NULL,
   `redirect_count` INT DEFAULT NULL,
   `deletion_date` DATETIME NOT NULL,
-   PRIMARY KEY (`id`)
 );
+
+CREATE TABLE IF NOT EXISTS `url_to_check` (
+    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `url_id` INT NOT NULL,
+    `status_id` INT DEFAULT NULL,
+    `url_name` VARCHAR(512)
+)
