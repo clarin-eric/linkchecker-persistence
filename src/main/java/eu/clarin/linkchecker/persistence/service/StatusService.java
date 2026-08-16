@@ -41,7 +41,7 @@ public class StatusService {
             uRep.save(status.getUrl());
         }
 
-        if(status.getRedirectCount() == 0){
+        if(status.getRedirectCount() == null || status.getRedirectCount() == 0){
 
             status.setFinalUrl(null); //we only want to save the final URL in case of redirects
         }
