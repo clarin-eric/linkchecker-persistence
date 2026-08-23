@@ -5,6 +5,6 @@ ALTER TABLE `url` ADD COLUMN `exclude_checking` BOOLEAN DEFAULT NULL;
 # dropping table providerGroup (!= providergroup)
 DROP TABLE `providerGroup`;
 # dropping table urlToCheck
-DROP TABLE `urlToCheck`
+DROP TABLE `urlToCheck`;
 # using handle prefix instead of host as group key for handles
 UPDATE `url` SET `group_key` = SUBSTRING_INDEX(SUBSTRING_INDEX(name , '/', 4), '/', -1) WHERE `group_key` = 'hdl.handle.net';
