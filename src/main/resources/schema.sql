@@ -115,10 +115,3 @@ CREATE TABLE IF NOT EXISTS `obsolete` (
   `redirect_count` INT DEFAULT NULL,
   `deletion_date` DATETIME NOT NULL
 );
-
-CREATE TABLE IF NOT EXISTS `url_to_check` (
-    `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `url_id` INT NOT NULL,
-    `status_id` INT DEFAULT NULL,
-    `url_name` VARCHAR(512)
-);
