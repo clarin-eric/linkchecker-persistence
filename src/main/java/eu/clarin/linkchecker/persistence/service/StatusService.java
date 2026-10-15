@@ -28,9 +28,9 @@ public class StatusService {
     @Autowired
     StatusRepository sRep;
     @Autowired
-    HistoryRepository hRep;
-    @Autowired
     StatusDetailRepository sdRep;
+    @Autowired
+    HistoryService historyService;
 
 
     public void save(Status status) {
@@ -60,10 +60,10 @@ public class StatusService {
             // the try/catch block was necessary since we had frequently some records which were already
             // copied from status history table
             try {
-                hRep.save(history);
+                historyService.save(history);
             }
             catch (Exception e) {
-                log.error("constraint violation while attempting to copy a record more than once from status to history table");
+                log.warn("constraint violation while attempting to copy a record more than once from status to history table");
             }
 
             status.setId(oldStatus.getId());

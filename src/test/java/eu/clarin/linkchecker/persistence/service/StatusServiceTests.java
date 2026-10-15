@@ -54,11 +54,23 @@ class StatusServiceTests {
     void saveWithDBInconsistency() {
 
         Url url = uRep.save(new Url("http://www.wowasa.com", "www.wowasa.com", true));
-        LocalDateTime now = LocalDateTime.now();
 
-        hRep.save(new History(url, Category.Broken, now));
+        Status status = new Status(url, Category.Broken, "", LocalDateTime.now());
 
-        sService.save(new Status(url, Category.Broken, "", now));
+        //saves only to status table
+        sService.save(status);
+
+        assertEquals(1, sRep.count());
+        assertEquals(0, hRep.count());
+
+        // copies old status to history
+        sService.save(status);
+
+        assertEquals(1, sRep.count());
+        assertEquals(1, hRep.count());
+
+        // here the constraint violation should happen
+        sService.save(status);
 
         assertEquals(1, sRep.count());
         assertEquals(1, hRep.count());
