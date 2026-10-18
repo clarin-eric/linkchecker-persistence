@@ -15,7 +15,7 @@
       <java.version>25</java.version>
       <maven.compiler.source>25</maven.compiler.source>
       <maven.compiler.target>25</maven.compiler.target>
-      <vlo.version>4.12.1</vlo.version>
+      <vlo.version>4.12.4</vlo.version>
    </properties>
    <dependencies>
       <dependency>
